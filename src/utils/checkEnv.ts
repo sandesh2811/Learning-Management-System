@@ -3,13 +3,17 @@ type EnvironmentVariablesType = {
     MONGODB_URI: string;
     JWT_ACCESS_TOKEN_SECRET_KEY: string;
     JWT_ACCESS_TOKEN_EXPIRY: string;
+    JWT_REFRESH_TOKEN_SECRET_KEY: string;
+    JWT_REFRESH_TOKEN_EXPIRY: string;
+    ACCESS_TOKEN_COOKIE_EXPIRY: string;
+    REFRESH_TOKEN_COOKIE_EXPIRY: string;
+    SALT_ROUNDS: string;
 };
 
 const CheckEnvirnomentVariables = <Key extends keyof EnvironmentVariablesType>(
     key: Key
 ): EnvironmentVariablesType[Key] => {
     const value = process.env[key];
-    console.log(value);
 
     if (!value) {
         throw new Error("Missing environment variables!");
@@ -27,4 +31,17 @@ export const env: EnvironmentVariablesType = {
     JWT_ACCESS_TOKEN_EXPIRY: CheckEnvirnomentVariables(
         "JWT_ACCESS_TOKEN_EXPIRY"
     ),
+    JWT_REFRESH_TOKEN_SECRET_KEY: CheckEnvirnomentVariables(
+        "JWT_REFRESH_TOKEN_SECRET_KEY"
+    ),
+    JWT_REFRESH_TOKEN_EXPIRY: CheckEnvirnomentVariables(
+        "JWT_REFRESH_TOKEN_EXPIRY"
+    ),
+    ACCESS_TOKEN_COOKIE_EXPIRY: CheckEnvirnomentVariables(
+        "ACCESS_TOKEN_COOKIE_EXPIRY"
+    ),
+    REFRESH_TOKEN_COOKIE_EXPIRY: CheckEnvirnomentVariables(
+        "REFRESH_TOKEN_COOKIE_EXPIRY"
+    ),
+    SALT_ROUNDS: CheckEnvirnomentVariables("SALT_ROUNDS"),
 };

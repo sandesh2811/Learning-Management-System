@@ -1,3 +1,5 @@
+/* Status Codes */
+
 const OK = 200;
 const CREATED = 201;
 const NO_CONTENT = 204;
@@ -9,6 +11,12 @@ const NOT_FOUND = 404;
 const CONFLICT = 409;
 const INTERNAL_SERVER_ERROR = 500;
 const SERVICE_UNAVAILABLE = 503;
+
+/* Response Messages */
+
+const INTERNAL_SERVER_ERROR_MESSAGE = "Internal Server Error!";
+
+/* Exports */
 
 export {
     OK,
@@ -22,4 +30,5 @@ export {
     CONFLICT,
     INTERNAL_SERVER_ERROR,
     SERVICE_UNAVAILABLE,
+    INTERNAL_SERVER_ERROR_MESSAGE,
 };
