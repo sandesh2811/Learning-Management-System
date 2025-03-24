@@ -7,21 +7,27 @@ import {
 } from "@/constants/Constants";
 
 import { GetUser } from "@/database/services/auth/UserLogin";
+import LoginSchema from "@/validators/auth/LoginSchema";
 
 import { ComparePassword } from "@/lib/bcrypt";
 import { connectDB } from "@/lib/dbConnect";
 import { GenerateJwtToken } from "@/lib/jwt";
+
 import { API_RESPONSE } from "@/utils/API_Response";
 import { env } from "@/utils/checkEnv";
 
 import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { JsonWebTokenError } from "jsonwebtoken";
+import { ZodError } from "zod";
 
 /*
     Get username and password from user.
     Check if there are any missing fields.
     If all fields are not present then send respective response
+
+    Validate user sent credentials
+    If validation fails send respective response
 
     Find user with same username in the database
     If user is not found then send respective response
@@ -51,8 +57,14 @@ export const POST = async (request: NextRequest) => {
                 message: "Username or password missing!",
             });
 
+        // Validate user sent data
+        const validatedUserData = await LoginSchema.parseAsync({
+            username,
+            password,
+        });
+
         // Get user from database
-        const user = await GetUser(username);
+        const user = await GetUser(validatedUserData.username);
 
         if (!user)
             return API_RESPONSE(NOT_FOUND, {
@@ -63,7 +75,7 @@ export const POST = async (request: NextRequest) => {
         // Compare passwords
         const isSamePassword = await ComparePassword({
             hashedPassword: user.password,
-            password,
+            password: validatedUserData.password,
         });
 
         if (!isSamePassword)
@@ -115,6 +127,11 @@ export const POST = async (request: NextRequest) => {
             return API_RESPONSE(BAD_REQUEST, {
                 success: false,
                 message: error.message,
+            });
+        } else if (error instanceof ZodError) {
+            return API_RESPONSE(BAD_REQUEST, {
+                success: false,
+                message: error.errors[0].message,
             });
         }
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {

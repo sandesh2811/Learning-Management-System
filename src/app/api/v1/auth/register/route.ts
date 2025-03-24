@@ -9,15 +9,21 @@ import {
     CheckUserExists,
     CreateUser,
 } from "@/database/services/auth/UserRegistration";
+import RegisterSchema from "@/validators/auth/RegisterSchema";
+
 import { connectDB } from "@/lib/dbConnect";
 import { API_RESPONSE } from "@/utils/API_Response";
 
 import { NextRequest, NextResponse } from "next/server";
+import { ZodError } from "zod";
 
 /*
     Get the required credentials from user
     Check if all fields/credentials are available
     If all fields are not present then send respective response
+
+    Validate user sent credentials
+    If validation fails send respective response
 
     Check if user with same email already exists
     If user exists with same email exists then send respective response
@@ -28,6 +34,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (request: NextRequest): Promise<NextResponse> => {
     try {
         await connectDB();
+
         const { username, email, password, role } =
             (await request.json()) as RegisterRouteBodyType;
 
@@ -37,8 +44,16 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
                 message: "Missing fields!",
             });
 
+        // Validate user sent data
+        const validatedUserData = await RegisterSchema.parseAsync({
+            username,
+            email,
+            password,
+            role,
+        });
+
         // Check if user already exists
-        const userExists = await CheckUserExists(email);
+        const userExists = await CheckUserExists(validatedUserData.email);
 
         if (userExists)
             return API_RESPONSE(BAD_REQUEST, {
@@ -47,7 +62,12 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             });
 
         // Create new user
-        await CreateUser({ email, username, role, password });
+        await CreateUser({
+            email: validatedUserData.email,
+            username: validatedUserData.username,
+            role: validatedUserData.role,
+            password: validatedUserData.password,
+        });
 
         return API_RESPONSE(CREATED, {
             success: true,
@@ -58,6 +78,13 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             Todo : Add profile picture option
         */
     } catch (error) {
+        if (error instanceof ZodError) {
+            return API_RESPONSE(BAD_REQUEST, {
+                success: false,
+                message: error.errors[0].message,
+            });
+        }
+
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {
             success: false,
             message: INTERNAL_SERVER_ERROR_MESSAGE,
