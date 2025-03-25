@@ -35,7 +35,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
     try {
         await connectDB();
 
-        const { username, email, password, role } =
+        const { username, email, password, role, fullname } =
             (await request.json()) as RegisterRouteBodyType;
 
         if (!username || !email || !password || !role)
@@ -50,6 +50,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             email,
             password,
             role,
+            fullname,
         });
 
         // Check if user already exists
@@ -67,6 +68,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             username: validatedUserData.username,
             role: validatedUserData.role,
             password: validatedUserData.password,
+            fullname: validatedUserData.fullname,
         });
 
         return API_RESPONSE(CREATED, {

@@ -11,6 +11,10 @@ const RegisterSchema = z.object({
         .min(8, { message: "Password must be atleast 8 characters!" })
         .max(15, { message: "Password cannot exceed 15 characters!" })
         .trim(),
+    fullname: z
+        .string({ required_error: "Fullname cannot be empty!" })
+        .min(10, { message: "Fullname must be atleast 10 characters!" })
+        .max(30, { message: "Fullname cannot exceed 30 characters!" }),
     email: z
         .string({ required_error: "Email cannot be empty!" })
         .email("Please enter a valid email!")

@@ -2,6 +2,7 @@ import mongoose, { Document, Model, Schema } from "mongoose";
 
 interface UserSchemaType extends Document {
     username: string;
+    fullname: string;
     email: string;
     password: string;
     // avatar : string,
@@ -22,6 +23,11 @@ const UserSchema = new Schema<UserSchemaType>(
             required: [true, "Email is required!"],
             unique: true,
             trim: true,
+        },
+
+        fullname: {
+            type: String,
+            required: [true, "Full name is required!"],
         },
 
         password: {
