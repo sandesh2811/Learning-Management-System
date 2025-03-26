@@ -5,7 +5,7 @@ interface UserSchemaType extends Document {
     fullname: string;
     email: string;
     password: string;
-    // avatar : string,
+    avatar: string;
     role: string;
 }
 
@@ -37,10 +37,10 @@ const UserSchema = new Schema<UserSchemaType>(
             trim: true,
         },
 
-        // avatar : {
-        //     type: String,
-        //     required : [true , "Avatar is required!"]
-        // },
+        avatar: {
+            type: String,
+            required: [true, "Avatar is required!"],
+        },
 
         role: {
             type: String,
@@ -51,5 +51,5 @@ const UserSchema = new Schema<UserSchemaType>(
 );
 
 export const UserModel =
-    (mongoose.models.Users as Model<UserSchemaType>) ||
+    (mongoose.models.User as Model<UserSchemaType>) ||
     mongoose.model<UserSchemaType>("User", UserSchema);

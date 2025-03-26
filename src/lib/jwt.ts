@@ -2,6 +2,12 @@ import { env } from "@/utils/checkEnv";
 
 import jwt from "jsonwebtoken";
 
+/*
+    Get all the required values for jwt payload
+    Generate access & refresh tokens
+    Send tokens based on token type recieved
+*/
+
 const GenerateJwtToken = ({
     role,
     userId,

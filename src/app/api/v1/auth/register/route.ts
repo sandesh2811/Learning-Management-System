@@ -12,7 +12,9 @@ import {
 import RegisterSchema from "@/validators/auth/RegisterSchema";
 
 import { connectDB } from "@/lib/dbConnect";
+
 import { API_RESPONSE } from "@/utils/API_Response";
+import { ConvertFormData } from "@/utils/formDataConversion";
 
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
@@ -35,10 +37,14 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
     try {
         await connectDB();
 
-        const { username, email, password, role, fullname } =
-            (await request.json()) as RegisterRouteBodyType;
+        const formData = await request.formData();
 
-        if (!username || !email || !password || !role)
+        // Convert the form data
+        const { username, email, password, role, fullname, avatar } =
+            ConvertFormData<RegisterUserType>(formData);
+
+        // Check required fields presence
+        if (!username || !email || !password || !role || !fullname || !avatar)
             return API_RESPONSE(BAD_REQUEST, {
                 success: false,
                 message: "Missing fields!",
@@ -47,10 +53,11 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         // Validate user sent data
         const validatedUserData = await RegisterSchema.parseAsync({
             username,
-            email,
             password,
-            role,
             fullname,
+            email,
+            role,
+            avatar,
         });
 
         // Check if user already exists
@@ -67,8 +74,9 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             email: validatedUserData.email,
             username: validatedUserData.username,
             role: validatedUserData.role,
-            password: validatedUserData.password,
             fullname: validatedUserData.fullname,
+            password: validatedUserData.password,
+            avatar: validatedUserData.avatar,
         });
 
         return API_RESPONSE(CREATED, {
@@ -77,7 +85,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         });
 
         /*
-            Todo : Add profile picture option
+            Todo : Add profile picture 
         */
     } catch (error) {
         if (error instanceof ZodError) {

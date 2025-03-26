@@ -17,7 +17,7 @@ const freebiesSchema = z.object({
                 file && file[0] instanceof File && file[0].type === "video/mp4"
             );
         },
-        { message: "Only MP4 video is allowed" }
+        { message: "Only MP4 video is allowed!" }
     ),
 });
 
@@ -61,7 +61,7 @@ const CreateCourseSchema = z.object({
             .min(1, { message: "Atleast one tag is required!" })
     ),
 
-    languagesAvailable: z.array(z.string()).or(z.string()),
+    languagesAvailable: z.array(z.string()),
 
     enrolledStudents: z
         .optional(

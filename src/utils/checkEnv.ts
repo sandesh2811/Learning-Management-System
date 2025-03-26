@@ -8,6 +8,7 @@ type EnvironmentVariablesType = {
     ACCESS_TOKEN_COOKIE_EXPIRY: string;
     REFRESH_TOKEN_COOKIE_EXPIRY: string;
     SALT_ROUNDS: string;
+    SIGNED_COOKIE_SECRET_KEY: string;
 };
 
 const CheckEnvirnomentVariables = <Key extends keyof EnvironmentVariablesType>(
@@ -44,4 +45,7 @@ export const env: EnvironmentVariablesType = {
         "REFRESH_TOKEN_COOKIE_EXPIRY"
     ),
     SALT_ROUNDS: CheckEnvirnomentVariables("SALT_ROUNDS"),
+    SIGNED_COOKIE_SECRET_KEY: CheckEnvirnomentVariables(
+        "SIGNED_COOKIE_SECRET_KEY"
+    ),
 };

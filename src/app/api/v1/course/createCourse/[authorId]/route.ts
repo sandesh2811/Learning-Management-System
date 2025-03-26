@@ -4,17 +4,20 @@ import {
     INTERNAL_SERVER_ERROR,
     INTERNAL_SERVER_ERROR_MESSAGE,
 } from "@/constants/Constants";
+
 import { CreateCourse } from "@/database/services/course/CreateCourse";
+import CreateCourseSchema from "@/validators/course/CreateCourseSchema";
+
 import { connectDB } from "@/lib/dbConnect";
 
 import { API_RESPONSE } from "@/utils/API_Response";
-import CreateCourseSchema from "@/validators/course/CreateCourseSchema";
+import { ConvertFormData } from "@/utils/formDataConversion";
 
 import { NextRequest } from "next/server";
 import { ZodError } from "zod";
 
 /*
-    Get all the fields from request form
+    Get all the fields from request 
     If required field are not available then send respective response
 
     If all fields are present then validate user sent data
@@ -32,6 +35,9 @@ export const POST = async (
         await connectDB();
 
         const { authorId } = await params;
+        const userSentData = await request.formData();
+
+        // Convert formdata to object
         const {
             title,
             description,
@@ -41,7 +47,7 @@ export const POST = async (
             freebies,
             languagesAvailable,
             tags,
-        } = (await request.json()) as Partial<CourseType>;
+        } = ConvertFormData<Partial<CourseType>>(userSentData);
 
         // Check required fields presence
         if (
@@ -64,17 +70,23 @@ export const POST = async (
             authorId,
             title,
             description,
-            price,
+            price: price,
             duration,
-            discount,
-            freebies,
+            discount: {
+                hasDiscount: discount?.hasDiscount,
+                discountPercentage: discount?.discountPercentage,
+            },
+            freebies: {
+                isFreebie: freebies?.isFreebie,
+                file: freebies?.file,
+            },
             tags,
             languagesAvailable,
         });
 
-        /* Todo : Add video uploads */
+        /* Todo : Add video uploads and get the url of the uploaded videos */
 
-        // Storing the valid data in an object
+        // Store valid data in an object
         const courseCreationValidData: Omit<
             CourseType,
             "courseContent" | "enrolledStudents"
@@ -114,7 +126,6 @@ export const POST = async (
         });
     } catch (error) {
         if (error instanceof ZodError) {
-            console.log(error.errors[0].path);
             return API_RESPONSE(BAD_REQUEST, {
                 success: false,
                 message: error.errors[0].message,

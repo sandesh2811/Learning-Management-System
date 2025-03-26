@@ -19,7 +19,8 @@ const CreateUser = async ({
     username,
     role,
     password,
-}: RegisterRouteBodyType): Promise<void> => {
+    fullname,
+}: RegisterUserType): Promise<void> => {
     const hashedPassword = await HashPassword(password);
 
     await UserModel.create({
@@ -27,6 +28,7 @@ const CreateUser = async ({
         email,
         password: hashedPassword,
         role,
+        fullname,
     });
 };
 

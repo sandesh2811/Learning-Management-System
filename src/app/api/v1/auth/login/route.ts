@@ -12,6 +12,7 @@ import LoginSchema from "@/validators/auth/LoginSchema";
 import { ComparePassword } from "@/lib/bcrypt";
 import { connectDB } from "@/lib/dbConnect";
 import { GenerateJwtToken } from "@/lib/jwt";
+import { SignCookie } from "@/lib/cookie";
 
 import { API_RESPONSE } from "@/utils/API_Response";
 import { env } from "@/utils/checkEnv";
@@ -35,16 +36,11 @@ import { ZodError } from "zod";
     If passwords don't match then send respective response
 
     If passwords match generate refresh and access tokens
-    Set the access and refresh token to user as http only cookies
+    Set the access and refresh token to user as http only signed cookies
     Send user details
 */
 
 export const POST = async (request: NextRequest) => {
-    /*
-    Todo : 
-    Encrypt refresh token and decide where to store refresh token (database/redis)
-    Sign cookies
-    */
     try {
         await connectDB();
 
@@ -96,25 +92,31 @@ export const POST = async (request: NextRequest) => {
             tokenType: "refresh",
         });
 
+        // Sign cookies
+        const signedAccessToken = SignCookie(access_token);
+        const signedRefreshToken = SignCookie(refresh_token);
+
         // Set access and refresh token
-        (await cookies()).set("access_token", access_token, {
+        (await cookies()).set("access_token", signedAccessToken, {
             httpOnly: true,
             secure: env.NODE_ENV === "development" ? false : true,
             sameSite: "strict",
             expires: Number(env.ACCESS_TOKEN_COOKIE_EXPIRY),
         });
 
-        (await cookies()).set("refresh_token", refresh_token, {
+        (await cookies()).set("refresh_token", signedRefreshToken, {
             httpOnly: true,
             secure: env.NODE_ENV === "development" ? false : true,
             sameSite: "strict",
             expires: Number(env.REFRESH_TOKEN_COOKIE_EXPIRY),
+            path: "/api/v1/auth/refresh",
         });
 
         const userData: LoggedInUserType = {
             username: user.username,
             userId: user._id as string,
             role: user.role,
+            fullname: user.fullname,
         };
 
         return API_RESPONSE<LoggedInUserType>(OK, {

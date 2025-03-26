@@ -7,22 +7,23 @@ type ResponseStructure<T> = {
     data?: T;
 };
 
-type RegisterRouteBodyType = {
+type LoginRouteBodyType = Omit<RegisterUserType, "email" | "role" | "avatar">;
+
+/* SHARED TYPES */
+
+type RegisterUserType = {
     fullname: string;
     username: string;
     email: string;
     password: string;
-    // avatar : string,
+    avatar: File;
     role: string;
 };
 
-//todo : Omit avatar
-
-type LoginRouteBodyType = Omit<RegisterRouteBodyType, "email" | "role">;
-
-/* SHARED TYPES */
-
-type LoggedInUserType = Omit<RegisterRouteBodyType, "password" | "email"> & {
+type LoggedInUserType = Omit<
+    RegisterUserType,
+    "password" | "email" | "avatar"
+> & {
     userId: string;
 };
 

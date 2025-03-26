@@ -17,7 +17,7 @@ export interface CourseSchemaType extends Document {
         isFreebie: boolean;
         contentId: string[];
     };
-    languagesAvailable: string | string[];
+    languagesAvailable: string[];
     enrolledStudents: Schema.Types.ObjectId[];
     tags: string[];
 }
@@ -74,7 +74,7 @@ const CourseSchema = new Schema<CourseSchemaType>(
             default: [],
         },
         languagesAvailable: {
-            type: String || Array(String),
+            type: Array(String),
             required: [true, "Course language is required!"],
         },
         enrolledStudents: {
