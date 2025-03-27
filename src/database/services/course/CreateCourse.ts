@@ -3,7 +3,7 @@ import { CourseModel } from "@/database/models/CourseModel";
 export const CreateCourse = async (
     courseCreationValidData: Omit<
         CourseType,
-        "courseContent" | "enrolledStudents"
+        "courseContent" | "enrolledStudents" | "_id"
     >
 ) => {
     const {
@@ -33,5 +33,5 @@ export const CreateCourse = async (
     if (createdCourse)
         return { success: true, message: "Course created successfully!" };
 
-    return { success: true, message: "Couldn't create course!" };
+    return { success: false, message: "Couldn't create course!" };
 };

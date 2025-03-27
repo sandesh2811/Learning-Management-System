@@ -1,5 +1,6 @@
 import {
     BAD_REQUEST,
+    CONFLICT,
     CREATED,
     INTERNAL_SERVER_ERROR,
     INTERNAL_SERVER_ERROR_MESSAGE,
@@ -29,7 +30,7 @@ import { ZodError } from "zod";
 
 export const POST = async (
     request: NextRequest,
-    { params }: { params: Promise<{ authorId: string }> }
+    { params }: ParamsProp<{ authorId: string }>
 ) => {
     try {
         await connectDB();
@@ -89,7 +90,7 @@ export const POST = async (
         // Store valid data in an object
         const courseCreationValidData: Omit<
             CourseType,
-            "courseContent" | "enrolledStudents"
+            "courseContent" | "enrolledStudents" | "_id"
         > = {
             authorId: authorId,
             title: validatedData.title,
@@ -115,7 +116,7 @@ export const POST = async (
         );
 
         if (!success)
-            return API_RESPONSE(BAD_REQUEST, {
+            return API_RESPONSE(CONFLICT, {
                 success,
                 message,
             });

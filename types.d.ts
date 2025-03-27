@@ -9,6 +9,10 @@ type ResponseStructure<T> = {
 
 type LoginRouteBodyType = Omit<RegisterUserType, "email" | "role" | "avatar">;
 
+type ParamsProp<T> = {
+    params: Promise<T>;
+};
+
 /* SHARED TYPES */
 
 type RegisterUserType = {
@@ -28,6 +32,7 @@ type LoggedInUserType = Omit<
 };
 
 type CourseType = {
+    _id: string;
     authorId: string;
     title: string;
     description: string;
