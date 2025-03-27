@@ -32,3 +32,25 @@ export {
     SERVICE_UNAVAILABLE,
     INTERNAL_SERVER_ERROR_MESSAGE,
 };
+
+/* NAVBAR LINKS */
+
+export const Links = [
+    {
+        href: "/",
+        title: "Home",
+    },
+    {
+        href: "/courses",
+        title: "Courses",
+    },
+
+    {
+        href: "/register",
+        title: "Register",
+    },
+    {
+        href: "/login",
+        title: "Login",
+    },
+];
