@@ -4,8 +4,7 @@ import {
     NOT_FOUND,
     OK,
 } from "@/constants/Constants";
-
-import { CheckCourseExists } from "@/database/services/course/CourseExists";
+import { EnrolledCourses } from "@/database/services/course/EnrolledCourses";
 import { connectDB } from "@/lib/dbConnect";
 
 import { API_RESPONSE } from "@/utils/API_Response";
@@ -13,25 +12,24 @@ import { API_RESPONSE } from "@/utils/API_Response";
 import { NextRequest } from "next/server";
 
 /*
-    Get course id from the params
+    Get studentId from params
 
-    Search if course exists 
-    If course doesnot exists then send respective response
-    If course exists then send course 
+    Get all the courses that the student is enrolled in
+    If not found then send respective response
 */
 
 export const GET = async (
-    req: NextRequest,
-    { params }: ParamsProp<{ courseId: string }>
+    request: NextRequest,
+    { params }: ParamsProp<{ studentId: string }>
 ) => {
     try {
         await connectDB();
 
-        // Get the course id
-        const { courseId } = await params;
+        // Get the student id
+        const { studentId } = await params;
 
-        // Check if course exists
-        const { success, message, course } = await CheckCourseExists(courseId);
+        // Get all the courses
+        const { success, message, courses } = await EnrolledCourses(studentId);
 
         if (!success) {
             return API_RESPONSE(NOT_FOUND, {
@@ -43,7 +41,7 @@ export const GET = async (
         return API_RESPONSE(OK, {
             success,
             message,
-            data: course,
+            data: courses,
         });
     } catch (error) {
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {

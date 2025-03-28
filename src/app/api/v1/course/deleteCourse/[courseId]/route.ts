@@ -12,6 +12,7 @@ import { CheckCourseExists } from "@/database/services/course/CourseExists";
 import { API_RESPONSE } from "@/utils/API_Response";
 
 import { NextRequest } from "next/server";
+import { connectDB } from "@/lib/dbConnect";
 
 /*
     Get the course id from the params
@@ -26,6 +27,8 @@ export const DELETE = async (
     { params }: ParamsProp<{ courseId: string }>
 ) => {
     try {
+        await connectDB();
+
         const { courseId } = await params;
 
         // Check if course exists
