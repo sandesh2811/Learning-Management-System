@@ -6,10 +6,8 @@ import {
     NOT_FOUND,
 } from "@/constants/Constants";
 
-import {
-    CheckCourseExists,
-    DeleteCourse,
-} from "@/database/services/course/DeleteCourse";
+import { DeleteCourse } from "@/database/services/course/DeleteCourse";
+import { CheckCourseExists } from "@/database/services/course/CourseExists";
 
 import { API_RESPONSE } from "@/utils/API_Response";
 
