@@ -16,7 +16,7 @@ const Navbar = () => {
     useDisableScroll(isActive);
 
     return (
-        <header className="flex h-[5vh] items-center justify-between">
+        <header className="mb-16 flex h-[5vh] items-center justify-between">
             <h1 className="font-semibold tracking-wide">LOGO</h1>
 
             {/* Mobile Navbar */}
