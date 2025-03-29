@@ -5,14 +5,17 @@
 :root {
     --background: #fcfcfc;
     --secondary-color: #f4f4f460;
+    --secondary-background: #e6e6e6;
     --primary-text: #282828;
+    --secondary-text: #28282899;
 }
 
 @theme inline {
     --color-background: var(--background);
+    --color-secondary-background: var(--secondary-background);
     --color-secondary-color: var(--secondary-color);
     --color-primary-text: var(--primary-text);
-
+    --color-secondary-text: var(--secondary-text);
     --font-manrope: "Manrope", sans-serif;
 }
 
