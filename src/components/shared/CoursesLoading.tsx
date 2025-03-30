@@ -4,7 +4,7 @@ const CoursesLoading = () => {
             {Array.from({ length: 4 }).map((_, idx) => (
                 <div
                     key={idx}
-                    className="bg-secondary-background relative flex min-h-[50vh] max-w-[400px] flex-col overflow-hidden rounded-xl md:max-w-[500px]"
+                    className="bg-secondary-background relative flex min-h-[50vh] w-[400px] flex-col overflow-hidden rounded-xl md:w-full"
                 >
                     {/* Image */}
                     <div className="flex-1 animate-pulse bg-gray-300"></div>

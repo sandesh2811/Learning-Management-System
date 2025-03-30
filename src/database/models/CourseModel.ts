@@ -12,14 +12,16 @@ export interface CourseSchemaType extends Document {
         hasDiscount: boolean;
         discountPercentage: number;
     };
-    courseContent: Schema.Types.ObjectId[];
+    courseContent: string[];
     freebies: {
         isFreebie: boolean;
-        contentId: string[];
+        file: string[];
     };
+    coverImage: string;
     languagesAvailable: string[];
     enrolledStudents: Schema.Types.ObjectId[];
     tags: string[];
+    rating: number;
 }
 
 const CourseSchema = new Schema<CourseSchemaType>(
@@ -56,21 +58,25 @@ const CourseSchema = new Schema<CourseSchemaType>(
             },
         },
         courseContent: {
-            type: Array(Schema.Types.ObjectId),
+            type: Array(String),
             default: [],
         },
         freebies: {
             isFreebie: {
                 type: Boolean,
             },
-            contentId: {
+            file: {
                 type: Array(String),
                 required: [true, "Atleast one free video is required!"],
             },
         },
+        coverImage: {
+            type: String,
+            required: [true, "Cover image is required!"],
+        },
         tags: {
             type: Array(String),
-            required: [true, "Tag is required!"],
+            required: [true, "Atleast one tag is required!"],
             default: [],
         },
         languagesAvailable: {
@@ -80,6 +86,10 @@ const CourseSchema = new Schema<CourseSchemaType>(
         enrolledStudents: {
             type: Array(Schema.Types.ObjectId),
             default: [],
+        },
+        rating: {
+            type: Number,
+            default: 0,
         },
     },
     { timestamps: true }

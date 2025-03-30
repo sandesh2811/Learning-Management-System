@@ -1,10 +1,18 @@
+import GetAllCourses from "@/features/allcourses/api/getAllCourses";
 import FeaturedCourseCard from "./FeaturedCourseCard";
 
-const FeaturedCoursesCardsWrapper = () => {
+const FeaturedCoursesCardsWrapper = async () => {
+    /* Get all courses */
+    const { success, message, courses } = await GetAllCourses();
+
+    const featuredcourses = courses.filter(
+        (course) => course.rating >= 4.5 && course
+    );
+
     return (
         <div className="flex flex-wrap justify-center gap-6 md:grid md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:gap-9">
-            {Array.from({ length: 4 }).map((_, idx) => (
-                <FeaturedCourseCard key={idx} data="" />
+            {featuredcourses.map((course) => (
+                <FeaturedCourseCard key={course._id} course={course} />
             ))}
         </div>
     );

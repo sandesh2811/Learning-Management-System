@@ -5,6 +5,7 @@ import {
     OK,
 } from "@/constants/Constants";
 import { GetAllCourses } from "@/database/services/course/AllCourse";
+import { connectDB } from "@/lib/dbConnect";
 
 import { API_RESPONSE } from "@/utils/API_Response";
 
@@ -20,7 +21,10 @@ export const GET = async (request: NextRequest) => {
     /*
         Todo : Add filters and pagination 
     */
+
     try {
+        await connectDB();
+
         const { success, message, courses } = await GetAllCourses();
 
         if (!success)

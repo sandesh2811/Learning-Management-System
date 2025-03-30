@@ -1,19 +1,18 @@
 import Card from "@/components/ui/Card";
+import { CourseType } from "@/features/allcourses/schemas/incomingCourseSchema";
 
 type FeaturedCourseProps = {
-    data: unknown;
+    course: CourseType;
 };
 
-const FeaturedCourseCard = ({}: FeaturedCourseProps) => {
+const FeaturedCourseCard = ({ course }: FeaturedCourseProps) => {
     return (
         <Card
             authorName="Hari Bahadur"
-            description="Lorem ipsum dolor sit amet, consectetur adipisicing
-elit. Molestiae assumenda nobis, magni quod porro
-veritatis ratione doloribus sapiente deleniti."
-            price="50"
-            title="Advanced React Course"
-            type="Frontend"
+            description={course.description}
+            price={course.price}
+            title={course.title}
+            type={course.tags[0]}
             image=""
         />
     );

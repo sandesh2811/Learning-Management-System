@@ -6,7 +6,7 @@ export const GetAllCourses = async () => {
     if (courses.length !== 0)
         return {
             success: true,
-            message: "Courses made by author!",
+            message: "All Courses!",
             courses,
         };
 

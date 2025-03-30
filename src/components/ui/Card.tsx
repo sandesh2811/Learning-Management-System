@@ -1,7 +1,7 @@
 type CardProps = {
     title: string;
     description: string;
-    price: string;
+    price: number;
     authorName: string;
     type: string;
     image: string;
@@ -55,9 +55,9 @@ const CardContent = ({
                     {title}
                 </h3>
 
-                <p className="text-sm font-light text-pretty">
-                    {description.length > 150
-                        ? description.slice(0, 150).concat("...")
+                <p className="text-sm font-light text-pretty break-words">
+                    {description.length > 100
+                        ? description.slice(0, 100).concat("...")
                         : description}
                 </p>
             </div>
