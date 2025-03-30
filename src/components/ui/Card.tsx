@@ -16,7 +16,7 @@ const Card = ({
     image,
 }: CardProps) => {
     return (
-        <div className="bg-secondary-background lg:max-w-[4 relative flex min-h-[50vh] max-w-[400px] flex-col overflow-hidden rounded-xl md:max-w-[500px]">
+        <div className="bg-secondary-background relative flex min-h-[50vh] max-w-[400px] flex-col overflow-hidden rounded-xl md:max-w-[500px]">
             {/* Image */}
             <CardImage imageUrl={image} />
 
@@ -47,7 +47,7 @@ const CardContent = ({
     price,
 }: CardContentProps) => {
     return (
-        <div className="flex flex-col gap-6 p-4">
+        <div className="flex flex-1 flex-col justify-between gap-6 p-4">
             {/* Title and subtitle */}
 
             <div className="flex flex-col gap-1">
@@ -56,8 +56,8 @@ const CardContent = ({
                 </h3>
 
                 <p className="text-sm font-light text-pretty">
-                    {description.length > 100
-                        ? description.slice(0, 100).concat("...")
+                    {description.length > 150
+                        ? description.slice(0, 150).concat("...")
                         : description}
                 </p>
             </div>
