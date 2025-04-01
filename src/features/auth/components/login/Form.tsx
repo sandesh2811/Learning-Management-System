@@ -1,8 +1,8 @@
 "use client";
 
-import { useSetupRHF } from "../hooks/useSetupRHF";
+import { useSetupRHF } from "@/hooks/useSetupRHF";
 
-import LoginSchema from "@/validators/auth/LoginSchema";
+import LoginSchema, { LoginType } from "@/validators/auth/LoginSchema";
 
 import Button from "@/components/ui/Button";
 import FormInput from "@/components/ui/FormInput";
@@ -15,7 +15,7 @@ const FormBody = () => {
         reset,
         register,
         formState: { errors },
-    } = useSetupRHF(LoginSchema);
+    } = useSetupRHF<LoginType>(LoginSchema);
 
     return (
         <form className="flex flex-col gap-4 shadow-xl">
