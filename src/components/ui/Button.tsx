@@ -5,7 +5,7 @@ import cn from "@/lib/cn";
 /* Button Variants For Different Use Cases and Viewports */
 
 const ButtonVariants = cva(
-    "p-3 flex gap-2 items-center rounded-[4px] tracking-wide font-medium cursor-pointer",
+    "p-3 flex gap-2 items-center justify-center rounded-sm tracking-wide font-medium cursor-pointer",
     {
         variants: {
             variant: {
