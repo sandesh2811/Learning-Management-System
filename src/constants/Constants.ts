@@ -54,3 +54,22 @@ export const Links = [
         title: "Login",
     },
 ];
+
+/* COURSE FILTERS */
+
+export const CourseType = [
+    "Frontend",
+    "Backend",
+    "Devops",
+    "Fullstack",
+    "UI/UX",
+    "Video Editing",
+    "Graphics Designing",
+    "AI/ML",
+];
+
+export const CoursePrice = ["Low to High", "High to Low"];
+
+export const CourseDuration = ["1", "2", "3", "4", "5", "6"];
+
+export const CourseLanguages = ["English", "Nepali", "Hindi"];

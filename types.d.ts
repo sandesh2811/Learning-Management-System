@@ -50,4 +50,5 @@ type CourseType = {
     languagesAvailable: string | string[];
     enrolledStudents: string[];
     tags: string[];
+    coverImage: File;
 };

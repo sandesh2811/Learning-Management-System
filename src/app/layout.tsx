@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className="font-manrope">
+            <body className="font-manrope overflow-x-hidden">
                 <Wrapper>
                     <Navbar />
                     {children}

@@ -1,11 +1,36 @@
-type CardProps = {
+import cn from "@/lib/cn";
+import { cva, VariantProps } from "class-variance-authority";
+import { ComponentPropsWithoutRef } from "react";
+
+const CardVariants = cva(
+    "relative flex min-h-[50vh] flex-col overflow-hidden rounded-xl cursor-pointer",
+    {
+        variants: {
+            variant: {
+                default: "bg-secondary-background",
+            },
+            size: {
+                default: "max-w-[400px] md:max-w-[500px]",
+                shop: " md:max-w-[350px] h-[30vh]",
+            },
+        },
+        defaultVariants: {
+            variant: "default",
+            size: "default",
+        },
+    }
+);
+
+interface CardProps
+    extends ComponentPropsWithoutRef<"div">,
+        VariantProps<typeof CardVariants> {
     title: string;
     description: string;
     price: number;
     authorName: string;
     type: string;
     image: string;
-};
+}
 
 const Card = ({
     authorName,
@@ -14,9 +39,16 @@ const Card = ({
     price,
     type,
     image,
+    variant,
+    size,
+    className,
+    ...props
 }: CardProps) => {
     return (
-        <div className="bg-secondary-background relative flex min-h-[50vh] max-w-[400px] flex-col overflow-hidden rounded-xl md:max-w-[500px]">
+        <div
+            {...props}
+            className={cn(CardVariants({ size, variant, className }))}
+        >
             {/* Image */}
             <CardImage imageUrl={image} />
 
