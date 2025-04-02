@@ -1,5 +1,5 @@
 import CoursesWrapper from "@/features/allcourses/components/CoursesWrapper";
-import FiltersWrapper from "@/features/allcourses/components/FiltersWrapper";
+import FiltersWrapper from "@/features/allcourses/components/Filters/FiltersWrapper";
 
 const CoursesPage = () => {
     return (
