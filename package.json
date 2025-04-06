@@ -22,6 +22,7 @@
         "next": "15.2.3",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "redis": "^4.7.0",
         "react-error-boundary": "^5.0.0",
         "react-hook-form": "^7.55.0",
         "react-icons": "^5.5.0",
