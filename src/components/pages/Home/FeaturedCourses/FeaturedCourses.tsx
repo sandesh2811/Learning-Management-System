@@ -13,7 +13,7 @@ const FeaturedCourses = () => {
 
             {/* Featured courses */}
             <ErrorBoundaryWrapper>
-                <Suspense fallback={<CoursesLoading />}>
+                <Suspense fallback={<CoursesLoading length={4} />}>
                     <FeaturedCoursesCardsWrapper />
                 </Suspense>
             </ErrorBoundaryWrapper>

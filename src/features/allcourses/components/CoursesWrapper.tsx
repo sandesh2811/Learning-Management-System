@@ -2,8 +2,8 @@ import GetAllCourses from "../api/getAllCourses";
 
 import CourseCard from "./CourseCard";
 
-const CoursesWrapper = async () => {
-    const { success, message, courses } = await GetAllCourses();
+const CoursesWrapper = async ({ searchParams }: { searchParams: unknown }) => {
+    const { success, message, courses } = await GetAllCourses(searchParams);
 
     if (courses.length === 0)
         return (
@@ -13,7 +13,7 @@ const CoursesWrapper = async () => {
         );
 
     return (
-        <section className="flex flex-wrap gap-8">
+        <section className="flex grid-cols-2 flex-wrap items-center justify-center gap-8 md:grid lg:grid-cols-3">
             {courses.map((course) => (
                 <CourseCard course={course} key={course._id} />
             ))}

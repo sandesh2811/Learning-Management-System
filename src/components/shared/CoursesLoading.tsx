@@ -1,7 +1,7 @@
-const CoursesLoading = () => {
+const CoursesLoading = ({ length }: { length: number }) => {
     return (
         <div className="flex flex-wrap justify-center gap-6 md:grid md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:gap-9">
-            {Array.from({ length: 4 }).map((_, idx) => (
+            {Array.from({ length }).map((_, idx) => (
                 <div
                     key={idx}
                     className="bg-secondary-background relative flex min-h-[50vh] w-[400px] flex-col overflow-hidden rounded-xl md:w-full"

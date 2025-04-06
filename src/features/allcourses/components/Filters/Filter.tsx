@@ -1,15 +1,23 @@
+import handleFilterSelection from "../../utils/handleFilterSelection";
+
+import { SelectedFilters } from "../../utils/setSelectedFiltersInURL";
+
+import { Dispatch, SetStateAction } from "react";
+
 type FilterProps = {
     displayName: string;
-    filter: string[];
+    filters: string[];
     hasAdditionalChildren?: boolean;
     additionalText?: string;
+    setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>;
 };
 
 const Filter = ({
     displayName,
-    filter,
+    filters,
     hasAdditionalChildren,
     additionalText,
+    setSelectedFilters,
 }: FilterProps) => {
     return (
         <div>
@@ -25,9 +33,19 @@ const Filter = ({
             )}
 
             <div className="flex flex-wrap gap-3">
-                {filter.map((course) => (
-                    <span key={course} className="cursor-pointer">
-                        {course}
+                {filters.map((filter) => (
+                    <span
+                        key={filter}
+                        className="cursor-pointer"
+                        onClick={() =>
+                            handleFilterSelection(
+                                filter,
+                                displayName,
+                                setSelectedFilters
+                            )
+                        }
+                    >
+                        {filter}
                     </span>
                 ))}
             </div>

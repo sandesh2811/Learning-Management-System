@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Wrapper from "@/components/shared/Wrapper";
 import Footer from "@/components/shared/Footer";
+import { StoreProvider } from "@/components/shared/StoreProvider";
 
 export const metadata: Metadata = {
     title: "Learning Management System",
@@ -19,13 +20,15 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className="font-manrope overflow-x-hidden">
-                <Wrapper>
-                    <Navbar />
-                    {children}
-                    {modal}
-                    <Footer />
-                </Wrapper>
+            <body className="font-manrope">
+                <StoreProvider>
+                    <Wrapper>
+                        <Navbar />
+                        {children}
+                        {modal}
+                        <Footer />
+                    </Wrapper>
+                </StoreProvider>
             </body>
         </html>
     );

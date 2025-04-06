@@ -11,7 +11,7 @@ const CardVariants = cva(
             },
             size: {
                 default: "max-w-[400px] md:max-w-[500px]",
-                shop: " md:max-w-[350px] h-[30vh]",
+                shop: "h-[30vh] max-w-[400px]",
             },
         },
         defaultVariants: {
@@ -83,13 +83,13 @@ const CardContent = ({
             {/* Title and subtitle */}
 
             <div className="flex flex-col gap-1">
-                <h3 className="text-[clamp(0.5rem,1.5vw+1rem,1.5rem)] font-medium tracking-tight capitalize">
+                <h3 className="text-[clamp(0.2rem,0.8vw+1rem,1.5rem)] font-medium tracking-tight capitalize">
                     {title}
                 </h3>
 
                 <p className="text-sm font-light text-pretty break-words">
-                    {description.length > 100
-                        ? description.slice(0, 100).concat("...")
+                    {description.length > 75
+                        ? description.slice(0, 75).concat("...")
                         : description}
                 </p>
             </div>
