@@ -1,8 +1,8 @@
 import { createClient, RedisClientType } from "redis";
 
-let redisClient: RedisClientType | null = null;
+let redisClient: RedisClientType;
 
-export const connectRedis = async (): Promise<RedisClientType | null> => {
+const connectRedis = async (): Promise<RedisClientType | void> => {
     if (redisClient) return redisClient;
 
     try {
@@ -21,5 +21,6 @@ export const connectRedis = async (): Promise<RedisClientType | null> => {
         console.log("Error creating redis client!", error);
         process.exit(1);
     }
-    return redisClient;
 };
+
+export { redisClient, connectRedis };
