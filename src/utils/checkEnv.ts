@@ -8,6 +8,7 @@ type EnvironmentVariablesType = {
     ACCESS_TOKEN_COOKIE_EXPIRY: string;
     REFRESH_TOKEN_COOKIE_EXPIRY: string;
     SALT_ROUNDS: string;
+    SIGNED_COOKIE_SECRET_KEY: string;
     BASE_URL: string;
     ESEWA_MERCHANT_ID: string;
     ESEWA_SECRET_KEY: string;
@@ -55,6 +56,10 @@ export const env: EnvironmentVariablesType = {
     ),
 
     SALT_ROUNDS: CheckEnvirnomentVariables("SALT_ROUNDS"),
+
+    SIGNED_COOKIE_SECRET_KEY: CheckEnvirnomentVariables(
+        "SIGNED_COOKIE_SECRET_KEY"
+    ),
 
     BASE_URL: CheckEnvirnomentVariables("BASE_URL"),
 

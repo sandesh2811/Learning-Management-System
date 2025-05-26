@@ -1,25 +1,30 @@
-import GetAllCourses from "@/features/allcourses/api/getAllCourses";
-import FeaturedCourseCard from "./FeaturedCourseCard";
+import { getFeaturedCourses } from "../api/getFeaturedCourses";
+
+import CourseCard from "@/components/shared/course/CourseCard";
 
 const FeaturedCoursesCardsWrapper = async () => {
-    /* Get all courses */
-    const { success, message, courses } = await GetAllCourses();
+    /* Get featured courses */
+    const {
+        success,
+        message,
+        data: featuredCourses,
+    } = await getFeaturedCourses();
 
-    const featuredcourses = courses.filter(
-        (course) => course.rating >= 4.5 && course
-    );
-
-    if (featuredcourses.length === 0)
+    if (featuredCourses?.length === 0 && !success)
         return (
             <span className="font-light md:text-xl">
-                Looks like there are no featured course available right now!
+                {message}
+                {/* Looks like there are no featured course available right now! */}
             </span>
         );
 
     return (
-        <div className="flex flex-wrap justify-center gap-6 md:grid md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:gap-9">
-            {featuredcourses.map((course) => (
-                <FeaturedCourseCard key={course._id} course={course} />
+        <div
+            data-testid="featured-courses-wrapper"
+            className="flex flex-wrap justify-center gap-6 md:grid md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:gap-9"
+        >
+            {featuredCourses?.map((course) => (
+                <CourseCard key={course._id} course={course} />
             ))}
         </div>
     );

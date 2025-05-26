@@ -1,3 +1,5 @@
+import "server-only";
+
 import { UserModel } from "@/database/models/UserModel";
 import { HashPassword } from "@/lib/bcrypt";
 
@@ -20,6 +22,7 @@ const CreateUser = async ({
     role,
     password,
     fullname,
+    avatar,
 }: RegisterUserType): Promise<void> => {
     const hashedPassword = await HashPassword(password);
 
@@ -29,6 +32,7 @@ const CreateUser = async ({
         password: hashedPassword,
         role,
         fullname,
+        avatar,
     });
 };
 

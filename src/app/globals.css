@@ -3,11 +3,13 @@
 @import "tailwindcss";
 
 :root {
-    --background: #fcfcfc;
+    --background: #f8f9fa;
     --secondary-color: #f4f4f460;
     --secondary-background: #e6e6e6;
-    --primary-text: #282828;
+    --primary-text: #1a1a1a;
     --secondary-text: #28282899;
+    --error-text: #fb2c36;
+    --border-color: #d1d5dc;
 }
 
 @theme inline {
@@ -16,6 +18,9 @@
     --color-secondary-color: var(--secondary-color);
     --color-primary-text: var(--primary-text);
     --color-secondary-text: var(--secondary-text);
+    --color-error-text: var(--error-text);
+    --color-border-color: var(--border-color);
+    --breakpoint-mid: 550px;
     --font-manrope: "Manrope", sans-serif;
 }
 

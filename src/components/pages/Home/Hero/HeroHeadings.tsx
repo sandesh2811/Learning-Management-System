@@ -7,10 +7,10 @@ const heading = "Teaching learning process made easy and interactive";
 
 const HeroHeadings = () => {
     return (
-        <div className="flex flex-col gap-1">
-            <div className="flex flex-wrap justify-center gap-2 overflow-hidden">
+        <div data-testid="hero-headings-parent" className="flex flex-col gap-1">
+            <h1 className="flex flex-wrap justify-center gap-2 overflow-hidden">
                 {heading.split(" ").map((heading, idx) => (
-                    <m.h1
+                    <m.span
                         key={idx}
                         custom={idx}
                         variants={HeroHeadingVariant}
@@ -19,9 +19,9 @@ const HeroHeadings = () => {
                         className="text-[clamp(2.5rem,4vw+1rem,4rem)] leading-[clamp(3rem,4.8vw+1rem,4.48rem)] font-bold tracking-tight capitalize"
                     >
                         {heading}
-                    </m.h1>
+                    </m.span>
                 ))}
-            </div>
+            </h1>
 
             <div className="flex justify-center overflow-hidden">
                 <m.span

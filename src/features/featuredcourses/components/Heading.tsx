@@ -1,8 +1,12 @@
-const Heading = () => {
+interface HeadingProps {
+    text: string;
+}
+
+const Heading = ({ text }: HeadingProps) => {
     return (
         <div>
             <h2 className="text-[clamp(2rem,5vw+1rem,3rem)] font-semibold tracking-tighter capitalize">
-                Featured courses
+                {text}
             </h2>
         </div>
     );

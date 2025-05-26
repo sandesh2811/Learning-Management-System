@@ -4,28 +4,33 @@ import {
     NOT_FOUND,
     OK,
 } from "@/constants/Constants";
+
 import { GetAllCourses } from "@/database/services/course/AllCourse";
-import { connectDB } from "@/lib/dbConnect";
+
+import { RateLimit } from "@/middlewares/rateLimit";
+import { withMiddleware } from "@/middlewares/withMiddleware";
 
 import { API_RESPONSE } from "@/utils/API_Response";
+
+import { connectDB } from "@/lib/dbConnect";
 
 import { NextRequest } from "next/server";
 
 /*
     Query to get courses from the database
-    If no course are found then send respective response
+    If no courses are found then send respective response
     If found then send respective response
 */
 
-export const GET = async (request: NextRequest) => {
-    /*
-        Todo : Add filters and pagination 
-    */
+export const handler = async (request: NextRequest) => {
+    const filters = request.nextUrl.searchParams as SearchParamsType &
+        URLSearchParams;
 
     try {
         await connectDB();
 
-        const { success, message, courses } = await GetAllCourses();
+        const { success, message, courses, nextCursor } =
+            await GetAllCourses(filters);
 
         if (!success)
             return API_RESPONSE(NOT_FOUND, {
@@ -38,6 +43,7 @@ export const GET = async (request: NextRequest) => {
             success,
             message,
             data: courses,
+            nextPage: nextCursor,
         });
     } catch (error) {
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {
@@ -47,3 +53,5 @@ export const GET = async (request: NextRequest) => {
         });
     }
 };
+
+export const GET = withMiddleware([RateLimit], handler);

@@ -1,10 +1,10 @@
 import handleFilterSelection from "../../utils/handleFilterSelection";
 
-import { SelectedFilters } from "../../utils/setSelectedFiltersInURL";
+import { Span } from "@/components/ui/Span";
 
 import { Dispatch, SetStateAction } from "react";
 
-type FilterProps = {
+type IndividualFilterProps = {
     displayName: string;
     filters: string[];
     hasAdditionalChildren?: boolean;
@@ -12,13 +12,13 @@ type FilterProps = {
     setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>;
 };
 
-const Filter = ({
+const IndividualFilter = ({
     displayName,
     filters,
     hasAdditionalChildren,
     additionalText,
     setSelectedFilters,
-}: FilterProps) => {
+}: IndividualFilterProps) => {
     return (
         <div>
             {hasAdditionalChildren ? (
@@ -34,23 +34,21 @@ const Filter = ({
 
             <div className="flex flex-wrap gap-3">
                 {filters.map((filter) => (
-                    <span
+                    <Span
+                        role="button"
                         key={filter}
-                        className="cursor-pointer"
-                        onClick={() =>
-                            handleFilterSelection(
-                                filter,
-                                displayName,
-                                setSelectedFilters
-                            )
-                        }
+                        onClick={handleFilterSelection({
+                            filter,
+                            displayName,
+                            setSelectedFilters,
+                        })}
                     >
                         {filter}
-                    </span>
+                    </Span>
                 ))}
             </div>
         </div>
     );
 };
 
-export default Filter;
+export default IndividualFilter;

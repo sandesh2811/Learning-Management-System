@@ -1,10 +1,6 @@
-import React from "react";
-
-import { type SelectedFilters } from "../../utils/setSelectedFiltersInURL";
-
-type SelectedFiltersProps = {
+interface SelectedFiltersProps {
     selectedFilters: SelectedFilters;
-};
+}
 
 const SelectedFilters = ({ selectedFilters }: SelectedFiltersProps) => {
     return (

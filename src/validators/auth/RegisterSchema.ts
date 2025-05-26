@@ -25,17 +25,19 @@ const RegisterSchema = z.object({
 
     role: z.string({ required_error: "Role cannot be empty!" }),
 
-    avatar: z.any().refine(
-        (file) => {
-            return (
+    avatar: z
+        .any()
+        .refine(
+            (file) =>
                 file &&
-                    file[0] instanceof File &&
-                    file[0].type === "image/jpeg",
-                "image/png"
-            );
-        },
-        { message: "Only jpeg or png images are allowed!" }
-    ),
+                file instanceof File &&
+                ["image/jpeg", "image/png", "image/jpg"].includes(file?.type),
+            {
+                message: "File is required and of type JPEG or PNG or JPG!",
+            }
+        ),
 });
+
+export type RegisterType = z.infer<typeof RegisterSchema>;
 
 export default RegisterSchema;

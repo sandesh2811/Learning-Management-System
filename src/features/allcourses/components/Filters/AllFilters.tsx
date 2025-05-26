@@ -5,30 +5,22 @@ import {
     CourseType,
 } from "@/constants/Constants";
 
-import useDisableScroll from "@/hooks/useDisableScroll";
+import { useDisableScroll } from "@/hooks/useDisableScroll";
 
-import { clearSelectedFilters } from "../../utils/clearSelectedFilters";
-import { setSelectedFiltersInURL } from "../../utils/setSelectedFiltersInURL";
-
-import Button from "@/components/ui/Button";
-import Filter from "./Filter";
+import { Span } from "@/components/ui/Span";
+import FiltersButton from "./FiltersButton";
 import SelectedFilters from "./SelectedFilters";
+import IndividualFilter from "./IndividualFilter";
 
 import { GoX } from "react-icons/go";
-import { Dispatch, SetStateAction, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
-const AllFilters = ({
-    isActive,
-    setActive,
-}: {
+interface AllFiltersProps {
     isActive: boolean;
-    setActive: Dispatch<SetStateAction<boolean>>;
-}) => {
-    const router = useRouter();
+    setActiveStateFalse: () => void;
+}
 
-    const urlSearchParams = useSearchParams();
-
+const AllFilters = ({ isActive, setActiveStateFalse }: AllFiltersProps) => {
     const [selectedFilters, setSelectedFilters] = useState({
         type: "",
         price: "",
@@ -40,41 +32,41 @@ const AllFilters = ({
 
     return (
         <>
-            {/* Overlay */}
+            {/* OVERLAY */}
             <div
                 className={`z-10 h-full w-full bg-gray-500/50 duration-400 ease-in-out md:absolute ${isActive ? "top-0 left-0 block" : "hidden"}`}
+                onClick={setActiveStateFalse}
             ></div>
 
-            {/* Filter Section  */}
+            {/* FILTERS SECTION */}
             <div
-                className={`bg-background absolute flex h-full w-full flex-col justify-between gap-4 p-6 md:w-[400px] ${isActive ? "top-0 left-0" : "top-0 left-[-150%]"} z-30 duration-200 ease-in-out`}
+                className={`bg-background absolute flex h-full w-full flex-col justify-between gap-4 p-6 md:w-[400px] ${isActive ? "visible top-0 left-0" : "invisible top-0 left-[-150%]"} z-30 duration-200 ease-in-out`}
             >
-                <div
-                    className="flex justify-end"
-                    onClick={() => setActive(false)}
-                >
-                    <GoX size={25} className="cursor-pointer" />
+                <div className="inline-flex justify-end">
+                    <Span
+                        aria-label="Close filters"
+                        onClick={setActiveStateFalse}
+                    >
+                        <GoX size={25} className="cursor-pointer" />
+                    </Span>
                 </div>
 
                 {/* BY COURSE TYPE */}
-
-                <Filter
+                <IndividualFilter
                     displayName="Course Type"
                     filters={CourseType}
                     setSelectedFilters={setSelectedFilters}
                 />
 
                 {/* BY COURSE PRICE */}
-
-                <Filter
+                <IndividualFilter
                     displayName="Course Price"
                     filters={CoursePrice}
                     setSelectedFilters={setSelectedFilters}
                 />
 
                 {/* BY COURSE DURATION */}
-
-                <Filter
+                <IndividualFilter
                     displayName="Course Duration"
                     filters={CourseDuration}
                     hasAdditionalChildren={true}
@@ -83,40 +75,20 @@ const AllFilters = ({
                 />
 
                 {/* BY COURSE LANGUAGE*/}
-
-                <Filter
+                <IndividualFilter
                     displayName="Course Language"
                     filters={CourseLanguages}
                     setSelectedFilters={setSelectedFilters}
                 />
 
                 {/* SELECTED FILTERS */}
-
                 <SelectedFilters selectedFilters={selectedFilters} />
 
-                {/* CTA BUTTONS */}
-
-                <div className="flex justify-between gap-4 md:justify-end">
-                    <Button
-                        className="px-7 uppercase"
-                        variant="skeleton"
-                        onClick={() => clearSelectedFilters(setSelectedFilters)}
-                    >
-                        Clear
-                    </Button>
-                    <Button
-                        className="px-7 uppercase"
-                        onClick={() =>
-                            setSelectedFiltersInURL({
-                                router,
-                                selectedFilters,
-                                urlSearchParams,
-                            })
-                        }
-                    >
-                        Apply
-                    </Button>
-                </div>
+                {/* FILTERS BUTTON */}
+                <FiltersButton
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                />
             </div>
         </>
     );

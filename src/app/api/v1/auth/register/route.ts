@@ -13,10 +13,14 @@ import RegisterSchema from "@/validators/auth/RegisterSchema";
 
 import { connectDB } from "@/lib/dbConnect";
 
+import { RateLimit } from "@/middlewares/rateLimit";
+import { withMiddleware } from "@/middlewares/withMiddleware";
+
 import { API_RESPONSE } from "@/utils/API_Response";
+import SaveFileLocally from "@/utils/saveFileLocally";
 import { ConvertFormData } from "@/utils/formDataConversion";
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { ZodError } from "zod";
 
 /*
@@ -30,17 +34,21 @@ import { ZodError } from "zod";
     Check if user with same email already exists
     If user exists with same email exists then send respective response
 
+    First save the image locally then save on the image upload service
+    If the upload is successful then remove the image stored locally
+
     If user doesnot exist then create new user
 */
 
-export const POST = async (request: NextRequest): Promise<NextResponse> => {
+const handler = async (request: NextRequest) => {
     try {
         await connectDB();
 
         const formData = await request.formData();
+        const avatar = formData.get("avatar") as File;
 
         // Convert the form data
-        const { username, email, password, role, fullname, avatar } =
+        const { username, email, password, role, fullname } =
             ConvertFormData<RegisterUserType>(formData);
 
         // Check required fields presence
@@ -60,6 +68,17 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             avatar,
         });
 
+        // Initially upload the file locally
+        const localFileSaveSuccess = await SaveFileLocally({
+            image: validatedUserData.avatar,
+        });
+
+        /*
+    TODO
+    Find a way to exclude avatar in the form data conversion
+    Upload the image and get the url from the image upload service
+*/
+
         // Check if user already exists
         const userExists = await CheckUserExists(validatedUserData.email);
 
@@ -76,17 +95,13 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
             role: validatedUserData.role,
             fullname: validatedUserData.fullname,
             password: validatedUserData.password,
-            avatar: validatedUserData.avatar,
+            avatar: validatedUserData.avatar.name,
         });
 
         return API_RESPONSE(CREATED, {
             success: true,
             message: "Registration Successful!",
         });
-
-        /*
-            Todo : Add profile picture 
-        */
     } catch (error) {
         if (error instanceof ZodError) {
             return API_RESPONSE(BAD_REQUEST, {
@@ -102,3 +117,5 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
         });
     }
 };
+
+export const POST = withMiddleware([RateLimit], handler);

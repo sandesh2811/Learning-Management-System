@@ -1,10 +1,17 @@
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { ReadonlyURLSearchParams, useRouter } from "next/navigation";
 
-export const useSetSearchParam = (
-    debouncedSearchQuery: string,
-    searchParams: unknown
-): void => {
+interface useSetSearchParamProps {
+    debouncedSearchQuery: string;
+    searchParams: ReadonlyURLSearchParams;
+    setUserTypingFalse: () => void;
+}
+
+export const useSetSearchParam = ({
+    debouncedSearchQuery,
+    searchParams,
+    setUserTypingFalse,
+}: useSetSearchParamProps): void => {
     const router = useRouter();
 
     useEffect(() => {
@@ -17,5 +24,7 @@ export const useSetSearchParam = (
         }
 
         router.replace(`?${params.toString()}`);
+
+        setUserTypingFalse();
     }, [debouncedSearchQuery, router, searchParams]);
 };

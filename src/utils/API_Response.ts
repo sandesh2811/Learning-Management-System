@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export const API_RESPONSE = <T>(
     statusCode: number,
-    { success, message, error, data }: ResponseStructure<T>
+    { success, message, error, data, nextPage }: ResponseStructure<T>
 ) => {
     if (error) {
         return NextResponse.json<ResponseStructure<void>>(
@@ -19,6 +19,7 @@ export const API_RESPONSE = <T>(
                 success,
                 message,
                 data,
+                nextPage,
             },
             { status: statusCode }
         );

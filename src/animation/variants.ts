@@ -56,7 +56,7 @@ export const FadeInVariant = {
     },
 };
 
-export const SlideRight = {
+export const SlideRightOnHover = {
     hover: {
         x: 2.5,
         duration: 0.8,

@@ -1,13 +1,16 @@
-import { INTERNAL_SERVER_ERROR_MESSAGE } from "@/constants/Constants";
 import {
     BAD_REQUEST,
     INTERNAL_SERVER_ERROR,
     NOT_FOUND,
     OK,
+    INTERNAL_SERVER_ERROR_MESSAGE,
 } from "@/constants/Constants";
 
 import { GetUser } from "@/database/services/auth/UserLogin";
 import LoginSchema from "@/validators/auth/LoginSchema";
+
+import { withMiddleware } from "@/middlewares/withMiddleware";
+import { RateLimit } from "@/middlewares/rateLimit";
 
 import { ComparePassword } from "@/lib/bcrypt";
 import { connectDB } from "@/lib/dbConnect";
@@ -15,10 +18,9 @@ import { GenerateJwtToken } from "@/lib/jwt";
 import { SignCookie } from "@/lib/cookie";
 
 import { API_RESPONSE } from "@/utils/API_Response";
-import { env } from "@/utils/checkEnv";
+import { SetCookies } from "@/utils/setCookies";
 
 import { NextRequest } from "next/server";
-import { cookies } from "next/headers";
 import { JsonWebTokenError } from "jsonwebtoken";
 import { ZodError } from "zod";
 
@@ -40,7 +42,7 @@ import { ZodError } from "zod";
     Send user details
 */
 
-export const POST = async (request: NextRequest) => {
+const handler = async (request: NextRequest) => {
     try {
         await connectDB();
 
@@ -62,11 +64,12 @@ export const POST = async (request: NextRequest) => {
         // Get user from database
         const user = await GetUser(validatedUserData.username);
 
-        if (!user)
+        if (!user) {
             return API_RESPONSE(NOT_FOUND, {
                 success: false,
-                message: "User doesnot exist!",
+                message: "Invalid credentials!",
             });
+        }
 
         // Compare passwords
         const isSamePassword = await ComparePassword({
@@ -96,21 +99,8 @@ export const POST = async (request: NextRequest) => {
         const signedAccessToken = SignCookie(access_token);
         const signedRefreshToken = SignCookie(refresh_token);
 
-        // Set access and refresh token
-        (await cookies()).set("access_token", signedAccessToken, {
-            httpOnly: true,
-            secure: env.NODE_ENV === "development" ? false : true,
-            sameSite: "strict",
-            expires: Number(env.ACCESS_TOKEN_COOKIE_EXPIRY),
-        });
-
-        (await cookies()).set("refresh_token", signedRefreshToken, {
-            httpOnly: true,
-            secure: env.NODE_ENV === "development" ? false : true,
-            sameSite: "strict",
-            expires: Number(env.REFRESH_TOKEN_COOKIE_EXPIRY),
-            path: "/api/v1/auth/refresh",
-        });
+        // Set cookies
+        await SetCookies({ signedAccessToken, signedRefreshToken });
 
         const userData: LoggedInUserType = {
             username: user.username,
@@ -143,3 +133,5 @@ export const POST = async (request: NextRequest) => {
         });
     }
 };
+
+export const POST = withMiddleware([RateLimit], handler);

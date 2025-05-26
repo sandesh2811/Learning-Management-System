@@ -10,8 +10,10 @@ const ButtonVariants = cva(
         variants: {
             variant: {
                 default: "bg-primary-text text-background",
-                skeleton: "bg-transparent border-[1.5px] border-secondary-text",
+                skeleton: "bg-transparent border-[1.2px] border-border-color",
                 danger: "bg-red-600 text-background",
+                courses:
+                    "bg-transparent text-secondary-text hover:text-primary-text focus-visible:text-primary-text mid:max-w-[150px] w-full max-w-[400px] cursor-pointer border-[1.2px] border-border-color  px-5 py-2 tracking-wide shadow-xs duration-300 ease-in-out focus-visible:outline-[1.2px]",
             },
             size: {
                 sm: "text-sm",
@@ -28,14 +30,15 @@ const ButtonVariants = cva(
 interface ButtonProps
     extends ComponentPropsWithoutRef<"button">,
         VariantProps<typeof ButtonVariants> {
-    customProp?: unknown;
+    onClick?: () => void;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ children, className, variant, size, ...props }, ref) => {
+    ({ children, className, variant, size, onClick, ...props }, ref) => {
         return (
             <button
                 ref={ref}
+                onClick={onClick}
                 className={cn(ButtonVariants({ size, variant, className }))}
                 {...props}
             >

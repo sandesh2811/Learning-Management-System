@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 type ScreenSizes = "xs" | "sm" | "md" | "lg";
 
-const useDetermineScreenSize = (): ScreenSizes | null => {
+export const useDetermineScreenSize = (): ScreenSizes | null => {
     const [screenSize, setScreenSize] = useState<ScreenSizes | null>(null);
 
     useEffect(() => {
@@ -22,5 +22,3 @@ const useDetermineScreenSize = (): ScreenSizes | null => {
 
     return screenSize;
 };
-
-export default useDetermineScreenSize;

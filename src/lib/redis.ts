@@ -14,6 +14,7 @@ const connectRedis = async (): Promise<RedisClientType | void> => {
 
         redisClient.on("error", () => {
             console.log("Couldn't connect to redis!");
+            process.exit(1);
         });
 
         await redisClient.connect();

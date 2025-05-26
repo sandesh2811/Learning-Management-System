@@ -42,3 +42,11 @@ next-env.d.ts
 
 
 todo.txt
+public
+__tests__
+
+jest*
+mocks
+ReactScanInitializer.tsx
+
+singlecourse

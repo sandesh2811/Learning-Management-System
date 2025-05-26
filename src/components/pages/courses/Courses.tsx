@@ -1,22 +1,36 @@
-import CoursesLoading from "@/components/shared/CoursesLoading";
+import prefetchAllCourses from "@/features/allcourses/utils/prefetchAllCourses";
+
 import { ErrorBoundaryWrapper } from "@/components/shared/ErrorBoundary";
 import CoursesWrapper from "@/features/allcourses/components/CoursesWrapper";
 import FiltersWrapper from "@/features/allcourses/components/Filters/FiltersWrapper";
+import PaginationButton from "@/features/allcourses/components/Pagination/PaginationButton";
+import UserTypingContextProvider from "@/components/shared/course/UserTypingContextProvider";
 
-import { Suspense } from "react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-const CoursesPage = ({ searchParams }: { searchParams: unknown }) => {
+interface CoursesPageProps {
+    searchParams: SearchParamsType;
+}
+
+const CoursesPage = async ({ searchParams }: CoursesPageProps) => {
+    const { queryClient } = await prefetchAllCourses(searchParams);
+
     return (
-        <div className="flex min-h-[80vh] flex-col gap-8 rounded-2xl p-3 md:p-6">
-            {/* Filters */}
-            <FiltersWrapper searchParams={searchParams} />
+        <div className="flex min-h-[80vh] flex-col gap-10 rounded-2xl">
+            <UserTypingContextProvider>
+                {/* Filters */}
+                <FiltersWrapper searchParams={searchParams} />
 
-            {/* Courses */}
-            <ErrorBoundaryWrapper>
-                <Suspense fallback={<CoursesLoading length={6} />}>
-                    <CoursesWrapper searchParams={searchParams} />
-                </Suspense>
-            </ErrorBoundaryWrapper>
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    {/* Courses */}
+                    <ErrorBoundaryWrapper>
+                        <CoursesWrapper searchParams={searchParams} />
+                    </ErrorBoundaryWrapper>
+
+                    {/* Pagination Button */}
+                    <PaginationButton searchParams={searchParams} />
+                </HydrationBoundary>
+            </UserTypingContextProvider>
         </div>
     );
 };

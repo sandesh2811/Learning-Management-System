@@ -1,7 +1,5 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-//Can add ratings too
-
 export interface CourseSchemaType extends Document {
     authorId: Schema.Types.ObjectId;
     title: string;
@@ -94,6 +92,9 @@ const CourseSchema = new Schema<CourseSchemaType>(
     },
     { timestamps: true }
 );
+
+// Creating an index for rating
+CourseSchema.index({ rating: 1 });
 
 export const CourseModel =
     (mongoose.models.Course as Model<CourseSchemaType>) ||
