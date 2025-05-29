@@ -50,6 +50,9 @@ const UserSchema = new Schema<UserSchemaType>(
     { timestamps: true }
 );
 
+// Index for email
+UserSchema.index({ email: 1 }, { unique: true });
+
 export const UserModel =
     (mongoose.models.User as Model<UserSchemaType>) ||
     mongoose.model<UserSchemaType>("User", UserSchema);

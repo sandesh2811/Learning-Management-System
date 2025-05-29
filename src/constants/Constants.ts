@@ -87,3 +87,15 @@ export {
 /* COURSES LIMIT */
 
 export const LIMIT = 6;
+
+/* REDIS CACHE */
+
+export const CACHE_TTLS = {
+    COURSES: 60 * 10,
+    FEATURED_COURSES: 60 * 15,
+};
+
+export const CACHE_KEYS = {
+    COURSES: "courses",
+    FEATURED_COURSES: "featuredCourses",
+};

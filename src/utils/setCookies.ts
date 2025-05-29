@@ -4,13 +4,15 @@ import { env } from "./checkEnv";
 
 import { cookies } from "next/headers";
 
+type SetCookiesArguments = {
+    signedAccessToken: string;
+    signedRefreshToken: string;
+};
+
 export const SetCookies = async ({
     signedAccessToken,
     signedRefreshToken,
-}: {
-    signedAccessToken: string;
-    signedRefreshToken: string;
-}) => {
+}: SetCookiesArguments) => {
     // Access token
     (await cookies()).set("access_token", signedAccessToken, {
         httpOnly: true,

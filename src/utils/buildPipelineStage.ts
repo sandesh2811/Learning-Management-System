@@ -145,9 +145,9 @@ const buildPipelineStage = ({ filters }: BuildPipelineStageProps) => {
     pipeline.push({ $limit: LIMIT + 1 });
 
     return {
-        match,
-        sort,
         pipeline,
+        priceCursor,
+        pageCursor,
     };
 };
 

@@ -93,8 +93,10 @@ const CourseSchema = new Schema<CourseSchemaType>(
     { timestamps: true }
 );
 
-// Creating an index for rating
+// Indexes related to course
+CourseSchema.index({ title: 1 });
 CourseSchema.index({ rating: 1 });
+CourseSchema.index({ price: 1, title: 1 });
 
 export const CourseModel =
     (mongoose.models.Course as Model<CourseSchemaType>) ||

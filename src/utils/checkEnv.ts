@@ -1,21 +1,28 @@
 type EnvironmentVariablesType = {
     NODE_ENV: "development" | "production";
     MONGODB_URI: string;
+
     JWT_ACCESS_TOKEN_SECRET_KEY: string;
     JWT_ACCESS_TOKEN_EXPIRY: string;
     JWT_REFRESH_TOKEN_SECRET_KEY: string;
     JWT_REFRESH_TOKEN_EXPIRY: string;
     ACCESS_TOKEN_COOKIE_EXPIRY: string;
     REFRESH_TOKEN_COOKIE_EXPIRY: string;
+
     SALT_ROUNDS: string;
+
     SIGNED_COOKIE_SECRET_KEY: string;
+
     BASE_URL: string;
+
     ESEWA_MERCHANT_ID: string;
     ESEWA_SECRET_KEY: string;
     ESEWA_SUCCESS_URI: string;
     ESEWA_FAILURE_URI: string;
     ESEWA_PAYMENT_URI: string;
     ESEWA_STATUS_CHECK_URI: string;
+
+    REDIS_KEY_PREFIX: string;
 };
 
 const CheckEnvirnomentVariables = <Key extends keyof EnvironmentVariablesType>(
@@ -69,4 +76,6 @@ export const env: EnvironmentVariablesType = {
     ESEWA_FAILURE_URI: CheckEnvirnomentVariables("ESEWA_FAILURE_URI"),
     ESEWA_PAYMENT_URI: CheckEnvirnomentVariables("ESEWA_PAYMENT_URI"),
     ESEWA_STATUS_CHECK_URI: CheckEnvirnomentVariables("ESEWA_STATUS_CHECK_URI"),
+
+    REDIS_KEY_PREFIX: CheckEnvirnomentVariables("REDIS_KEY_PREFIX"),
 };

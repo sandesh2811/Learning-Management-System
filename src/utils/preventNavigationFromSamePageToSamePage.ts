@@ -1,12 +1,12 @@
 import { MouseEvent } from "react";
 
-interface PreventNavigationFromSamePageToSamePageProps {
+interface PreventNavigationFromSamePageToSamePageArgs {
     href: string;
     pathname: string;
 }
 
 export const preventNavigationFromSamePageToSamePage =
-    ({ href, pathname }: PreventNavigationFromSamePageToSamePageProps) =>
+    ({ href, pathname }: PreventNavigationFromSamePageToSamePageArgs) =>
     (e: MouseEvent<HTMLAnchorElement>) => {
         if (pathname === href) e.preventDefault();
     };
