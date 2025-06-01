@@ -48,5 +48,3 @@ __tests__
 jest*
 mocks
 ReactScanInitializer.tsx
-
-singlecourse

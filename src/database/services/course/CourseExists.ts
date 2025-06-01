@@ -1,3 +1,5 @@
+import "server-only";
+
 import { CourseModel } from "@/database/models/CourseModel";
 
 export const CheckCourseExists = async (courseId: string) => {

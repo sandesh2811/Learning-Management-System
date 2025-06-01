@@ -28,6 +28,6 @@ body {
     background: var(--background);
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
     display: none;
 }
