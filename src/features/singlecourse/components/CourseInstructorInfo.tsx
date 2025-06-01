@@ -1,26 +1,34 @@
+import Link from "next/link";
+import {
+    type RelatedCoursesType,
+    type CourseInstructorType,
+} from "../schemas/singleCourse";
+
 import { ReactNode } from "react";
 import { GoArrowUpRight } from "react-icons/go";
 
 interface CourseInstructorInfoProps {
-    courseInstructorInfo?: unknown;
+    courseInstructorInfo: CourseInstructorType;
+    relatedCourses: RelatedCoursesType;
 }
 
 const CourseInstructorInfo = ({
     courseInstructorInfo,
+    relatedCourses,
 }: CourseInstructorInfoProps) => {
+    const { fullname, email, about, avatar } = courseInstructorInfo;
+
     return (
         <div className="bg-secondary-background flex min-h-[50vh] flex-1 flex-col gap-6 rounded-xl p-6">
             <div className="flex flex-col gap-4">
                 <InstructorBasicInfo
-                    instructorName="Hari bahadur"
-                    instructorEmail="test@test.com"
+                    instructorName={fullname}
+                    instructorEmail={email}
+                    instructorImage={avatar}
                 />
                 <div className="flex flex-col gap-8">
-                    <AboutMeSection
-                        description="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum
-                laudantium dicta ratione ipsam reprehenderit."
-                    />
-                    <RelatedCoursesSection courses="test" />
+                    <AboutMeSection description={about} />
+                    <RelatedCoursesSection courses={relatedCourses} />
                 </div>
             </div>
         </div>
@@ -42,26 +50,27 @@ const SectionSubHeading = ({ children }: SectionSubHeadingProps) => {
 /* RELATED COURSES COMPONENT */
 
 interface RelatedCoursesSectionProps {
-    courses: unknown;
+    courses: RelatedCoursesType;
 }
 
-const RelatedCoursesSection = ({}: RelatedCoursesSectionProps) => {
+const RelatedCoursesSection = ({ courses }: RelatedCoursesSectionProps) => {
     return (
         <div className="flex flex-col">
             <SectionSubHeading>Related Courses</SectionSubHeading>
 
             <div className="divide-primary-text flex flex-col gap-2 divide-y-[1.2px]">
-                {Array.from({ length: 3 }).map((_, idx) => (
-                    <span
-                        key={idx}
+                {courses.map((course) => (
+                    <Link
+                        href={`${course._id}`}
+                        key={course._id}
                         className="group flex cursor-pointer items-center justify-between py-4"
                     >
-                        Frontend with React
+                        {course.title}
                         <GoArrowUpRight
                             size={22}
                             className="duration-300 ease-in-out group-hover:translate-x-2 group-hover:-translate-y-2 group-hover:translate-z-2"
                         />
-                    </span>
+                    </Link>
                 ))}
             </div>
         </div>

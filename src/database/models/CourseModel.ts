@@ -10,11 +10,7 @@ export interface CourseSchemaType extends Document {
         hasDiscount: boolean;
         discountPercentage: number;
     };
-    courseContent: string[];
-    freebies: {
-        isFreebie: boolean;
-        file: string[];
-    };
+    courseContentId: Schema.Types.ObjectId;
     coverImage: string;
     languagesAvailable: string[];
     enrolledStudents: Schema.Types.ObjectId[];
@@ -55,18 +51,9 @@ const CourseSchema = new Schema<CourseSchemaType>(
                 default: 0,
             },
         },
-        courseContent: {
-            type: Array(String),
-            default: [],
-        },
-        freebies: {
-            isFreebie: {
-                type: Boolean,
-            },
-            file: {
-                type: Array(String),
-                required: [true, "Atleast one free video is required!"],
-            },
+        courseContentId: {
+            type: Schema.Types.ObjectId,
+            ref: "CourseContent",
         },
         coverImage: {
             type: String,

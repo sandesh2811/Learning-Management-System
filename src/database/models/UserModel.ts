@@ -7,6 +7,7 @@ interface UserSchemaType extends Document {
     password: string;
     avatar: string;
     role: string;
+    about: string;
 }
 
 const UserSchema = new Schema<UserSchemaType>(
@@ -45,6 +46,10 @@ const UserSchema = new Schema<UserSchemaType>(
         role: {
             type: String,
             required: [true, "Role cannot be empty!"],
+        },
+
+        about: {
+            type: String,
         },
     },
     { timestamps: true }

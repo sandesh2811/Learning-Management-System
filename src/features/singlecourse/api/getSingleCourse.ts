@@ -1,7 +1,10 @@
 import { api } from "@/lib/axios";
 import { HandleError } from "@/utils/errorHandling";
 
-import { SingleCourseSchema } from "../schemas/singleCourse";
+import {
+    RelatedCoursesSchema,
+    SingleCourseSchema,
+} from "../schemas/singleCourse";
 
 const GetSingleCourse = async (id: string) => {
     try {
@@ -9,12 +12,20 @@ const GetSingleCourse = async (id: string) => {
             data: { success, message, data },
         } = await api.get(`/v1/course/getCourse/${id}`);
 
-        const validData = await SingleCourseSchema.parseAsync(data);
+        const course = await SingleCourseSchema.parseAsync(data.course);
+        const relatedCourses = await RelatedCoursesSchema.parseAsync(
+            data.relatedCourses
+        );
+
+        const validData = {
+            course,
+            relatedCourses,
+        };
 
         return {
             success,
             message,
-            course: validData,
+            singleCourse: validData,
         };
     } catch (error) {
         return HandleError(error);

@@ -2,6 +2,19 @@ import { discountSchema } from "@/features/allcourses/schemas/incomingCourseSche
 
 import { z } from "zod";
 
+/* COURSE INSTRUCTOR */
+
+const instructorInfoSchema = z.object({
+    fullname: z.string(),
+    email: z.string(),
+    avatar: z.string(),
+    about: z.string(),
+});
+
+export type CourseInstructorType = z.infer<typeof instructorInfoSchema>;
+
+/* SINGLE COURSE */
+
 const freebiesSchema = z.object({
     isFreebie: z.boolean(),
     file: z.array(z.string()),
@@ -9,19 +22,31 @@ const freebiesSchema = z.object({
 
 export const SingleCourseSchema = z.object({
     _id: z.string(),
-    authorId: z.string(),
     title: z.string(),
     description: z.string(),
     price: z.number(),
     duration: z.string(),
     discount: discountSchema,
-    courseContent: z.array(z.string()),
     freebies: freebiesSchema,
-    coverImage: z.string(),
-    tags: z.array(z.string()),
     languagesAvailable: z.array(z.string()),
     enrolledStudents: z.array(z.string()),
     rating: z.number(),
+    instructorInfo: instructorInfoSchema,
+    // Need to change
+    courseContent: z.object({
+        test: z.string(),
+    }),
 });
 
 export type SingleCourseType = z.infer<typeof SingleCourseSchema>;
+
+/* RELATED COURSES */
+
+const RelatedCourse = z.object({
+    _id: z.string(),
+    title: z.string(),
+});
+
+export const RelatedCoursesSchema = z.array(RelatedCourse);
+
+export type RelatedCoursesType = z.infer<typeof RelatedCoursesSchema>;

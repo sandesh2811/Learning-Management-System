@@ -4,14 +4,14 @@ import SingleCourse from "./SingleCourse";
 type SingleCourseWrapperProps = { id: string };
 
 const SingleCourseWrapper = async ({ id }: SingleCourseWrapperProps) => {
-    const { success, message, course } = await GetSingleCourse(id);
+    const { success, message, singleCourse } = await GetSingleCourse(id);
 
-    if (!(course || success))
+    if (!(singleCourse || success))
         return <span className="font-light md:text-xl">{message}</span>;
 
     return (
         <div className="min-h-[60vh]">
-            <SingleCourse course={course} />
+            <SingleCourse singleCourse={singleCourse} />
         </div>
     );
 };

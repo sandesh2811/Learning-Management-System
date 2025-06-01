@@ -12,7 +12,13 @@ type AccordianState = {
     accordianId: null | number;
 };
 
-const CourseContentContainer = () => {
+interface CourseContentContainerProps {
+    courseContent: unknown;
+}
+
+const CourseContentContainer = ({
+    courseContent,
+}: CourseContentContainerProps) => {
     return (
         <div className="bg-secondary-background relative overflow-hidden rounded-xl p-6 md:flex-1/5 lg:flex-1/3">
             <m.div

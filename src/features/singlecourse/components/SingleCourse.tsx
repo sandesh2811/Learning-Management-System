@@ -1,4 +1,7 @@
-import { type SingleCourseType } from "../schemas/singleCourse";
+import {
+    RelatedCoursesType,
+    type SingleCourseType,
+} from "../schemas/singleCourse";
 
 import ReasonsToBuyTheCourse from "./ReasonsToBuy";
 import CourseContentContainer from "./CourseContent";
@@ -6,21 +9,30 @@ import BasicCourseDetails from "./BasicCourseDetails";
 import CourseInstructorInfo from "./CourseInstructorInfo";
 
 type SingleCourseProps = {
-    course: SingleCourseType;
+    singleCourse: {
+        course: SingleCourseType;
+        relatedCourses: RelatedCoursesType;
+    };
 };
 
-const SingleCourse = ({ course }: SingleCourseProps) => {
+const SingleCourse = ({ singleCourse }: SingleCourseProps) => {
+    const { course, relatedCourses } = singleCourse;
+
+    const { instructorInfo, courseContent, enrolledStudents } = course;
+
     return (
         <div className="flex min-h-[50vh] w-full flex-col gap-4">
             <div className="flex flex-col gap-4 md:flex-row">
                 <BasicCourseDetails course={course} />
-                <ReasonsToBuyTheCourse
-                    studentsEnrolled={course.enrolledStudents}
-                />
+                <ReasonsToBuyTheCourse studentsEnrolled={enrolledStudents} />
             </div>
+
             <div className="flex flex-col gap-4 md:flex-row">
-                <CourseContentContainer />
-                <CourseInstructorInfo />
+                <CourseContentContainer courseContent={courseContent} />
+                <CourseInstructorInfo
+                    courseInstructorInfo={instructorInfo}
+                    relatedCourses={relatedCourses}
+                />
             </div>
         </div>
     );

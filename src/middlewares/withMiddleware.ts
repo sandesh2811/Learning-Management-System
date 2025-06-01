@@ -10,10 +10,14 @@ import { NextRequest, NextResponse } from "next/server";
 export const withMiddleware = (
     middlewares: AppMiddleware[],
     handler: (
-        req: NextRequest
+        req: NextRequest,
+        { params }: ParamsProp<{ courseId: string }>
     ) => Promise<NextResponse<ResponseStructure<unknown>>>
 ) => {
-    return async (req: NextRequest) => {
+    return async (
+        req: NextRequest,
+        params: ParamsProp<{ courseId: string }>
+    ) => {
         try {
             for (const middleware of middlewares) {
                 const result = await middleware(req);
@@ -23,7 +27,7 @@ export const withMiddleware = (
                 }
             }
 
-            return handler(req);
+            return handler(req, params);
         } catch (error) {
             return API_RESPONSE(INTERNAL_SERVER_ERROR, {
                 success: false,

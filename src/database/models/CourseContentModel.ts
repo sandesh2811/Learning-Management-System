@@ -15,33 +15,37 @@ export interface CourseContent extends Document {
     content: SingleContent[];
 }
 
-const CourseContentSchema = new Schema<CourseContent>({
-    freebies: {
-        isFreebie: {
-            type: Boolean,
-        },
-        file: {
-            type: Array(String),
-            required: [true, "Atleast one free video is required!"],
-        },
-    },
-
-    content: {
-        title: {
-            type: String,
-            required: [true, "Title is required!"],
-        },
-        description: {
-            type: String,
-            required: [true, "Description is required!"],
+const CourseContentSchema = new Schema<CourseContent>(
+    {
+        freebies: {
+            isFreebie: {
+                type: Boolean,
+            },
+            file: {
+                type: Array(String),
+            },
         },
 
-        video: {
-            type: String,
-            required: [true, "Video is required!"],
-        },
+        content: [
+            {
+                title: {
+                    type: String,
+                    required: [true, "Title is required!"],
+                },
+                description: {
+                    type: String,
+                    required: [true, "Description is required!"],
+                },
+
+                video: {
+                    type: String,
+                    required: [true, "Video is required!"],
+                },
+            },
+        ],
     },
-});
+    { timestamps: true }
+);
 
 export const CourseContentModel =
     (mongoose.models.CourseContent as Model<CourseContent>) ||

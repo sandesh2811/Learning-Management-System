@@ -7,6 +7,8 @@ import {
 
 import { CheckCourseExists } from "@/database/services/course/CourseExists";
 import { connectDB } from "@/lib/dbConnect";
+import { RateLimit } from "@/middlewares/rateLimit";
+import { withMiddleware } from "@/middlewares/withMiddleware";
 
 import { API_RESPONSE } from "@/utils/API_Response";
 
@@ -20,7 +22,7 @@ import { NextRequest } from "next/server";
     If course exists then send course 
 */
 
-export const GET = async (
+const handler = async (
     req: NextRequest,
     { params }: ParamsProp<{ courseId: string }>
 ) => {
@@ -30,8 +32,8 @@ export const GET = async (
         // Get the course id
         const { courseId } = await params;
 
-        // Check if course exists
-        const { success, message, course } = await CheckCourseExists(courseId);
+        // Check if course exists and get the course
+        const { success, message, data } = await CheckCourseExists(courseId);
 
         if (!success) {
             return API_RESPONSE(NOT_FOUND, {
@@ -43,9 +45,11 @@ export const GET = async (
         return API_RESPONSE(OK, {
             success,
             message,
-            data: course,
+            data,
         });
     } catch (error) {
+        console.log(error);
+
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {
             success: false,
             message: INTERNAL_SERVER_ERROR_MESSAGE,
@@ -53,3 +57,5 @@ export const GET = async (
         });
     }
 };
+
+export const GET = withMiddleware([RateLimit], handler);
