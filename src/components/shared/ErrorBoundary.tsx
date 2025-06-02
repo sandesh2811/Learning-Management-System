@@ -7,7 +7,17 @@ import { ReactNode } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-export const ErrorBoundaryWrapper = ({ children }: { children: ReactNode }) => {
+interface ErrorBoundaryWrapperProps {
+    children: ReactNode;
+    subErrorMessage?: string;
+    showButton: boolean;
+}
+
+export const ErrorBoundaryWrapper = ({
+    children,
+    showButton,
+    subErrorMessage,
+}: ErrorBoundaryWrapperProps) => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -19,7 +29,8 @@ export const ErrorBoundaryWrapper = ({ children }: { children: ReactNode }) => {
                 return (
                     <ErrorUI
                         errorMessage={parsedError.message}
-                        subErrorMessage="Please try clearing filters if applied or try again later!"
+                        subErrorMessage={subErrorMessage}
+                        showButton={showButton}
                         router={router}
                     />
                 );
@@ -35,12 +46,14 @@ export const ErrorBoundaryWrapper = ({ children }: { children: ReactNode }) => {
 interface ErrorUIProps {
     errorMessage?: string;
     subErrorMessage?: string;
-    router?: AppRouterInstance;
+    router: AppRouterInstance;
+    showButton: boolean;
 }
 
 export const ErrorUI = ({
     errorMessage,
     subErrorMessage,
+    showButton,
     router,
 }: ErrorUIProps) => {
     return (
@@ -53,7 +66,7 @@ export const ErrorUI = ({
                     {subErrorMessage}
                 </p>
             </div>
-            {router && (
+            {showButton && (
                 <div className="flex justify-center">
                     <Button onClick={() => router.push("/")} size="sm">
                         Back to home

@@ -23,7 +23,10 @@ const CoursesPage = async ({ searchParams }: CoursesPageProps) => {
 
                 <HydrationBoundary state={dehydrate(queryClient)}>
                     {/* Courses */}
-                    <ErrorBoundaryWrapper>
+                    <ErrorBoundaryWrapper
+                        subErrorMessage="Please try clearing filters if applied or try again later!"
+                        showButton={true}
+                    >
                         <CoursesWrapper searchParams={searchParams} />
                     </ErrorBoundaryWrapper>
 

@@ -22,7 +22,10 @@ export const HandleError = (error: unknown) => {
         throw new Error(
             JSON.stringify({
                 success: false,
-                message: "Oops! Something went wrong. Please try again later",
+                message:
+                    error instanceof Error
+                        ? error.message
+                        : "Oops! Something went wrong.",
             })
         );
     }

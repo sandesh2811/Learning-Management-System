@@ -12,7 +12,10 @@ const FeaturedCourses = () => {
             <Heading text="Featured courses" />
 
             {/* Featured courses */}
-            <ErrorBoundaryWrapper>
+            <ErrorBoundaryWrapper
+                subErrorMessage="Please try again later!"
+                showButton={false}
+            >
                 <Suspense fallback={<CoursesLoading length={3} />}>
                     <FeaturedCoursesCardsWrapper />
                 </Suspense>

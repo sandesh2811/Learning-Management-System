@@ -1,6 +1,10 @@
-import { GoStarFill } from "react-icons/go";
 import { SingleCourseType } from "../schemas/singleCourse";
+
+import cn from "@/lib/cn";
+
 import SectionMainHeading from "./SectionMainHeading";
+
+import { GoStarFill } from "react-icons/go";
 import { ReactNode } from "react";
 
 interface BasicCourseDetailsProps {
@@ -36,10 +40,20 @@ export default BasicCourseDetails;
 
 interface WrapperProps {
     children: ReactNode;
+    className?: string;
 }
 
-const Wrapper = ({ children }: WrapperProps) => {
-    return <div className="flex items-center justify-between">{children}</div>;
+const Wrapper = ({ children, className }: WrapperProps) => {
+    return (
+        <div
+            className={cn(
+                "mid:flex-row mid:items-center flex justify-between",
+                className
+            )}
+        >
+            {children}
+        </div>
+    );
 };
 
 /* PRICE AND RATING COMPONENT */
@@ -81,8 +95,8 @@ const LanguagesAvailableAndDuration = ({
     duration,
 }: LanguagesAvailableAndDurationProps) => {
     return (
-        <Wrapper>
-            <span className="flex items-center gap-1">
+        <Wrapper className="flex-col gap-2">
+            <span className="mid:items-center flex flex-wrap gap-1">
                 Languages Available :
                 {languagesAvailable.map((lang) => (
                     <span key={lang}>{lang}</span>

@@ -3,7 +3,7 @@ import {
     type SingleCourseType,
 } from "../schemas/singleCourse";
 
-import ReasonsToBuyTheCourse from "./ReasonsToBuy";
+import ReasonsToBuyTheCourse from "./ReasonsToBuy/ReasonsToBuy";
 import CourseContentContainer from "./CourseContent";
 import BasicCourseDetails from "./BasicCourseDetails";
 import CourseInstructorInfo from "./CourseInstructorInfo";

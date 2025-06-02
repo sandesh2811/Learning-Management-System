@@ -48,8 +48,6 @@ const handler = async (
             data,
         });
     } catch (error) {
-        console.log(error);
-
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {
             success: false,
             message: INTERNAL_SERVER_ERROR_MESSAGE,
