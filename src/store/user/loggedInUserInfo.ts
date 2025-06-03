@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type LoggedInUserType = {
+    userId: string;
     fullname: string;
     username: string;
     email: string;
@@ -8,6 +9,7 @@ type LoggedInUserType = {
 };
 
 const initialState: LoggedInUserType = {
+    userId: "",
     fullname: "",
     username: "",
     email: "",
@@ -19,8 +21,9 @@ const LoggedInUser = createSlice({
     initialState,
     reducers: {
         loggerInUserInfo: (state, action: PayloadAction<LoggedInUserType>) => {
-            const { fullname, username, email, role } = action.payload;
+            const { userId, fullname, username, email, role } = action.payload;
 
+            state.userId = userId;
             state.fullname = fullname;
             state.username = username;
             state.email = email;

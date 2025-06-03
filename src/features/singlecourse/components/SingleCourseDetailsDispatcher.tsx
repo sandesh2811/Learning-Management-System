@@ -17,10 +17,12 @@ const SingleCourseDetailsDispatcher = ({
 
     useEffect(() => {
         if (singleCourse) {
-            const { title, price, instructorInfo, duration } = singleCourse;
+            const { _id, title, price, instructorInfo, duration } =
+                singleCourse;
 
             dispatch(
                 selectedCourse({
+                    id: _id,
                     title,
                     price,
                     duration,

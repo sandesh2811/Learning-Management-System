@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type SelectedCourseType = {
+    id: string;
     title: string;
     price: string | number;
     duration: string;
@@ -8,6 +9,7 @@ type SelectedCourseType = {
 };
 
 const initialState: SelectedCourseType = {
+    id: "",
     title: "",
     price: "",
     duration: "",
@@ -19,8 +21,10 @@ const SelectedCourse = createSlice({
     initialState,
     reducers: {
         selectedCourse: (state, action: PayloadAction<SelectedCourseType>) => {
-            const { title, price, duration, instructorName } = action.payload;
+            const { id, title, price, duration, instructorName } =
+                action.payload;
 
+            state.id = id;
             state.title = title;
             state.price = price;
             state.duration = duration;

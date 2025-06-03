@@ -48,3 +48,6 @@ __tests__
 jest*
 mocks
 ReactScanInitializer.tsx
+
+
+paymentSuccess
