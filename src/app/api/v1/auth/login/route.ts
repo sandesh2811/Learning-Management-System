@@ -107,6 +107,7 @@ const handler = async (request: NextRequest) => {
             userId: user._id as string,
             role: user.role,
             fullname: user.fullname,
+            email: user.email,
         };
 
         return API_RESPONSE<LoggedInUserType>(OK, {

@@ -1,6 +1,7 @@
 import GetSingleCourse from "@/features/singlecourse/api/getSingleCourse";
 
 import SingleCourse from "./SingleCourse";
+import SingleCourseDetailsDispatcher from "./SingleCourseDetailsDispatcher";
 
 type SingleCourseWrapperProps = { id: string };
 
@@ -14,6 +15,9 @@ const SingleCourseWrapper = async ({ id }: SingleCourseWrapperProps) => {
     return (
         <div className="min-h-[60vh]">
             <SingleCourse singleCourse={singleCourse} />
+
+            {/* Only for dispatching the course details from redux. No any JSX*/}
+            <SingleCourseDetailsDispatcher singleCourse={singleCourse.course} />
         </div>
     );
 };

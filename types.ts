@@ -64,10 +64,7 @@ declare global {
         role: string;
     };
 
-    type LoggedInUserType = Omit<
-        RegisterUserType,
-        "password" | "email" | "avatar"
-    > & {
+    type LoggedInUserType = Omit<RegisterUserType, "password" | "avatar"> & {
         userId: string;
     };
 

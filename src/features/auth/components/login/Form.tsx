@@ -2,21 +2,29 @@
 
 import { useSetupRHF } from "@/hooks/useSetupRHF";
 import { useHandleForm } from "@/hooks/useHandleForm";
+
 import { LoginUser } from "../../api/LoginUser";
 
-import LoginSchema, { LoginType } from "@/validators/auth/LoginSchema";
+import LoginSchema, { type LoginType } from "@/validators/auth/LoginSchema";
+
+import { loggerInUserInfo } from "@/store/user/loggedInUserInfo";
 
 import Button from "@/components/ui/Button";
 import FormInput from "@/components/ui/FormInput";
 import Spinner from "@/components/ui/Spinner";
 
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+/* Initial State */
+const initialState: ReturnState = {
+    success: false,
+    message: "",
+};
 
 const FormBody = () => {
-    const initialState: ReturnState = {
-        success: false,
-        message: "",
-    };
+    /* To dispatch action */
+    const dispatch = useDispatch();
 
     /* Setting up react-hook-form */
     const {
@@ -32,12 +40,13 @@ const FormBody = () => {
         initialState
     );
 
-    /* Reset the form */
+    /*Dispatch the user login data and Reset the form */
     useEffect(() => {
-        if (state.success) {
+        if (state.success && state.userInfo) {
+            dispatch(loggerInUserInfo(state.userInfo));
             reset();
         }
-    }, [state.success, reset]);
+    }, [state.success, state.userInfo, reset, dispatch]);
 
     return (
         <form

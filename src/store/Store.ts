@@ -1,9 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { GetSelectedFilters } from "./features/selectedFeatures";
+
+import { SetLoggedInUser } from "./user/loggedInUserInfo";
+import { SetUserInfoForEnrollment } from "./enrollForm/userInfoForEnrollment";
+import { SetSelectedCourse } from "./selectedCourse/selectedCourse";
 
 export const GlobalStore = configureStore({
     reducer: {
-        selectedFilters: GetSelectedFilters,
+        loggedinUser: SetLoggedInUser,
+        userInfoForEnrollment: SetUserInfoForEnrollment,
+        selectedCourse: SetSelectedCourse,
     },
 });
 

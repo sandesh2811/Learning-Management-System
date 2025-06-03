@@ -10,6 +10,7 @@ import LabelAndSelect from "./LabelAndSelect";
 
 import { forwardRef, useState } from "react";
 import { Control, useController } from "react-hook-form";
+import cn from "@/lib/cn";
 
 const defaultValue = "None";
 
@@ -23,10 +24,11 @@ interface SelectInputProps {
     control: Control<any>;
     name: string;
     fieldName: string;
+    wrapperClassName?: string;
 }
 
 const SelectInput = forwardRef<HTMLDivElement, SelectInputProps>(
-    ({ options, control, name, fieldName }, ref) => {
+    ({ options, control, name, fieldName, wrapperClassName }, ref) => {
         const [selectedValue, setSelectedValue] =
             useState<string>(defaultValue);
 
@@ -41,7 +43,12 @@ const SelectInput = forwardRef<HTMLDivElement, SelectInputProps>(
             useActiveState();
 
         return (
-            <div className="relative flex h-full w-full flex-col gap-2 md:w-[250px]">
+            <div
+                className={cn(
+                    "relative flex h-full w-full flex-col gap-2 md:w-[250px]",
+                    wrapperClassName
+                )}
+            >
                 {/* Label and External Select UI */}
                 <LabelAndSelect
                     ref={ref}
