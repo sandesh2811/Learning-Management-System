@@ -2,7 +2,9 @@ import { RootState } from "@/store/Store";
 import { useSelector } from "react-redux";
 
 const BuyerDetails = () => {
-    const { userInfoForEnrollment } = useSelector((state: RootState) => state);
+    const userInfoForEnrollment = useSelector(
+        (state: RootState) => state.userInfoForEnrollment
+    );
 
     return (
         <div className="flex flex-col gap-1">
