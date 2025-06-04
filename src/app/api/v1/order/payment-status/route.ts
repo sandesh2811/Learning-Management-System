@@ -13,6 +13,7 @@ import { UpdateOrderStatus } from "@/database/services/order/UpdateOrderStatus";
 
 import { NextRequest } from "next/server";
 import axios from "axios";
+import { verifyPaymentSignature } from "@/utils/verifyPaymentSignature";
 
 /*
 
@@ -28,7 +29,23 @@ import axios from "axios";
 */
 
 export const POST = async (req: NextRequest) => {
-    const { transactionId } = await req.json();
+    // const { transactionId } = await req.json();
+
+    // Get the base64 encoded data from the URL
+    const params = req.nextUrl.searchParams;
+    const data = params.get("data");
+
+    console.log(data, "base64 response data");
+
+    // Decode the base64 data
+    const { success, message, transactionId } = verifyPaymentSignature(data);
+
+    if (!success) {
+        return API_RESPONSE(NOT_FOUND, {
+            success,
+            message,
+        });
+    }
 
     try {
         await connectDB();
@@ -71,6 +88,8 @@ export const POST = async (req: NextRequest) => {
             });
         }
     } catch (error) {
+        console.log(error);
+
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {
             success: false,
             message: INTERNAL_SERVER_ERROR_MESSAGE,

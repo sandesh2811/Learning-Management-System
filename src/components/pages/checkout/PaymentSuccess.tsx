@@ -1,7 +1,11 @@
-import PaymentSuccess from "@/features/checkout/components/paymentSuccess/PaymentSuccess";
+import Invoice from "@/features/checkout/components/paymentSuccess/invoice/Invoice";
 
 const PaymentSuccessPage = () => {
-    return <PaymentSuccess />;
+    return (
+        <div className="min-h-[75vh]">
+            <Invoice />
+        </div>
+    );
 };
 
 export default PaymentSuccessPage;

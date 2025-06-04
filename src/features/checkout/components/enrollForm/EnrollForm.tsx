@@ -1,7 +1,7 @@
 "use client";
 
 import { useSetupRHF } from "@/hooks/useSetupRHF";
-import { useHandleFormSubmit } from "../../hooks/handleFormSubmit";
+import { useHandleFormSubmit } from "../../hooks/usehandleFormSubmit";
 
 import {
     EnrollFormSchema,

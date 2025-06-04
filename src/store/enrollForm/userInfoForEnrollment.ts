@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type UserInfoForEnrollmentType = {
+export type UserInfoForEnrollmentType = {
     fullname: string;
     email: string;
     paymentMethod: string;

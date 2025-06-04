@@ -8,6 +8,7 @@ import Wrapper from "@/components/shared/Wrapper";
 import Footer from "@/components/shared/Footer";
 import { StoreProvider } from "@/components/shared/StoreProvider";
 import ReactQueryProvider from "@/components/shared/ReactQueryProvider";
+import ReduxPersistProvider from "@/components/shared/ReduxPersistProvider";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -30,12 +31,14 @@ export default function RootLayout({
                 <ReactQueryProvider>
                     <ReactQueryDevtools initialIsOpen={false} />
                     <StoreProvider>
-                        <Wrapper>
-                            <Navbar />
-                            {children}
-                            {modal}
-                            <Footer />
-                        </Wrapper>
+                        <ReduxPersistProvider>
+                            <Wrapper>
+                                <Navbar />
+                                {children}
+                                {modal}
+                                <Footer />
+                            </Wrapper>
+                        </ReduxPersistProvider>
                     </StoreProvider>
                 </ReactQueryProvider>
             </body>
