@@ -6,11 +6,14 @@ import {
 } from "@/constants/Constants";
 
 import { CheckCourseExists } from "@/database/services/course/CourseExists";
-import { connectDB } from "@/lib/dbConnect";
+import { CacheDataType } from "@/database/services/course/types/CourseExists";
+
 import { RateLimit } from "@/middlewares/rateLimit";
 import { withMiddleware } from "@/middlewares/withMiddleware";
 
 import { API_RESPONSE } from "@/utils/API_Response";
+
+import { connectDB } from "@/lib/dbConnect";
 
 import { NextRequest } from "next/server";
 
@@ -42,7 +45,7 @@ const handler = async (
             });
         }
 
-        return API_RESPONSE(OK, {
+        return API_RESPONSE<CacheDataType>(OK, {
             success,
             message,
             data,

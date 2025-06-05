@@ -2,6 +2,12 @@ import "server-only";
 
 import { CACHE_KEYS, CACHE_TTLS } from "@/constants/Constants";
 
+import {
+    CacheDataType,
+    CheckCourseExistsType,
+    RelatedCourse,
+} from "./types/CourseExists";
+
 import { CourseModel } from "@/database/models/CourseModel";
 
 import { cacheData, generateCacheKey, getCachedData } from "@/utils/redisCache";
@@ -15,7 +21,9 @@ import mongoose from "mongoose";
     Find relevant courses based on user id and return only 3 based on rating
 */
 
-export const CheckCourseExists = async (courseId: string) => {
+export const CheckCourseExists = async (
+    courseId: string
+): Promise<CheckCourseExistsType> => {
     // Get the cache key
     const cacheKey = await generateCacheKey({
         baseKey: CACHE_KEYS.SINGLE_COURSE,
@@ -54,6 +62,7 @@ export const CheckCourseExists = async (courseId: string) => {
             },
         },
         { $unwind: "$coursewithcontent" },
+
         {
             $project: {
                 title: 1,
@@ -87,7 +96,8 @@ export const CheckCourseExists = async (courseId: string) => {
         _id: { $ne: course[0]._id },
     })
         .limit(3)
-        .select("title");
+        .select("title")
+        .lean<RelatedCourse[]>();
 
     const data = {
         course: course[0],
@@ -95,13 +105,17 @@ export const CheckCourseExists = async (courseId: string) => {
     };
 
     // Set data in cache
-    await cacheData({ cacheKey, data, ttl: CACHE_TTLS.SINGLE_COURSE });
+    await cacheData<CacheDataType>({
+        cacheKey,
+        data,
+        ttl: CACHE_TTLS.SINGLE_COURSE,
+    });
 
     if (!course)
         return {
             success: false,
             message: "Couldn't find particular course!",
-            data: {},
+            data: undefined,
         };
 
     return {

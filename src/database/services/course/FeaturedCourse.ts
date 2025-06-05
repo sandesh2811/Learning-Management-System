@@ -1,8 +1,11 @@
 import "server-only";
-
-import { CourseModel, CourseSchemaType } from "@/database/models/CourseModel";
-import { cacheData, generateCacheKey, getCachedData } from "@/utils/redisCache";
 import { CACHE_KEYS, CACHE_TTLS } from "@/constants/Constants";
+
+import { SelectiveCourseDetails } from "./types/GetAllCourses";
+
+import { CourseModel } from "@/database/models/CourseModel";
+
+import { cacheData, generateCacheKey, getCachedData } from "@/utils/redisCache";
 
 /*
     Join two documents through userId
@@ -19,7 +22,7 @@ import { CACHE_KEYS, CACHE_TTLS } from "@/constants/Constants";
 */
 
 type FeaturedCoursesServiceReturnType = BaseResponse & {
-    featuredCourses: CourseSchemaType[];
+    featuredCourses: SelectiveCourseDetails[];
 };
 
 // Build pipeline
@@ -87,7 +90,7 @@ export const FeaturedCourses =
             };
 
         // Set the data in cache
-        await cacheData({
+        await cacheData<SelectiveCourseDetails[]>({
             cacheKey,
             data: featuredCourses,
             ttl: CACHE_TTLS.FEATURED_COURSES,

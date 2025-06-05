@@ -1,3 +1,5 @@
+import { HandleError } from "@/utils/errorHandling";
+
 import { api } from "@/lib/axios";
 
 import { useSelector } from "react-redux";
@@ -12,16 +14,20 @@ export const useInitiatePayment = () => {
     const [isRedirecting, setRedirecting] = useState<boolean>(false);
 
     const initiatePayment = async () => {
-        setRedirecting(true);
-        const { data } = await api.post("/v1/order/initiate-payment", {
-            amount: selectedCourse.price,
-            courseId: selectedCourse.id,
-            customerId: loggedinUser.userId,
-        });
+        try {
+            setRedirecting(true);
+            const { data } = await api.post("/v1/order/initiate-payment", {
+                amount: selectedCourse.price,
+                courseId: selectedCourse.id,
+                customerId: loggedinUser.userId,
+            });
 
-        if (data.success) {
-            setRedirecting(false);
-            window.location.href = data.data;
+            if (data.success) {
+                setRedirecting(false);
+                window.location.href = data.data;
+            }
+        } catch (error) {
+            return HandleError(error);
         }
     };
 

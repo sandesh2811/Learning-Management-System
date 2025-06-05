@@ -20,8 +20,6 @@ export const RegisterUser = async (
             }
         });
 
-        console.log(formData, "Insid the register action");
-
         const response = await axios.post(
             "http://localhost:3000/api/v1/auth/register",
             formData

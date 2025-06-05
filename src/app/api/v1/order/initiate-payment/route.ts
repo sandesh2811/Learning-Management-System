@@ -5,10 +5,12 @@ import {
     OK,
 } from "@/constants/Constants";
 
+import { CreateInitialOrder } from "@/database/services/order/CreateOrder";
+
 import { env } from "@/utils/checkEnv";
-import { connectDB } from "@/lib/dbConnect";
 import { API_RESPONSE } from "@/utils/API_Response";
-import { OrderModel } from "@/database/models/OrderModel";
+
+import { connectDB } from "@/lib/dbConnect";
 import { generateSignatureForPayment } from "@/lib/generateSignature";
 
 import { NextRequest } from "next/server";
@@ -82,14 +84,14 @@ export const POST = async (req: NextRequest) => {
         // Send response url
         if (initiatePayment.status === 200) {
             // Create order (intially pending status)
-            await OrderModel.create({
+            await CreateInitialOrder({
                 amount,
                 courseId,
                 customerId,
                 transactionId,
             });
 
-            return API_RESPONSE(OK, {
+            return API_RESPONSE<string>(OK, {
                 success: true,
                 message: "Payment Initiated!",
                 data: initiatePayment.request.res.responseUrl,

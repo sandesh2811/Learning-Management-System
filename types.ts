@@ -90,9 +90,11 @@ declare global {
             isFreebie: boolean;
             file: File;
         };
+        coverImage: string;
         languagesAvailable: string | string[];
         enrolledStudents: string[];
         tags: string[];
+        rating: number;
     };
 
     type SelectedFilters = {

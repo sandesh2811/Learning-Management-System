@@ -9,7 +9,8 @@ interface CourseCardProps {
 }
 
 const CourseCard = ({ course }: CourseCardProps) => {
-    const { _id, title, price, tags, coverImage, rating } = course;
+    const { _id, title, price, tags, coverImage, rating, courseswithuserinfo } =
+        course;
 
     return (
         <Link
@@ -22,7 +23,7 @@ const CourseCard = ({ course }: CourseCardProps) => {
                 type={tags[0]}
                 image={coverImage}
                 rating={rating}
-                authorName="Hari Bahadur"
+                authorName={courseswithuserinfo.fullname}
                 aria-label="Course Card"
                 aria-description={`${title} priced at Rs:${price} with a rating of ${rating} stars instructed by Hari Bahadur`}
             />

@@ -2,6 +2,11 @@ import "server-only";
 
 import { CACHE_KEYS, CACHE_TTLS, LIMIT } from "@/constants/Constants";
 
+import {
+    type CacheDataType,
+    type GetAllCoursesReturnType,
+} from "./types/GetAllCourses";
+
 import { CourseModel } from "@/database/models/CourseModel";
 
 import buildPipelineStage from "@/utils/buildPipelineStage";
@@ -16,7 +21,7 @@ import { cacheData, generateCacheKey, getCachedData } from "@/utils/redisCache";
 
 export const GetAllCourses = async (
     filters: SearchParamsType & URLSearchParams
-) => {
+): Promise<GetAllCoursesReturnType> => {
     // Build the pipeline
     const { pipeline, pageCursor } = buildPipelineStage({
         filters,
@@ -35,7 +40,7 @@ export const GetAllCourses = async (
     if (cachedData) {
         return {
             success: true,
-            message: "All Courses! From cache",
+            message: "All Courses!",
             nextCursor: cachedData.nextCursor,
             courses: cachedData.items,
         };
@@ -68,14 +73,15 @@ export const GetAllCourses = async (
               }
             : undefined;
 
-    const data = {
-        items,
-        nextCursor,
-    };
-
-    // ADD TYPESCRIPT
     // Set the data in cache
-    await cacheData({ cacheKey, data, ttl: CACHE_TTLS.COURSES });
+    await cacheData<CacheDataType>({
+        cacheKey,
+        data: {
+            courses: items,
+            nextCursor,
+        },
+        ttl: CACHE_TTLS.COURSES,
+    });
 
     return {
         success: true,

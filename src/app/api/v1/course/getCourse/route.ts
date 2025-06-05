@@ -5,6 +5,8 @@ import {
     OK,
 } from "@/constants/Constants";
 
+import { type SelectiveCourseDetails } from "@/database/services/course/types/GetAllCourses";
+
 import { GetAllCourses } from "@/database/services/course/AllCourse";
 
 import { RateLimit } from "@/middlewares/rateLimit";
@@ -22,7 +24,7 @@ import { NextRequest } from "next/server";
     If found then send respective response
 */
 
-export const handler = async (request: NextRequest) => {
+const handler = async (request: NextRequest) => {
     const filters = request.nextUrl.searchParams as SearchParamsType &
         URLSearchParams;
 
@@ -39,7 +41,7 @@ export const handler = async (request: NextRequest) => {
                 data: courses,
             });
 
-        return API_RESPONSE(OK, {
+        return API_RESPONSE<SelectiveCourseDetails[]>(OK, {
             success,
             message,
             data: courses,

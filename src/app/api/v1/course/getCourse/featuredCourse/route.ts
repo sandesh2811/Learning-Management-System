@@ -7,6 +7,8 @@ import {
 
 import { FeaturedCourses } from "@/database/services/course/FeaturedCourse";
 
+import { SelectiveCourseDetails } from "@/database/services/course/types/GetAllCourses";
+
 import { RateLimit } from "@/middlewares/rateLimit";
 import { withMiddleware } from "@/middlewares/withMiddleware";
 
@@ -22,7 +24,7 @@ import { NextRequest } from "next/server";
     If featured courses are found then send featured courses along with respective response
 */
 
-export const handler = async (request: NextRequest) => {
+const handler = async (request: NextRequest) => {
     try {
         await connectDB();
 
@@ -35,7 +37,7 @@ export const handler = async (request: NextRequest) => {
             });
         }
 
-        return API_RESPONSE(OK, {
+        return API_RESPONSE<SelectiveCourseDetails[]>(OK, {
             success,
             message,
             data: featuredCourses,
