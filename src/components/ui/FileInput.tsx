@@ -12,10 +12,11 @@ interface FileInputProps extends ComponentPropsWithoutRef<"input"> {
     title: string;
     control: Control<any>;
     name: string;
+    success: boolean;
 }
 
 const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
-    ({ title, control, name }, forwardedRef) => {
+    ({ title, control, name, success }, forwardedRef) => {
         const {
             error,
             selectedFile,
@@ -23,7 +24,7 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
             internalInputRef,
             handleFileSelect,
             handleLabelClick,
-        } = useFileInputLogic({ name, control });
+        } = useFileInputLogic({ name, control, success });
 
         return (
             <div className="flex w-full flex-col gap-2">

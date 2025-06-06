@@ -1,6 +1,7 @@
 import ReactScanInitializer from "@/ReactScanInitializer";
 
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar/Navbar";
@@ -37,6 +38,18 @@ export default function RootLayout({
                                 {children}
                                 {modal}
                                 <Footer />
+                                <Toaster
+                                    position="top-right"
+                                    richColors={true}
+                                    toastOptions={{
+                                        style: {
+                                            fontSize: "15px",
+                                            letterSpacing: "5px",
+                                            fontWeight: "bold",
+                                        },
+                                        duration: 1800,
+                                    }}
+                                />
                             </Wrapper>
                         </ReduxPersistProvider>
                     </StoreProvider>

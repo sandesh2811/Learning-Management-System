@@ -33,6 +33,7 @@
         "redis": "^4.7.0",
         "redux-persist": "^6.0.0",
         "set-cookie-parser": "^2.7.1",
+        "sonner": "^2.0.5",
         "tailwind-merge": "^3.0.2",
         "uuid": "^11.1.0",
         "zod": "^3.24.2"

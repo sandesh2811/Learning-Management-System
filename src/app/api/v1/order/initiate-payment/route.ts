@@ -7,6 +7,9 @@ import {
 
 import { CreateInitialOrder } from "@/database/services/order/CreateOrder";
 
+import { withMiddleware } from "@/middlewares/withMiddleware";
+import { RateLimit } from "@/middlewares/rateLimit";
+
 import { env } from "@/utils/checkEnv";
 import { API_RESPONSE } from "@/utils/API_Response";
 
@@ -43,7 +46,7 @@ type PaymenDataType = {
     signature?: string;
 };
 
-export const POST = async (req: NextRequest) => {
+const handler = async (req: NextRequest) => {
     const { amount, courseId, customerId } = await req.json();
     const transactionId = uuidV4();
 
@@ -112,3 +115,5 @@ export const POST = async (req: NextRequest) => {
         });
     }
 };
+
+export const POST = withMiddleware([RateLimit], handler);

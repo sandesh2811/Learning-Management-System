@@ -36,13 +36,13 @@ export const GetAllCourses = async (
     // Check if the data is already cached
     const cachedData = await getCachedData(cacheKey);
 
-    // Format this to take cursor and items from the cache
+    // Return the cached data
     if (cachedData) {
         return {
             success: true,
             message: "All Courses!",
             nextCursor: cachedData.nextCursor,
-            courses: cachedData.items,
+            courses: cachedData.courses,
         };
     }
 

@@ -1,6 +1,8 @@
 import { useDisableScroll } from "@/hooks/useDisableScroll";
 import { useActiveState } from "@/hooks/useActiveState";
 
+import { setAriaHidden, removeAriaHidden } from "@/utils/ariaHidden";
+
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -17,13 +19,7 @@ export const useLoginModalLogic = () => {
     /* For making all the other child elements of the dom hierarchy hidden or non-interactive */
     useEffect(() => {
         if (isActive) {
-            Array.from(document.body.children).forEach((child) => {
-                if (!child.id.includes("login-modal")) {
-                    child.setAttribute("aria-hidden", "true");
-                    // makes the element non-interactive
-                    child.setAttribute("inert", "true");
-                }
-            });
+            setAriaHidden({ id: "login-modal" });
         }
     }, [isActive]);
 
@@ -33,12 +29,7 @@ export const useLoginModalLogic = () => {
     /* Handling the modal close on icon/button click */
     const handleModalClose = () => {
         router.back();
-        Array.from(document.body.children).forEach((child) => {
-            if (!child.id.includes("login-modal")) {
-                child.removeAttribute("aria-hidden");
-                child.removeAttribute("inert");
-            }
-        });
+        removeAriaHidden({ id: "login-modal" });
     };
 
     return {

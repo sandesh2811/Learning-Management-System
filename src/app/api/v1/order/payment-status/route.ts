@@ -14,9 +14,10 @@ import { UpdateOrderStatus } from "@/database/services/order/UpdateOrderStatus";
 import { NextRequest } from "next/server";
 import axios from "axios";
 import { verifyPaymentSignature } from "@/utils/verifyPaymentSignature";
+import { withMiddleware } from "@/middlewares/withMiddleware";
+import { RateLimit } from "@/middlewares/rateLimit";
 
 /*
-
     Get transaction id (which is transaction_uuid) from the request 
 
     Get the order by the transaction id
@@ -28,7 +29,7 @@ import { verifyPaymentSignature } from "@/utils/verifyPaymentSignature";
     Send respective response
 */
 
-export const POST = async (req: NextRequest) => {
+const handler = async (req: NextRequest) => {
     // const { transactionId } = await req.json();
 
     // Get the base64 encoded data from the URL
@@ -97,3 +98,5 @@ export const POST = async (req: NextRequest) => {
         });
     }
 };
+
+export const POST = withMiddleware([RateLimit], handler);

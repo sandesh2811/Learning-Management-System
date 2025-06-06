@@ -60,6 +60,33 @@ const CourseDuration = ["1", "2", "3", "4", "5", "6"];
 
 const CourseLanguages = ["English", "Nepali", "Hindi"];
 
+/* TAGS THAT ARE NEEDED TO BE EXCLUDED WHEN USING REACT PORTALS */
+
+const TAGS_TO_BE_EXCLUDED = [
+    "SCRIPT",
+    "STYLE",
+    "NEXTJS-PORTAL",
+    "NEXT-ROUTE-ANNOUNCER",
+];
+
+/* COURSES LIMIT */
+
+const LIMIT = 6;
+
+/* REDIS CACHE */
+
+const CACHE_TTLS = {
+    COURSES: 60 * 10,
+    FEATURED_COURSES: 60 * 15,
+    SINGLE_COURSE: 60 * 15,
+};
+
+const CACHE_KEYS = {
+    COURSES: "courses",
+    FEATURED_COURSES: "featuredCourses",
+    SINGLE_COURSE: "singleCourse",
+};
+
 /* EXPORTS */
 
 export {
@@ -82,22 +109,8 @@ export {
     CoursePrice,
     CourseDuration,
     CourseLanguages,
-};
-
-/* COURSES LIMIT */
-
-export const LIMIT = 6;
-
-/* REDIS CACHE */
-
-export const CACHE_TTLS = {
-    COURSES: 60 * 10,
-    FEATURED_COURSES: 60 * 15,
-    SINGLE_COURSE: 60 * 15,
-};
-
-export const CACHE_KEYS = {
-    COURSES: "courses",
-    FEATURED_COURSES: "featuredCourses",
-    SINGLE_COURSE: "singleCourse",
+    LIMIT,
+    CACHE_KEYS,
+    CACHE_TTLS,
+    TAGS_TO_BE_EXCLUDED,
 };

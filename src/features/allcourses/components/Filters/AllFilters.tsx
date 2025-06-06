@@ -5,7 +5,7 @@ import {
     CourseType,
 } from "@/constants/Constants";
 
-import { useDisableScroll } from "@/hooks/useDisableScroll";
+import { useAllFiltersLogic } from "../../hooks/useAllFiltersLogic";
 
 import { Span } from "@/components/ui/Span";
 import FiltersButton from "./FiltersButton";
@@ -13,7 +13,7 @@ import SelectedFilters from "./SelectedFilters";
 import IndividualFilter from "./IndividualFilter";
 
 import { GoX } from "react-icons/go";
-import { useState } from "react";
+import { createPortal } from "react-dom";
 
 interface AllFiltersProps {
     isActive: boolean;
@@ -21,22 +21,16 @@ interface AllFiltersProps {
 }
 
 const AllFilters = ({ isActive, setActiveStateFalse }: AllFiltersProps) => {
-    const [selectedFilters, setSelectedFilters] = useState({
-        type: "",
-        price: "",
-        duration: "",
-        language: "",
-    });
+    const { selectedFilters, setSelectedFilters, handleFilterClose } =
+        useAllFiltersLogic({ isActive, setActiveStateFalse });
 
-    useDisableScroll(isActive);
-
-    return (
-        <>
+    return createPortal(
+        <div id="course-filter">
             {/* OVERLAY */}
             <div
                 className={`z-10 h-full w-full bg-gray-500/50 duration-400 ease-in-out md:absolute ${isActive ? "top-0 left-0 block" : "hidden"}`}
-                onClick={setActiveStateFalse}
-            ></div>
+                onClick={handleFilterClose}
+            />
 
             {/* FILTERS SECTION */}
             <div
@@ -45,7 +39,7 @@ const AllFilters = ({ isActive, setActiveStateFalse }: AllFiltersProps) => {
                 <div className="inline-flex justify-end">
                     <Span
                         aria-label="Close filters"
-                        onClick={setActiveStateFalse}
+                        onClick={handleFilterClose}
                     >
                         <GoX size={25} className="cursor-pointer" />
                     </Span>
@@ -90,7 +84,8 @@ const AllFilters = ({ isActive, setActiveStateFalse }: AllFiltersProps) => {
                     setSelectedFilters={setSelectedFilters}
                 />
             </div>
-        </>
+        </div>,
+        document.body
     );
 };
 

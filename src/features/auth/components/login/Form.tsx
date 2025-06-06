@@ -15,6 +15,7 @@ import Spinner from "@/components/ui/Spinner";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 /* Initial State */
 const initialState: ReturnState = {
@@ -40,13 +41,19 @@ const FormBody = () => {
         initialState
     );
 
-    /*Dispatch the user login data and Reset the form */
+    /*Dispatch the user login data and reset the form */
     useEffect(() => {
         if (state.success && state.userInfo) {
             dispatch(loggerInUserInfo(state.userInfo));
             reset();
+
+            toast.success(state.message);
         }
-    }, [state.success, state.userInfo, reset, dispatch]);
+
+        if (!state.success && state.message !== "") {
+            toast.error(state.message);
+        }
+    }, [state, reset, dispatch]);
 
     return (
         <form
@@ -74,7 +81,7 @@ const FormBody = () => {
 
             <Button
                 disabled={isPending}
-                className={`tracking-wider uppercase ${isPending && "cursor-not-allowed"}`}
+                className={`tracking-wider uppercase ${isPending && "bg-primary-text/80 cursor-not-allowed"}`}
             >
                 {isPending ? <Spinner message="Logging in..." /> : "Login"}
             </Button>

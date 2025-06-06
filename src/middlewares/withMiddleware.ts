@@ -12,7 +12,7 @@ export const withMiddleware = (
     handler: (
         req: NextRequest,
         { params }: ParamsProp<{ courseId: string }>
-    ) => Promise<NextResponse<ResponseStructure<unknown>>>
+    ) => Promise<NextResponse<ResponseStructure<unknown>> | undefined>
 ) => {
     return async (
         req: NextRequest,

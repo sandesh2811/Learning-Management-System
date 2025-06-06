@@ -1,18 +1,17 @@
 // Add accessibilty and refactor the overall component
 
-import { useActiveState } from "@/hooks/useActiveState";
+import { useSelectInputLogic } from "@/hooks/useSelectInputLogic";
 
 import { handleKeyDown } from "@/utils/handleKeyDown";
+
+import cn from "@/lib/cn";
 
 import FormError from "../FormError";
 import SelectOptions from "./SelectOptions";
 import LabelAndSelect from "./LabelAndSelect";
 
-import { forwardRef, useState } from "react";
-import { Control, useController } from "react-hook-form";
-import cn from "@/lib/cn";
-
-const defaultValue = "None";
+import { forwardRef } from "react";
+import { Control } from "react-hook-form";
 
 export interface SelectInputOptions {
     label: string;
@@ -24,23 +23,21 @@ interface SelectInputProps {
     control: Control<any>;
     name: string;
     fieldName: string;
+    success?: boolean;
     wrapperClassName?: string;
 }
 
 const SelectInput = forwardRef<HTMLDivElement, SelectInputProps>(
-    ({ options, control, name, fieldName, wrapperClassName }, ref) => {
-        const [selectedValue, setSelectedValue] =
-            useState<string>(defaultValue);
-
-        /* For form validation */
+    ({ options, control, name, fieldName, success, wrapperClassName }, ref) => {
         const {
-            fieldState: { error },
-            field: { onChange },
-        } = useController({ name, control });
-
-        /* Get the active state and respective functions */
-        const { isActive, setActiveStateFalse, toggleActiveState } =
-            useActiveState();
+            isActive,
+            error,
+            selectedValue,
+            onChange,
+            toggleActiveState,
+            setActiveStateFalse,
+            setSelectedValue,
+        } = useSelectInputLogic({ name, control, success });
 
         return (
             <div

@@ -14,6 +14,7 @@ import SelectInput from "@/components/ui/selectInput/SelectInput";
 import FileInput from "@/components/ui/FileInput";
 
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const initialState: ReturnState = {
     success: false,
@@ -39,9 +40,12 @@ const FormBody = () => {
     /* Reset the form */
     useEffect(() => {
         if (state.success) {
+            toast.success(state.message);
             reset();
+        } else if (!state.success && state.message !== "") {
+            toast.error(state.message);
         }
-    }, [state.success, reset]);
+    }, [state.success, state.message, reset]);
 
     return (
         <form onSubmit={handleSubmit(action)} className="flex flex-col gap-4">
@@ -89,6 +93,7 @@ const FormBody = () => {
                     name="avatar"
                     title="Profile Picture"
                     control={control}
+                    success={state.success}
                     multiple={false}
                 />
 
@@ -96,6 +101,7 @@ const FormBody = () => {
                     fieldName="Role"
                     name="role"
                     control={control}
+                    success={state.success}
                     options={[
                         {
                             label: "Teacher",

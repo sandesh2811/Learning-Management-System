@@ -46,7 +46,7 @@ export const ErrorBoundaryWrapper = ({
 interface ErrorUIProps {
     errorMessage?: string;
     subErrorMessage?: string;
-    router: AppRouterInstance;
+    router?: AppRouterInstance;
     showButton: boolean;
 }
 
@@ -68,7 +68,7 @@ export const ErrorUI = ({
             </div>
             {showButton && (
                 <div className="flex justify-center">
-                    <Button onClick={() => router.push("/")} size="sm">
+                    <Button onClick={() => router?.push("/")} size="sm">
                         Back to home
                     </Button>
                 </div>

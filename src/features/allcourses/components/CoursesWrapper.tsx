@@ -44,7 +44,7 @@ const CoursesWrapper = ({ searchParams }: CoursesWrapperProps) => {
                 ))}
             </section>
             {isFetchingNextPage && <CoursesLoading length={6} />}
-            {isError && <ErrorUI />}
+            {isError && <ErrorUI showButton={false} />}
         </>
     );
 };
