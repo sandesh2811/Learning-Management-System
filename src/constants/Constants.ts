@@ -41,6 +41,19 @@ const Links = [
     },
 ];
 
+/* USER BASED LINKS FOR NAVBAR */
+
+const USER_BASED_LINKS = [
+    {
+        title: "Profile",
+        href: "/profile",
+    },
+    { title: "Messages", href: "/messages" },
+    { title: "Purchased Courses", href: "/purchased-courses" },
+    { title: "Dashboard", href: "/dashboard" },
+    { title: "Logout", href: "/logout" },
+];
+
 /* COURSE FILTERS */
 
 const CourseType = [
@@ -113,4 +126,5 @@ export {
     CACHE_KEYS,
     CACHE_TTLS,
     TAGS_TO_BE_EXCLUDED,
+    USER_BASED_LINKS,
 };
