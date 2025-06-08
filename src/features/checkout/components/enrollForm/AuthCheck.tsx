@@ -1,34 +1,34 @@
-"use client";
+// "use client";
 
-import { EnrollFormLoading } from "@/app/(checkout)/enrollForm/loading";
-import { RootState } from "@/store/Store";
+// import { EnrollFormLoading } from "@/app/(checkout)/enrollForm/loading";
+// import { RootState } from "@/store/Store";
 
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+// import { redirect } from "next/navigation";
+// import { useEffect, useState } from "react";
+// import { useSelector } from "react-redux";
 
-// HOC
-const AuthCheck = () => {
-    const selectedCourse = useSelector(
-        (state: RootState) => state.selectedCourse
-    );
-    const [isChecked, setChecked] = useState<boolean>(false);
+// // HOC
+// const AuthCheck = () => {
+//     const selectedCourse = useSelector(
+//         (state: RootState) => state.selectedCourse
+//     );
+//     const [isChecked, setChecked] = useState<boolean>(false);
 
-    useEffect(() => {
-        if (selectedCourse === undefined) return;
+//     useEffect(() => {
+//         if (selectedCourse === undefined) return;
 
-        Object.values(selectedCourse).map((val) => {
-            if (val === "" || val === null) {
-                redirect("/courses");
-            } else {
-                setChecked(true);
-            }
-        });
-    }, [selectedCourse]);
+//         Object.values(selectedCourse).map((val) => {
+//             if (val === "" || val === null) {
+//                 redirect("/courses");
+//             } else {
+//                 setChecked(true);
+//             }
+//         });
+//     }, [selectedCourse]);
 
-    if (!isChecked) return <EnrollFormLoading />;
+//     if (!isChecked) return <EnrollFormLoading />;
 
-    return <h1>Loadin....</h1>;
-};
+//     return <h1>Loadin....</h1>;
+// };
 
-export default AuthCheck;
+// export default AuthCheck;

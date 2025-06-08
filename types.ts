@@ -64,6 +64,17 @@ declare global {
         role: string;
     };
 
+    /* FOR USER PROFILE DATA */
+    type UserType = Omit<RegisterUserType, "password" | "avatar"> & {
+        _id: string;
+        avatar: string;
+        about: string;
+        title: string;
+        address: string;
+        contactNumber: string;
+        updatedAt: string;
+    };
+
     type LoggedInUserType = Omit<RegisterUserType, "password" | "avatar"> & {
         userId: string;
     };
