@@ -14,6 +14,7 @@ import IndividualFilter from "./IndividualFilter";
 
 import { GoX } from "react-icons/go";
 import { createPortal } from "react-dom";
+import { Suspense } from "react";
 
 interface AllFiltersProps {
     isActive: boolean;
@@ -79,10 +80,12 @@ const AllFilters = ({ isActive, setActiveStateFalse }: AllFiltersProps) => {
                 <SelectedFilters selectedFilters={selectedFilters} />
 
                 {/* FILTERS BUTTON */}
-                <FiltersButton
-                    selectedFilters={selectedFilters}
-                    setSelectedFilters={setSelectedFilters}
-                />
+                <Suspense>
+                    <FiltersButton
+                        selectedFilters={selectedFilters}
+                        setSelectedFilters={setSelectedFilters}
+                    />
+                </Suspense>
             </div>
         </div>,
         document.body

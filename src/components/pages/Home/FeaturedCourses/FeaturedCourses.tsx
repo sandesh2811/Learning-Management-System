@@ -12,14 +12,15 @@ const FeaturedCourses = () => {
             <Heading text="Featured courses" />
 
             {/* Featured courses */}
-            <ErrorBoundaryWrapper
-                subErrorMessage="Please try again later!"
-                showButton={false}
-            >
-                <Suspense fallback={<CoursesLoading length={3} />}>
+
+            <Suspense fallback={<CoursesLoading length={3} />}>
+                <ErrorBoundaryWrapper
+                    subErrorMessage="Please try again later!"
+                    showButton={false}
+                >
                     <FeaturedCoursesCardsWrapper />
-                </Suspense>
-            </ErrorBoundaryWrapper>
+                </ErrorBoundaryWrapper>
+            </Suspense>
         </section>
     );
 };

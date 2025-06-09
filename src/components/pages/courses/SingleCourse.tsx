@@ -6,11 +6,11 @@ import { Suspense } from "react";
 
 const SingleCoursePage = ({ id }: { id: string }) => {
     return (
-        <ErrorBoundaryWrapper showButton={true}>
-            <Suspense fallback={<SingleCourseLoading />}>
+        <Suspense fallback={<SingleCourseLoading />}>
+            <ErrorBoundaryWrapper showButton={true}>
                 <SingleCourseWrapper id={id} />
-            </Suspense>
-        </ErrorBoundaryWrapper>
+            </ErrorBoundaryWrapper>
+        </Suspense>
     );
 };
 

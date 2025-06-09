@@ -5,8 +5,6 @@ import {
 
 import { HandleError } from "@/utils/errorHandling";
 
-import { api } from "@/lib/axios";
-
 type FeaturedCourses = Omit<
     ResponseStructure<CourseType[]>,
     "nextPage" | "error"
@@ -14,9 +12,29 @@ type FeaturedCourses = Omit<
 
 export const getFeaturedCourses = async (): Promise<FeaturedCourses> => {
     try {
-        const {
-            data: { success, message, data },
-        } = await api.get("/v1/course/getCourse/featuredCourse");
+        const response = await fetch(
+            `http://localhost:3000/api//v1/course/getCourse/featuredCourse`,
+            {
+                next: {
+                    revalidate: 3600,
+                    tags: [`featured-courses`],
+                },
+            }
+        );
+
+        if (!response.ok) {
+            const errorData = await response.json();
+
+            const error = new Error(
+                errorData.message || "Couldn't get course!"
+            );
+
+            throw error;
+        }
+
+        const jsonData = await response.json();
+
+        const { success, message, data } = jsonData;
 
         const validData = await CoursesSchema.parseAsync(data);
 

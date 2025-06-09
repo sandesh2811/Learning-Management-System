@@ -1,7 +1,7 @@
-import LoginModal from "@/features/auth/components/login/LoginModal";
+import LoginModalWrappper from "@/features/auth/components/login/LoginModalWrappper";
 
 const LoginModalPage = () => {
-    return <LoginModal />;
+    return <LoginModalWrappper />;
 };
 
 export default LoginModalPage;
