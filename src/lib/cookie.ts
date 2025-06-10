@@ -24,7 +24,14 @@ export const SignCookie = (token: string): string => {
 */
 
 export const VerifySignedCookie = (signedToken: string) => {
-    const [token, signature] = signedToken.split(".");
+    // Check the last index of '.'
+    const indexOfLastDot = signedToken.lastIndexOf(".");
+
+    // Slice the token part starting from index 0 to the last index of '.'
+    const token = signedToken.slice(0, indexOfLastDot);
+
+    // Slice the signature starting from last index of '.' + 1 to end of string
+    const signature = signedToken.slice(indexOfLastDot + 1);
 
     if (!token || !signature) return null;
 

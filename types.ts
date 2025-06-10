@@ -1,3 +1,4 @@
+import { CustomNextRequest } from "@/app/api/v1/user/profile/updateUserData/route";
 import { Connection } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -41,7 +42,18 @@ declare global {
     };
 
     // For middlewares
-    type AppMiddleware = (req: NextRequest) => Promise<NextResponse | void>;
+    interface CustomNextRequest extends NextRequest {
+        user: {
+            role: string;
+            userId: string;
+            iat: number;
+            exp: number;
+        };
+    }
+
+    type AppMiddleware = (
+        req: CustomNextRequest
+    ) => Promise<NextResponse | void>;
 
     /* SHARED TYPES */
 

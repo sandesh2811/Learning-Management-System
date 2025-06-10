@@ -5,17 +5,17 @@ import {
 
 import { API_RESPONSE } from "@/utils/API_Response";
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export const withMiddleware = (
     middlewares: AppMiddleware[],
     handler: (
-        req: NextRequest,
+        req: CustomNextRequest,
         { params }: ParamsProp<{ courseId: string }>
     ) => Promise<NextResponse<ResponseStructure<unknown>> | undefined>
 ) => {
     return async (
-        req: NextRequest,
+        req: CustomNextRequest,
         params: ParamsProp<{ courseId: string }>
     ) => {
         try {

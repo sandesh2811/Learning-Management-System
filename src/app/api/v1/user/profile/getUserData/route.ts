@@ -7,6 +7,9 @@ import {
 } from "@/constants/Constants";
 
 import { GetUserProfileData } from "@/database/services/user/GetUserProfileData";
+import { CheckSession } from "@/middlewares/checkSession";
+import { RateLimit } from "@/middlewares/rateLimit";
+import { withMiddleware } from "@/middlewares/withMiddleware";
 
 import { API_RESPONSE } from "@/utils/API_Response";
 
@@ -23,7 +26,7 @@ import { NextRequest } from "next/server";
  * If user doesnot exist then send appropiate response
  */
 
-export const GET = async (request: NextRequest) => {
+const handler = async (request: NextRequest) => {
     // Get all the params
     const params = request.nextUrl.searchParams;
 
@@ -65,3 +68,5 @@ export const GET = async (request: NextRequest) => {
         });
     }
 };
+
+export const GET = withMiddleware([CheckSession, RateLimit], handler);

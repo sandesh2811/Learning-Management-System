@@ -32,25 +32,25 @@ export default function RootLayout({
                 <ReactQueryProvider>
                     <ReactQueryDevtools initialIsOpen={false} />
                     <StoreProvider>
-                        {/* <ReduxPersistProvider> */}
-                        <Wrapper>
-                            <Navbar />
-                            {children}
-                            {modal}
-                            <Footer />
-                            <Toaster
-                                position="top-right"
-                                richColors={true}
-                                toastOptions={{
-                                    style: {
-                                        fontSize: "15px",
-                                        fontWeight: "bold",
-                                    },
-                                    duration: 1800,
-                                }}
-                            />
-                        </Wrapper>
-                        {/* </ReduxPersistProvider> */}
+                        <ReduxPersistProvider>
+                            <Wrapper>
+                                <Navbar />
+                                {children}
+                                {modal}
+                                <Footer />
+                                <Toaster
+                                    position="top-right"
+                                    richColors={true}
+                                    toastOptions={{
+                                        style: {
+                                            fontSize: "15px",
+                                            fontWeight: "bold",
+                                        },
+                                        duration: 1800,
+                                    }}
+                                />
+                            </Wrapper>
+                        </ReduxPersistProvider>
                     </StoreProvider>
                 </ReactQueryProvider>
             </body>

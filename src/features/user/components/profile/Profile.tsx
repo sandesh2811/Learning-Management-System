@@ -6,36 +6,71 @@ import UpdateProfileSchema, {
 } from "../../schemas/updateProfileSchema";
 
 import { useSetupRHF } from "@/hooks/useSetupRHF";
+import { useHandleForm } from "@/hooks/useHandleForm";
+
+import { updateUserProfileData } from "../../api/actions/updateUserProfileData";
 
 import cn from "@/lib/cn";
 
 import Button from "@/components/ui/Button";
+import Spinner from "@/components/ui/Spinner";
 import FormInput from "@/components/ui/FormInput";
 import FormError from "@/components/ui/FormError";
 
-import { ReactNode } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { ReactNode, useEffect } from "react";
+
+/* For useActionState inital state */
+const initialState = {
+    success: false,
+    message: "",
+};
 
 interface ProfileProps {
     userProfileData: UserProfileDataType;
 }
 
 const Profile = ({ userProfileData }: ProfileProps) => {
+    const router = useRouter();
+
+    /* Extract necessary data */
+    const { username, fullname, address, title, email, contactNumber, about } =
+        userProfileData;
+
+    /* Setting up React Hook Form */
     const {
-        control,
         handleSubmit,
         reset,
         register,
         formState: { errors },
     } = useSetupRHF<UpdateProfileType>(UpdateProfileSchema);
 
-    const { username, fullname, address, title, email, contactNumber, about } =
-        userProfileData;
+    /* Handling submitted form */
+    const { state, action, isPending } = useHandleForm<UpdateProfileType>(
+        updateUserProfileData,
+        initialState
+    );
+
+    /* Show toast and reset form */
+    useEffect(() => {
+        if (state.success) {
+            toast.success(state.message);
+
+            reset();
+        } else if (!state.success && state.message !== "") {
+            toast.error(state.message);
+        }
+    }, [state, reset]);
+
+    /* Redirecting user to home page */
+    const cancelProfileUpdate = () => {
+        router.push("/");
+    };
 
     return (
         <form
-            onSubmit={handleSubmit(() => {
-                console.log("Form submitted!");
-            })}
+            onSubmit={handleSubmit(action)}
             className="bg-background flex flex-col gap-4 rounded-md p-6"
         >
             {/* USERNAME AND FULLNAME */}
@@ -115,7 +150,7 @@ const Profile = ({ userProfileData }: ProfileProps) => {
                 </ProfileElement>
 
                 <FormInput
-                    id="contact-number-1"
+                    id="contact-number"
                     type="string"
                     label="Contact Number"
                     defaultValue={contactNumber}
@@ -145,17 +180,38 @@ const Profile = ({ userProfileData }: ProfileProps) => {
                 <FormError error={errors.about?.message} />
             </div>
 
-            <div className="flex justify-end gap-4">
-                <Button variant="skeleton" className={`tracking-wider`}>
+            {/* CANCEL AND UPDATE BUTTONS */}
+
+            <div className="mid:justify-end flex justify-between gap-4">
+                <Button
+                    type="button"
+                    onClick={cancelProfileUpdate}
+                    variant="skeleton"
+                    className={`w-[150px] tracking-wider ${isPending && "text-primary-text/80 cursor-not-allowed"}`}
+                >
                     Cancel
                 </Button>
-                <Button className={`tracking-wider`}>Update</Button>
+                <Button
+                    className={`w-[150px] tracking-wider ${isPending && "bg-primary-text/80 cursor-not-allowed"}`}
+                >
+                    {isPending ? <Spinner message="Updating..." /> : "Update"}
+                </Button>
             </div>
         </form>
     );
 };
 
 export default Profile;
+
+/* SINGLE WRAPPER FOR ELEMENTS WITH SAME UI STYLES */
+
+const Wrapper = ({ children }: { children: ReactNode }) => {
+    return (
+        <div className="mid:flex-row flex flex-col justify-between gap-6">
+            {children}
+        </div>
+    );
+};
 
 /* FOR INDIVIDUAL PROFILE ELEMENT WITH CERTAIN MESSAGE */
 
@@ -178,10 +234,4 @@ const ProfileElement = ({
             </span>
         </div>
     );
-};
-
-/* SINGLE WRAPPER FOR ELEMENTS WITH SAME UI STYLES */
-
-const Wrapper = ({ children }: { children: ReactNode }) => {
-    return <div className="flex justify-between gap-6">{children}</div>;
 };

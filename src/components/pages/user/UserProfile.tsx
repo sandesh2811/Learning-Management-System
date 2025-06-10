@@ -12,14 +12,17 @@ const UserProfilePage = async ({ username }: UserProfilePageProps) => {
     const { success, message, userProfileData } =
         await getUserProfileData(username);
 
-    if (!success) {
-        return <span>{message}</span>;
+    if (!userProfileData || !success) {
+        return <span className="font-light md:text-xl">{message}</span>;
     }
 
     return (
-        <div className="bg-secondary-background min-h-[50vh] rounded-md p-6">
-            <div className="flex flex-col gap-8">
-                <Headings fullname={userProfileData.fullname} />
+        <div className="bg-secondary-background mid:p-6 min-h-[50vh] rounded-md p-4">
+            <div className="mid:gap-8 flex flex-col gap-4">
+                <Headings
+                    fullname={userProfileData.fullname}
+                    updatedAt={userProfileData.updatedAt}
+                />
                 <Profile userProfileData={userProfileData} />
             </div>
         </div>

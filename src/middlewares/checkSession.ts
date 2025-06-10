@@ -9,7 +9,7 @@ import { VerifyJwtToken } from "@/lib/jwt";
 import { API_RESPONSE } from "@/utils/API_Response";
 
 import { JsonWebTokenError } from "jsonwebtoken";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 /*
     Get the access token from the request/headers
@@ -25,10 +25,9 @@ import { NextRequest, NextResponse } from "next/server";
     If token is valid then let the user continue to the required routes
 */
 
-export const CheckSession = (req: NextRequest) => {
+export const CheckSession = async (req: CustomNextRequest) => {
     // Get access token
-    const access_token = req.headers.get("access_token");
-    console.log(access_token);
+    const access_token = req.cookies.get("access_token")?.value;
 
     if (!access_token)
         return API_RESPONSE(UNAUTHORIZED, {
@@ -48,12 +47,17 @@ export const CheckSession = (req: NextRequest) => {
     try {
         // Verify jwt token
         const user = VerifyJwtToken({
-            token: access_token,
+            token: token,
             tokenType: "access_token",
         });
 
-        // Continue routing to specific api route
-        if (user) NextResponse.next();
+        if (user) {
+            // Add user object to the request
+            req.user = user;
+
+            // Continue routing to specific api route
+            NextResponse.next();
+        }
     } catch (error) {
         if (error instanceof JsonWebTokenError) {
             return API_RESPONSE(UNAUTHORIZED, {

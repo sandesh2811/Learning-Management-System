@@ -8,6 +8,9 @@ export interface UserSchemaType extends Document {
     avatar: string;
     role: string;
     about: string;
+    title: string;
+    address: string;
+    contactNumber: string;
 }
 
 const UserSchema = new Schema<UserSchemaType>(
@@ -50,6 +53,22 @@ const UserSchema = new Schema<UserSchemaType>(
 
         about: {
             type: String,
+            default: "",
+        },
+
+        title: {
+            type: String,
+            default: "",
+        },
+
+        contactNumber: {
+            type: String,
+            default: "",
+        },
+
+        address: {
+            type: String,
+            default: "",
         },
     },
     { timestamps: true }

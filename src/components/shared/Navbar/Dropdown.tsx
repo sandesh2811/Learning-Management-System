@@ -58,7 +58,7 @@ const Dropdown = ({ isActive }: DropdownProps) => {
                             <Link
                                 className="group flex cursor-pointer items-center justify-between py-2 text-[15px] font-medium lg:text-base"
                                 key={link.title}
-                                href={link.href}
+                                href={`${link.href}/${loggedInUser.username}`}
                                 prefetch={true}
                             >
                                 {link.title}

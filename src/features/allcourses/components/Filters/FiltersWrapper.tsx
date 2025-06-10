@@ -10,7 +10,6 @@ import Button from "@/components/ui/Button";
 import { FiFilter } from "react-icons/fi";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
 interface FiltersWrapperProps {
     searchParams: SearchParamsType;
@@ -31,9 +30,7 @@ const FiltersWrapper = ({ searchParams }: FiltersWrapperProps) => {
         <section className="w-full">
             <div className="mid:flex-row flex flex-col items-center justify-between gap-4">
                 {/* SEARCH BAR */}
-                <Suspense>
-                    <InputSearch />
-                </Suspense>
+                <InputSearch />
 
                 {/* FILTERS & CLEAR FILTER BUTTONS */}
                 <div className="mid:flex-row mid:justify-end flex w-full flex-col items-center gap-4">

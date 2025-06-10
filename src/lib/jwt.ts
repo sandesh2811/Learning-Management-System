@@ -41,19 +41,26 @@ const GenerateJwtToken = ({
     return tokenType === "access" ? access_token : refresh_token;
 };
 
+type VerifiedJWTReturnType = {
+    role: string;
+    userId: string;
+    iat: number;
+    exp: number;
+};
+
 const VerifyJwtToken = ({
     token,
     tokenType,
 }: {
     token: string;
     tokenType: string;
-}): unknown => {
+}): VerifiedJWTReturnType => {
     const user = jwt.verify(
         token,
         tokenType === "access_token"
             ? env.JWT_ACCESS_TOKEN_SECRET_KEY
             : env.JWT_REFRESH_TOKEN_SECRET_KEY
-    );
+    ) as VerifiedJWTReturnType;
 
     return user;
 };

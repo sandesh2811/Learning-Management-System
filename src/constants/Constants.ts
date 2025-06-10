@@ -46,12 +46,12 @@ const Links = [
 const USER_BASED_LINKS = [
     {
         title: "Profile",
-        href: "/profile",
+        href: "user/profile",
     },
-    { title: "Messages", href: "/messages" },
-    { title: "Purchased Courses", href: "/purchased-courses" },
-    { title: "Dashboard", href: "/dashboard" },
-    { title: "Logout", href: "/logout" },
+    { title: "Messages", href: "user/messages" },
+    { title: "Purchased Courses", href: "user/purchased-courses" },
+    { title: "Dashboard", href: "user/dashboard" },
+    { title: "Logout", href: "user/logout" },
 ];
 
 /* COURSE FILTERS */
