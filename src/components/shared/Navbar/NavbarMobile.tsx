@@ -14,6 +14,7 @@ import { RootState } from "@/store/Store";
 import { useSelector } from "react-redux";
 import { motion as m } from "motion/react";
 import { usePathname } from "next/navigation";
+import { useHandleUserLogoutLogic } from "@/features/auth/hooks/useHandleUserLogoutLogic";
 
 interface NavbarMobileProps {
     isActive: boolean;
@@ -21,6 +22,9 @@ interface NavbarMobileProps {
 }
 
 const NavbarMobile = ({ isActive, setActiveStateFalse }: NavbarMobileProps) => {
+    /* Get the handle logout method for logging out user */
+    const { handleLogout } = useHandleUserLogoutLogic();
+
     /* Disable scroll if navbar active */
     useDisableScroll(isActive);
 
@@ -96,6 +100,18 @@ const NavbarMobile = ({ isActive, setActiveStateFalse }: NavbarMobileProps) => {
                                     if (link.title === "Purchased Courses") {
                                         return;
                                     }
+                                }
+
+                                if (link.title === "Logout") {
+                                    return (
+                                        <span
+                                            onClick={handleLogout}
+                                            className="text-secondary-color text-[2.5rem] leading-[50px] font-medium uppercase"
+                                            key={link.title}
+                                        >
+                                            {link.title}
+                                        </span>
+                                    );
                                 }
 
                                 /*  User based links */

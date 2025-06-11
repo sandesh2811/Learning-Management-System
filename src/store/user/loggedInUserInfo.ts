@@ -8,7 +8,7 @@ type LoggedInUserType = {
     role: string;
 };
 
-const initialState: LoggedInUserType = {
+export const loggedInUserInitialState: LoggedInUserType = {
     userId: "",
     fullname: "",
     username: "",
@@ -18,9 +18,9 @@ const initialState: LoggedInUserType = {
 
 const LoggedInUser = createSlice({
     name: "loggedIn-user",
-    initialState,
+    initialState: loggedInUserInitialState,
     reducers: {
-        loggerInUserInfo: (state, action: PayloadAction<LoggedInUserType>) => {
+        loggedInUserInfo: (state, action: PayloadAction<LoggedInUserType>) => {
             const { userId, fullname, username, email, role } = action.payload;
 
             state.userId = userId;
@@ -34,4 +34,4 @@ const LoggedInUser = createSlice({
 
 export const SetLoggedInUser = LoggedInUser.reducer;
 
-export const { loggerInUserInfo } = LoggedInUser.actions;
+export const { loggedInUserInfo } = LoggedInUser.actions;

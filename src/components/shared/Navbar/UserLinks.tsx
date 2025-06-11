@@ -2,6 +2,8 @@ import demo from "../../../../public/demo.png";
 
 import { USER_BASED_LINKS } from "@/constants/Constants";
 
+import { useHandleUserLogoutLogic } from "@/features/auth/hooks/useHandleUserLogoutLogic";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,12 +13,18 @@ import {
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/Store";
+
 import { GoArrowUpRight } from "react-icons/go";
+import { useSelector } from "react-redux";
+
+import { RootState } from "@/store/Store";
 
 const UserLinks = () => {
+    /* Get the logged in user */
     const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
+
+    /* Get the handle logout method for logging out user */
+    const { handleLogout } = useHandleUserLogoutLogic();
 
     return (
         <DropdownMenu>
@@ -51,6 +59,21 @@ const UserLinks = () => {
                         }
                     }
 
+                    /* Logout Link */
+                    if (link.title === "Logout") {
+                        return (
+                            <DropdownMenuItem
+                                key={link.title}
+                                className="text-primary-text group w-full cursor-pointer justify-between gap-8 text-base focus:bg-transparent"
+                                onClick={handleLogout}
+                            >
+                                {link.title}
+                                <GoArrowUpRight className="text-primary-text duration-300 ease-in-out group-hover:translate-x-2 group-hover:-translate-y-2 group-focus:translate-x-2 group-focus:-translate-y-2" />
+                            </DropdownMenuItem>
+                        );
+                    }
+
+                    /* Other Links */
                     return (
                         <Link
                             key={link.title}

@@ -7,7 +7,7 @@ import { LoginUser } from "../../api/LoginUser";
 
 import LoginSchema, { type LoginType } from "@/validators/auth/LoginSchema";
 
-import { loggerInUserInfo } from "@/store/user/loggedInUserInfo";
+import { loggedInUserInfo } from "@/store/user/loggedInUserInfo";
 
 import Button from "@/components/ui/Button";
 import FormInput from "@/components/ui/FormInput";
@@ -44,7 +44,7 @@ const FormBody = () => {
     /*Dispatch the user login data and reset the form */
     useEffect(() => {
         if (state.success && state.userInfo) {
-            dispatch(loggerInUserInfo(state.userInfo));
+            dispatch(loggedInUserInfo(state.userInfo));
             reset();
 
             toast.success(state.message);

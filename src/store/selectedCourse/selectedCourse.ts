@@ -8,7 +8,7 @@ export type SelectedCourseType = {
     instructorName: string;
 };
 
-const initialState: SelectedCourseType = {
+export const selectedCourseInitialState: SelectedCourseType = {
     id: "",
     title: "",
     price: "",
@@ -18,7 +18,7 @@ const initialState: SelectedCourseType = {
 
 const SelectedCourse = createSlice({
     name: "selected-course",
-    initialState,
+    initialState: selectedCourseInitialState,
     reducers: {
         selectedCourse: (state, action: PayloadAction<SelectedCourseType>) => {
             const { id, title, price, duration, instructorName } =
