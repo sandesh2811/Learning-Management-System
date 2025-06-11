@@ -2,24 +2,20 @@ import { Links } from "@/constants/Constants";
 
 import { preventNavigationFromSamePageToSamePage } from "@/utils/preventNavigationFromSamePageToSamePage";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/Store";
-import { GoBell } from "react-icons/go";
+import UserLinks from "./UserLinks";
 import { Span } from "@/components/ui/Span";
 
-import demo from "../../../../public/demo.png";
-import Image from "next/image";
-import { useActiveState } from "@/hooks/useActiveState";
-import Dropdown from "./Dropdown";
+import Link from "next/link";
+import { GoBell } from "react-icons/go";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/Store";
+import { usePathname } from "next/navigation";
 
 const NavbarLaptop = () => {
     const pathname = usePathname();
 
+    /* Get the logged in user */
     const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
-
-    const { isActive, toggleActiveState } = useActiveState();
 
     return (
         <nav className="relative hidden items-center gap-6 md:flex">
@@ -30,6 +26,7 @@ const NavbarLaptop = () => {
                     }
                 }
 
+                /* Non user links */
                 return (
                     <Link
                         onClick={preventNavigationFromSamePageToSamePage({
@@ -47,6 +44,7 @@ const NavbarLaptop = () => {
 
             {loggedInUser.role !== "" && (
                 <>
+                    {/* Notifications button */}
                     <Span
                         onClick={() => console.log("demo notification")}
                         className="bg-secondary-background rounded-full p-2"
@@ -54,20 +52,8 @@ const NavbarLaptop = () => {
                         <GoBell size={25} />
                     </Span>
 
-                    <span
-                        id="user-image"
-                        onClick={toggleActiveState}
-                        className="bg-primary-text relative flex size-10 cursor-pointer items-center overflow-hidden rounded-full"
-                    >
-                        <Image
-                            src={demo}
-                            alt="User"
-                            className="object-cover duration-300 ease-in-out group-hover:scale-105"
-                            fill
-                        />
-                    </span>
-
-                    <Dropdown isActive={isActive} />
+                    {/* Dropdown */}
+                    <UserLinks />
                 </>
             )}
         </nav>

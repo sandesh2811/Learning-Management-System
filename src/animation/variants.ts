@@ -63,25 +63,3 @@ export const SlideRightOnHover = {
         ease: [0.65, 0, 0.35, 1],
     },
 };
-
-export const DropDownVariant = {
-    initial: {
-        opacity: 0,
-    },
-
-    animate: {
-        opacity: 1,
-        transition: {
-            duration: 0.3,
-            ease: "easeInOut",
-        },
-    },
-
-    exit: {
-        opacity: 0,
-        transition: {
-            duration: 0.3,
-            ease: "easeInOut",
-        },
-    },
-};
