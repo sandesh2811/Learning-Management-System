@@ -8,8 +8,6 @@ export const setAriaHidden = ({
     id: string;
     additionalId?: string;
 }) => {
-    console.log(additionalId);
-
     Array.from(document.body.children).forEach((child) => {
         if (
             !child.id.includes(id) &&

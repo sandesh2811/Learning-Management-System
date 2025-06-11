@@ -3,10 +3,9 @@ import { Links } from "@/constants/Constants";
 import { preventNavigationFromSamePageToSamePage } from "@/utils/preventNavigationFromSamePageToSamePage";
 
 import UserLinks from "./UserLinks";
-import { Span } from "@/components/ui/Span";
+import NotificationsContainer from "@/features/user/components/notifications/Notifications";
 
 import Link from "next/link";
-import { GoBell } from "react-icons/go";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/Store";
 import { usePathname } from "next/navigation";
@@ -44,13 +43,8 @@ const NavbarLaptop = () => {
 
             {loggedInUser.role !== "" && (
                 <>
-                    {/* Notifications button */}
-                    <Span
-                        onClick={() => console.log("demo notification")}
-                        className="bg-secondary-background rounded-full p-2"
-                    >
-                        <GoBell size={25} />
-                    </Span>
+                    {/* Notifications */}
+                    <NotificationsContainer />
 
                     {/* Dropdown */}
                     <UserLinks />
