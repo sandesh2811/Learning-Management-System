@@ -25,11 +25,15 @@ const NotificationsContainer = () => {
         };
 
         if (isActive) {
-            document.addEventListener("click", handleNotificationClose);
+            document.addEventListener("click", handleNotificationClose, true);
         }
 
         return () => {
-            document.removeEventListener("click", handleNotificationClose);
+            document.removeEventListener(
+                "click",
+                handleNotificationClose,
+                true
+            );
         };
     }, [isActive, setActiveStateFalse]);
 
