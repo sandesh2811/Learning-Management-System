@@ -46,11 +46,11 @@ const Links = [
 const USER_BASED_LINKS = [
     {
         title: "Profile",
-        href: "user/profile",
+        href: "/user/profile",
     },
-    { title: "Messages", href: "user/messages" },
-    { title: "Purchased Courses", href: "user/purchased-courses" },
-    { title: "Dashboard", href: "user/dashboard" },
+    { title: "Messages", href: "/user/messages" },
+    { title: "Purchased Courses", href: "/user/purchased-courses" },
+    { title: "Dashboard", href: "/user/dashboard" },
     { title: "Logout" },
 ];
 
@@ -73,6 +73,10 @@ const CourseDuration = ["1", "2", "3", "4", "5", "6"];
 
 const CourseLanguages = ["English", "Nepali", "Hindi"];
 
+/* TABLE HEADINS FOR USER ENROLLED COURSES */
+
+const TABLE_HEADINGS = ["Course Name", "Purchased Date", "Progress", ""];
+
 /* TAGS THAT ARE NEEDED TO BE EXCLUDED WHEN USING REACT PORTALS */
 
 const TAGS_TO_BE_EXCLUDED = [
@@ -92,12 +96,14 @@ const CACHE_TTLS = {
     COURSES: 60 * 10,
     FEATURED_COURSES: 60 * 15,
     SINGLE_COURSE: 60 * 15,
+    ENROLLED_COURSES: 60 * 5,
 };
 
 const CACHE_KEYS = {
     COURSES: "courses",
     FEATURED_COURSES: "featuredCourses",
     SINGLE_COURSE: "singleCourse",
+    ENROLLED_COURSES: "enrolledCourses",
 };
 
 /* EXPORTS */
@@ -127,4 +133,5 @@ export {
     CACHE_TTLS,
     TAGS_TO_BE_EXCLUDED,
     USER_BASED_LINKS,
+    TABLE_HEADINGS,
 };

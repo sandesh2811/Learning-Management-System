@@ -1,30 +1,33 @@
 import { generateCookieHeader } from "@/utils/generateCookieHeader";
 import {
-    UserProfileDataSchema,
-    type UserProfileDataType,
-} from "../schemas/getUserProfileDataSchema";
+    UserEnrolledCoursesDataSchema,
+    type UserEnrolledCourseDataType,
+} from "../schemas/getUserEnrolledCourseDataSchema";
 
 import { HandleError } from "@/utils/errorHandling";
 
-type GetUserProfileDataReturnType = {
-    userProfileData: UserProfileDataType;
+type GetUserEnrolledCoursesDataReturnType = {
+    userEnrolledCoursesData: UserEnrolledCourseDataType[];
 } & BaseResponse;
 
-export const getUserProfileData = async (
+export const getUserEnrolledCoursesData = async (
     username: string
-): Promise<GetUserProfileDataReturnType> => {
-    /* Get  cookie header */
+): Promise<GetUserEnrolledCoursesDataReturnType> => {
+    /* Get cookie header */
     const cookieHeader = await generateCookieHeader();
 
     try {
         /* Get the response from the backend */
         const response = await fetch(
-            `http://localhost:3000/api/v1/user/profile/getUserData?username=${username}`,
+            `http://localhost:3000/api/v1/course/getCourse/student`,
             {
                 headers: {
                     Cookie: cookieHeader,
                 },
-                next: { revalidate: 1200, tags: [`profile/${username}`] },
+                next: {
+                    revalidate: 1200,
+                    tags: [`purchased-courses/${username}`],
+                },
             }
         );
 
@@ -44,12 +47,12 @@ export const getUserProfileData = async (
         const { success, message, data } = jsonData;
 
         /* Validate the incoming data from the backend */
-        const validData = await UserProfileDataSchema.parseAsync(data);
+        const validData = await UserEnrolledCoursesDataSchema.parseAsync(data);
 
         return {
             success,
             message,
-            userProfileData: validData,
+            userEnrolledCoursesData: validData,
         };
     } catch (error) {
         return HandleError(error);

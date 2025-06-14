@@ -7,9 +7,10 @@ import { RootState } from "@/store/Store";
 import { useState } from "react";
 
 export const useInitiatePayment = () => {
-    const { loggedinUser, selectedCourse } = useSelector(
-        (state: RootState) => state
+    const selectedCourse = useSelector(
+        (state: RootState) => state.selectedCourse
     );
+    const loggedinUser = useSelector((state: RootState) => state.loggedinUser);
 
     const [isRedirecting, setRedirecting] = useState<boolean>(false);
 

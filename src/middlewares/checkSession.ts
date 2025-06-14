@@ -51,13 +51,18 @@ export const CheckSession = async (req: CustomNextRequest) => {
             tokenType: "access_token",
         });
 
-        if (user) {
-            // Add user object to the request
-            req.user = user;
-
-            // Continue routing to specific api route
-            NextResponse.next();
+        if (!user) {
+            return API_RESPONSE(UNAUTHORIZED, {
+                success: false,
+                message: "Unauthorized!",
+            });
         }
+
+        // Add user object to the request
+        req.user = user;
+
+        // Continue routing to specific api route
+        NextResponse.next();
     } catch (error) {
         if (error instanceof JsonWebTokenError) {
             return API_RESPONSE(UNAUTHORIZED, {

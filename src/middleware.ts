@@ -10,10 +10,5 @@ export const middleware = (req: NextRequest) => {
 };
 
 export const config = {
-    matcher: [
-        "/enrollForm",
-        "/confirmation",
-        "/paymentSuccess",
-        "/paymentFailed",
-    ],
+    matcher: ["/enrollForm", "/confirmation", "/user/:slug*", "/api/user"],
 };

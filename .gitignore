@@ -48,3 +48,7 @@ __tests__
 jest*
 mocks
 ReactScanInitializer.tsx
+
+AuthHoc.tsx
+route
+socket

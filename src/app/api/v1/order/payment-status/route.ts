@@ -5,17 +5,20 @@ import {
     NOT_FOUND,
 } from "@/constants/Constants";
 
-import { env } from "@/utils/checkEnv";
-import { connectDB } from "@/lib/dbConnect";
-import { API_RESPONSE } from "@/utils/API_Response";
 import { GetOrder } from "@/database/services/order/Order";
 import { UpdateOrderStatus } from "@/database/services/order/UpdateOrderStatus";
 
-import { NextRequest } from "next/server";
-import axios from "axios";
-import { verifyPaymentSignature } from "@/utils/verifyPaymentSignature";
 import { withMiddleware } from "@/middlewares/withMiddleware";
 import { RateLimit } from "@/middlewares/rateLimit";
+
+import { env } from "@/utils/checkEnv";
+import { API_RESPONSE } from "@/utils/API_Response";
+import { verifyPaymentSignature } from "@/utils/verifyPaymentSignature";
+
+import { connectDB } from "@/lib/dbConnect";
+
+import { NextRequest } from "next/server";
+import axios from "axios";
 
 /*
     Get transaction id (which is transaction_uuid) from the request 
@@ -35,8 +38,6 @@ const handler = async (req: NextRequest) => {
     // Get the base64 encoded data from the URL
     const params = req.nextUrl.searchParams;
     const data = params.get("data");
-
-    console.log(data, "base64 response data");
 
     // Decode the base64 data
     const { success, message, transactionId } = verifyPaymentSignature(data);
@@ -74,13 +75,13 @@ const handler = async (req: NextRequest) => {
         });
 
         // Parse the response
-        const paymentStatusData = JSON.parse(JSON.stringify(paymentResponse));
+        // const paymentStatusData = JSON.parse(JSON.stringify(paymentResponse));
 
-        if (paymentStatusData.status === 200) {
-            // Update the status of order (pending to completed)
+        if (paymentResponse.status === 200) {
+            // Update the status of order (pending to other states)
             const { success, message } = await UpdateOrderStatus(
                 order?.courseId,
-                paymentStatusData.data.status
+                paymentResponse.data.status
             );
 
             return API_RESPONSE(CREATED, {
@@ -89,8 +90,6 @@ const handler = async (req: NextRequest) => {
             });
         }
     } catch (error) {
-        console.log(error);
-
         return API_RESPONSE(INTERNAL_SERVER_ERROR, {
             success: false,
             message: INTERNAL_SERVER_ERROR_MESSAGE,

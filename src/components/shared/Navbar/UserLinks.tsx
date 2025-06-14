@@ -18,6 +18,8 @@ import { GoArrowUpRight } from "react-icons/go";
 import { useSelector } from "react-redux";
 
 import { RootState } from "@/store/Store";
+import { preventNavigationFromSamePageToSamePage } from "@/utils/preventNavigationFromSamePageToSamePage";
+import { usePathname } from "next/navigation";
 
 const UserLinks = () => {
     /* Get the logged in user */
@@ -25,6 +27,8 @@ const UserLinks = () => {
 
     /* Get the handle logout method for logging out user */
     const { handleLogout } = useHandleUserLogoutLogic();
+
+    const pathname = usePathname();
 
     return (
         <DropdownMenu>
@@ -76,6 +80,10 @@ const UserLinks = () => {
                     /* Other Links */
                     return (
                         <Link
+                            onClick={preventNavigationFromSamePageToSamePage({
+                                href: `${link.href}/${loggedInUser.username}`,
+                                pathname,
+                            })}
                             key={link.title}
                             className="group flex w-full cursor-pointer items-center justify-between rounded-sm font-medium"
                             href={`${link.href}/${loggedInUser.username}`}

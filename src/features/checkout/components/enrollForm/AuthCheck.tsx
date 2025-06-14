@@ -14,7 +14,7 @@
 //     );
 //     const [isChecked, setChecked] = useState<boolean>(false);
 
-//     useEffect(() => {
+//     useEffect(() => {S
 //         if (selectedCourse === undefined) return;
 
 //         Object.values(selectedCourse).map((val) => {

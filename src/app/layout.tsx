@@ -12,6 +12,7 @@ import ReactQueryProvider from "@/components/shared/ReactQueryProvider";
 import ReduxPersistProvider from "@/components/shared/ReduxPersistProvider";
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import RouteChangeTracker from "@/components/shared/RouteChangeTracker";
 
 export const metadata: Metadata = {
     title: "Learning Management System",
@@ -49,6 +50,7 @@ export default function RootLayout({
                                         duration: 1800,
                                     }}
                                 />
+                                <RouteChangeTracker />
                             </Wrapper>
                         </ReduxPersistProvider>
                     </StoreProvider>
