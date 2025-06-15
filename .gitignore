@@ -49,6 +49,6 @@ jest*
 mocks
 ReactScanInitializer.tsx
 
-AuthHoc.tsx
+socket 
 route
-socket
+AuthHoc.tsx
