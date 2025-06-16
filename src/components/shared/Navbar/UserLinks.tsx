@@ -81,12 +81,12 @@ const UserLinks = () => {
                     return (
                         <Link
                             onClick={preventNavigationFromSamePageToSamePage({
-                                href: `${link.href}/${loggedInUser.username}`,
+                                href: `${link.href}`,
                                 pathname,
                             })}
                             key={link.title}
                             className="group flex w-full cursor-pointer items-center justify-between rounded-sm font-medium"
-                            href={`${link.href}/${loggedInUser.username}`}
+                            href={`${link.href}`}
                             prefetch={true}
                         >
                             <DropdownMenuItem className="text-primary-text group w-full cursor-pointer justify-between gap-8 text-base focus:bg-transparent">

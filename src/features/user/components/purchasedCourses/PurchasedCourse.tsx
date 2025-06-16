@@ -3,13 +3,9 @@ import { getUserEnrolledCoursesData } from "../../api/getUserEnrolledCourseData"
 import CourseListCard from "./CourseListCard";
 import CourseListTable from "./CourseListTable";
 
-interface PurchasedCourseProps {
-    username: string;
-}
-
-const PurchasedCoursePage = async ({ username }: PurchasedCourseProps) => {
+const PurchasedCoursePage = async () => {
     const { success, message, userEnrolledCoursesData } =
-        await getUserEnrolledCoursesData(username);
+        await getUserEnrolledCoursesData();
 
     if (userEnrolledCoursesData?.length === 0 && !success)
         return <span className="font-light md:text-xl">{message}</span>;

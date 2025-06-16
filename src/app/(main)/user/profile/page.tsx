@@ -4,13 +4,11 @@ import ProfileLoading from "@/features/user/components/profile/ProfileLoading";
 
 import { Suspense } from "react";
 
-const UserProfile = async ({ params }: ParamsProp<{ username: string }>) => {
-    const { username } = await params;
-
+const UserProfile = () => {
     return (
         <Suspense fallback={<ProfileLoading />}>
             <ErrorBoundaryWrapper showButton={false}>
-                <UserProfilePage username={username} />
+                <UserProfilePage />
             </ErrorBoundaryWrapper>
         </Suspense>
     );

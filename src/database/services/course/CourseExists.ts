@@ -53,6 +53,7 @@ export const CheckCourseExists = async (
             },
         },
         { $unwind: "$coursewithuserinfo" },
+
         {
             $lookup: {
                 from: "courseContents",
@@ -81,9 +82,26 @@ export const CheckCourseExists = async (
                     avatar: "$coursewithuserinfo.avatar",
                     about: "$coursewithuserinfo.about",
                 },
-                // Need to make adjustments
+
                 courseContent: {
-                    test: "$coursewithcontent.test",
+                    content: {
+                        $map: {
+                            // the array to map
+                            input: "$coursewithcontent.content",
+
+                            // name to represent each arr element during mapping
+                            as: "content",
+
+                            // mapping to new object / transformation
+                            in: {
+                                // get title from current element
+                                title: "$$content.title",
+                                // get description from current element
+                                description: "$$content.description",
+                            },
+                        },
+                    },
+                    freebies: "$coursewithcontent.freebies",
                 },
             },
         },

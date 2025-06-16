@@ -3,9 +3,9 @@ import "server-only";
 import { UserModel } from "@/database/models/UserModel";
 
 export const GetUserProfileData = async (
-    username: string
+    userId: string
 ): Promise<UserType | null> => {
-    const user = await UserModel.findOne({ username })
+    const user = await UserModel.findById(userId)
         .select("-password -createdAt -__v")
         .lean<UserType>();
 
