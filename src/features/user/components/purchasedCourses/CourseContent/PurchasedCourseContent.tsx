@@ -1,5 +1,7 @@
 "use client";
 
+import { type SelectedCourseContentType } from "@/features/user/schemas/getSelectedCourseContentSchema";
+
 import { useActiveState } from "@/hooks/useActiveState";
 import { useDetermineScreenSize } from "@/hooks/useDetermineScreenSize";
 
@@ -8,7 +10,23 @@ import Content from "./Content";
 
 import { useEffect, useState } from "react";
 
-const PurchasedCourseContentPage = () => {
+interface PurchasedCourseContentProps {
+    courseContent: SelectedCourseContentType;
+}
+
+const PurchasedCourseContent = ({
+    courseContent,
+}: PurchasedCourseContentProps) => {
+    const sidebarContent = courseContent.map((content) => ({
+        contentId: content._id,
+        title: content.title,
+    }));
+
+    const mainContent = courseContent.map((content) => ({
+        video: content.video,
+        description: content.description,
+    }));
+
     /* Get the active state and methods */
     const {
         isActive,
@@ -17,7 +35,7 @@ const PurchasedCourseContentPage = () => {
         toggleActiveState,
     } = useActiveState();
 
-    const [selectedChapter, setSelectedChapter] = useState<number>(1);
+    const [selectedChapter, setSelectedChapter] = useState<number>(0);
 
     /* Get the screen size */
     const screenSize = useDetermineScreenSize();
@@ -37,6 +55,7 @@ const PurchasedCourseContentPage = () => {
             {!!isActive && (
                 <Sidebar
                     isActive={isActive}
+                    sidebarContent={sidebarContent}
                     selectedChapter={selectedChapter}
                     setSelectedChapter={setSelectedChapter}
                 />
@@ -45,10 +64,12 @@ const PurchasedCourseContentPage = () => {
             {/* ACTUAL CONTENT */}
             <Content
                 isActive={isActive}
+                selectedContent={selectedChapter}
+                mainContent={mainContent}
                 toggleActiveState={toggleActiveState}
             />
         </div>
     );
 };
 
-export default PurchasedCourseContentPage;
+export default PurchasedCourseContent;

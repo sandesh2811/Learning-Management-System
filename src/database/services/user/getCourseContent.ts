@@ -21,22 +21,22 @@ export const getCourseContent = async (courseId: string) => {
             $lookup: {
                 from: "courseContents",
                 foreignField: "_id",
-                localField: "courseContentId",
+                localField: "courseContent",
                 as: "coursewithcontent",
             },
         },
-        { $unwind: "$coursewithcontent" },
+
         {
             $project: {
                 _id: 0,
                 courseContent: {
                     $map: {
-                        input: "$coursewithcontent.content",
-                        as: "content",
+                        input: "$coursewithcontent",
                         in: {
-                            title: "$$content.title",
-                            description: "$$content.description",
-                            video: "$$content.video",
+                            _id: "$$this._id",
+                            title: "$$this.content.title",
+                            description: "$$this.content.description",
+                            video: "$$this.content.video",
                         },
                     },
                 },

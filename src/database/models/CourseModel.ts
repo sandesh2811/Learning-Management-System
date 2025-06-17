@@ -10,7 +10,7 @@ export interface CourseSchemaType extends Document {
         hasDiscount: boolean;
         discountPercentage: number;
     };
-    courseContentId: Schema.Types.ObjectId;
+    courseContent: Schema.Types.ObjectId[];
     coverImage: string;
     languagesAvailable: string[];
     enrolledStudents: Schema.Types.ObjectId[];
@@ -51,8 +51,8 @@ const CourseSchema = new Schema<CourseSchemaType>(
                 default: 0,
             },
         },
-        courseContentId: {
-            type: Schema.Types.ObjectId,
+        courseContent: {
+            type: Array(Schema.Types.ObjectId),
             ref: "CourseContent",
         },
         coverImage: {

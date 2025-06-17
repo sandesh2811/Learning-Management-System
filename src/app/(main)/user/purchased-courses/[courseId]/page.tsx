@@ -1,7 +1,11 @@
-import PurchasedCourseContentPage from "@/features/user/components/purchasedCourses/CourseContent/PurchasedCourseContent";
+import PurchasedCourseContentPage from "@/components/pages/user/PurchasedCourseContent";
 
-const PurchasedCourseContent = () => {
-    return <PurchasedCourseContentPage />;
+const PurchasedCourseContent = async ({
+    params,
+}: ParamsProp<{ courseId: string }>) => {
+    const { courseId } = await params;
+
+    return <PurchasedCourseContentPage courseId={courseId} />;
 };
 
 export default PurchasedCourseContent;

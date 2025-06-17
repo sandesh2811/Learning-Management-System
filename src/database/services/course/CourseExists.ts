@@ -57,12 +57,11 @@ export const CheckCourseExists = async (
         {
             $lookup: {
                 from: "courseContents",
-                localField: "courseContentId",
+                localField: "courseContent",
                 foreignField: "_id",
                 as: "coursewithcontent",
             },
         },
-        { $unwind: "$coursewithcontent" },
 
         {
             $project: {
@@ -84,24 +83,15 @@ export const CheckCourseExists = async (
                 },
 
                 courseContent: {
-                    content: {
-                        $map: {
-                            // the array to map
-                            input: "$coursewithcontent.content",
-
-                            // name to represent each arr element during mapping
-                            as: "content",
-
-                            // mapping to new object / transformation
-                            in: {
-                                // get title from current element
-                                title: "$$content.title",
-                                // get description from current element
-                                description: "$$content.description",
-                            },
+                    $map: {
+                        input: "$coursewithcontent",
+                        in: {
+                            isFreebie: "$$this.isFreebie",
+                            title: "$$this.content.title",
+                            description: "$$this.content.description",
+                            video: "$$this.content.video",
                         },
                     },
-                    freebies: "$coursewithcontent.freebies",
                 },
             },
         },

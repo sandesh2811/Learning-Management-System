@@ -7,42 +7,32 @@ type SingleContent = {
 };
 
 export interface CourseContent extends Document {
-    freebies: {
-        isFreebie: boolean;
-        file: string[];
-    };
-
-    content: SingleContent[];
+    isFreebie: boolean;
+    content: SingleContent;
 }
 
 const CourseContentSchema = new Schema<CourseContent>(
     {
-        freebies: {
-            isFreebie: {
-                type: Boolean,
-            },
-            file: {
-                type: Array(String),
-            },
+        isFreebie: {
+            type: Boolean,
+            required: [true, "Freebie status is required!"],
         },
 
-        content: [
-            {
-                title: {
-                    type: String,
-                    required: [true, "Title is required!"],
-                },
-                description: {
-                    type: String,
-                    required: [true, "Description is required!"],
-                },
-
-                video: {
-                    type: String,
-                    required: [true, "Video is required!"],
-                },
+        content: {
+            title: {
+                type: String,
+                required: [true, "Title is required!"],
             },
-        ],
+            description: {
+                type: String,
+                required: [true, "Description is required!"],
+            },
+
+            video: {
+                type: String,
+                required: [true, "Video is required!"],
+            },
+        },
     },
     { timestamps: true }
 );

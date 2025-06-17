@@ -20,9 +20,11 @@ const freebiesSchema = z.object({
     file: z.array(z.string()),
 });
 
-const contentSchema = z.object({
+const courseContent = z.object({
+    isFreebie: z.boolean(),
     title: z.string(),
     description: z.string(),
+    video: z.string(),
 });
 
 // Need to remove freebies schema
@@ -40,10 +42,7 @@ export const SingleCourseSchema = z
         rating: z.number(),
         instructorInfo: instructorInfoSchema,
 
-        courseContent: z.object({
-            content: z.array(contentSchema),
-            freebies: freebiesSchema,
-        }),
+        courseContent: z.array(courseContent),
     })
     .strict();
 

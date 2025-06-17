@@ -8,10 +8,20 @@ import { GoSidebarCollapse, GoSidebarExpand } from "react-icons/go";
 
 interface ContentProps {
     isActive: boolean;
+    selectedContent: number;
+    mainContent: {
+        video: string;
+        description: string;
+    }[];
     toggleActiveState: () => void;
 }
 
-const Content = ({ isActive, toggleActiveState }: ContentProps) => {
+const Content = ({
+    isActive,
+    mainContent,
+    selectedContent,
+    toggleActiveState,
+}: ContentProps) => {
     return (
         <div
             className={`border-primary-text/20 flex flex-1/2 flex-col gap-6 overflow-y-auto rounded-md border-t-[1.2px] border-r-[1.2px] border-b-[1.2px] p-4 ${!isActive ? "rounded-l-md border-l-[1.2px]" : "rounded-l-none border-t-[1.2px] border-r-[1.2px] border-b-[1.2px]"} min-h-[80vh] lg:px-6`}
@@ -23,7 +33,10 @@ const Content = ({ isActive, toggleActiveState }: ContentProps) => {
             />
 
             {/* COURSE VIDEO WITH DESCRIPTION */}
-            <ChapterVideoAndInfo />
+            <ChapterVideoAndInfo
+                mainContent={mainContent}
+                selectedContent={selectedContent}
+            />
         </div>
     );
 };
@@ -81,7 +94,18 @@ const ContentHeader = ({ isActive, toggleActiveState }: ContentHeaderProps) => {
 
 /* CHAPTER VIDEO AND INFO COMPONENT */
 
-const ChapterVideoAndInfo = () => {
+interface ChapterVideoAndInfoProp {
+    mainContent: {
+        video: string;
+        description: string;
+    }[];
+    selectedContent: number;
+}
+
+const ChapterVideoAndInfo = ({
+    mainContent,
+    selectedContent,
+}: ChapterVideoAndInfoProp) => {
     return (
         <div className="border-primary-text/10 flex flex-col gap-4 overflow-y-auto">
             <div>
@@ -98,11 +122,7 @@ const ChapterVideoAndInfo = () => {
             <div className="flex flex-col gap-2">
                 <h5 className="text-lg font-semibold">About this chapter</h5>
                 <p className="mid:text-base text-sm">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Ipsa voluptatum corporis minus. Consectetur molestias quas
-                    ipsa eius perspiciatis, ullam dicta corporis nemo soluta
-                    necessitatibus, dolor at neque, autem aspernatur nisi!Lorem
-                    ipsum dolor sit amet consectetur adipisicing elit.
+                    {mainContent[selectedContent].description}
                 </p>
             </div>
         </div>
