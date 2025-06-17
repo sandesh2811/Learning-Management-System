@@ -50,7 +50,7 @@ const USER_BASED_LINKS = [
     },
     { title: "Messages", href: "/user/messages" },
     { title: "Purchased Courses", href: "/user/purchased-courses" },
-    { title: "Dashboard", href: "/user/dashboard" },
+    { title: "Dashboard", href: "/dashboard" },
     { title: "Logout" },
 ];
 
