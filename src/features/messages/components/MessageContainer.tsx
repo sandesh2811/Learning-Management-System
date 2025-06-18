@@ -1,25 +1,28 @@
 "use client";
 
+import { SettingsVariant } from "../animation/variants";
+
+import { useActiveState } from "@/hooks/useActiveState";
+
 import Button from "@/components/ui/Button";
 import { Span } from "@/components/ui/Span";
 import { Switch } from "@/components/ui/switch";
-import { useActiveState } from "@/hooks/useActiveState";
 
+import { CiChat1 } from "react-icons/ci";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion as m } from "motion/react";
 import { GoArrowUpRight, GoKebabHorizontal } from "react-icons/go";
-import { CiChat1 } from "react-icons/ci";
 
 interface MessageContainerProps {
-    isActive: boolean;
+    selectedConversation: number | null;
 }
 
-const MessageContainer = ({ isActive }: MessageContainerProps) => {
+const MessageContainer = ({ selectedConversation }: MessageContainerProps) => {
     return (
         <div
-            className={`border-primary-text/10 flex flex-1 flex-col justify-between gap-6 overflow-y-auto rounded-r-md border-t-[1.2px] border-r-[1.2px] border-b-[1.2px] p-4 lg:px-6`}
+            className={`border-primary-text/10 flex-1 flex-col justify-between gap-6 overflow-y-auto rounded-r-md border-t-[1.2px] border-r-[1.2px] border-b-[1.2px] p-4 lg:px-6 ${selectedConversation !== null && "flex"}`}
         >
-            {isActive ? (
+            {selectedConversation !== null ? (
                 <>
                     <MessageContainerHeader />
                     <MessageContainerBody />
@@ -34,9 +37,11 @@ const MessageContainer = ({ isActive }: MessageContainerProps) => {
 
 export default MessageContainer;
 
+/* FALLBACK UI COMPONENT */
+
 const FallbackUI = () => {
     return (
-        <div className="flex h-full flex-col items-center justify-center gap-2">
+        <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
             <CiChat1 size={80} className="text-primary-text/80" />
             <h2 className="text-primary-text/80 text-5xl font-semibold">
                 No conversation selected
@@ -48,30 +53,42 @@ const FallbackUI = () => {
     );
 };
 
+/* MESSAGE CONTAINER HEADER COMPONENT */
+
 const MessageContainerHeader = () => {
     return (
         <div className="border-primary-text/10 flex items-center justify-between border-b-[1.2px] pb-2">
             <div className="flex items-center gap-2">
+                {/* USER INFO */}
+
                 <div className="flex items-center gap-4">
                     <span className="bg-primary-text size-8 rounded-full"></span>
                     <h2 className="text-xl font-medium">Ram Bahadur</h2>
                 </div>
+
+                {/* ACTIVE STATUS INDICATOR */}
+
                 <span className="size-2 rounded-full bg-green-600" />
             </div>
+
+            {/* SETTINGS DROPDOWN */}
 
             <SettingsDropdown />
         </div>
     );
 };
 
+/* SETTINGS DROPDOWN COMPONENT */
+
 const SettingsDropdown = () => {
+    /* Get the active state */
     const { isActive, toggleActiveState, setActiveStateFalse } =
         useActiveState();
 
     const [checked, setChecked] = useState<boolean>(true);
-
     const settingsRef = useRef<HTMLDivElement | null>(null);
 
+    /* Handle outside click */
     useEffect(() => {
         const handleNotificationClose = (e: MouseEvent) => {
             if (!settingsRef.current?.contains(e.target as Node)) {
@@ -97,22 +114,14 @@ const SettingsDropdown = () => {
             <Span onClick={toggleActiveState}>
                 <GoKebabHorizontal size={22} />
             </Span>
+
             <AnimatePresence>
                 {!!isActive && (
                     <m.div
-                        initial={{
-                            opacity: 0,
-                        }}
-                        animate={{
-                            opacity: 1,
-                        }}
-                        exit={{
-                            opacity: 0,
-                        }}
-                        transition={{
-                            duration: 0.2,
-                            ease: "ease-in-out",
-                        }}
+                        variants={SettingsVariant}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
                         className="bg-background border-primary-text/10 absolute top-5 right-5 flex min-h-[5vh] w-[250px] items-center justify-center gap-4 rounded-sm border-[1.2px] shadow-lg"
                     >
                         <label htmlFor="notifications">
@@ -131,6 +140,8 @@ const SettingsDropdown = () => {
     );
 };
 
+/* MESSAGE CONTAINER BODY COMPONENT */
+
 const MessageContainerBody = () => {
     const isSender = false;
 
@@ -148,6 +159,8 @@ const MessageContainerBody = () => {
         </div>
     );
 };
+
+/* MESSAGE CONTAINER FOOTER COMPONENT */
 
 const MessageContainerFooter = () => {
     const [message, setMessage] = useState<string>("");

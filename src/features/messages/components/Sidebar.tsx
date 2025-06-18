@@ -1,19 +1,17 @@
 import { Dispatch, SetStateAction } from "react";
 
 interface SidebarProp {
-    isActive: boolean;
-    selectedConversation: number;
-    setSelectedConversation: Dispatch<SetStateAction<number>>;
+    selectedConversation: number | null;
+    setSelectedConversation: Dispatch<SetStateAction<number | null>>;
 }
 
 const Sidebar = ({
-    isActive,
     selectedConversation,
     setSelectedConversation,
 }: SidebarProp) => {
     return (
         <div
-            className={`bg-background border-primary-text/10 flex h-[80vh] flex-col gap-7 rounded-md border-[1.2px] p-4 md:w-[30%] md:rounded-r-none lg:px-6 ${!!isActive && "absolute z-10 w-full rounded-md"} md:static`}
+            className={`bg-background border-primary-text/10 flex h-[80vh] w-full flex-col gap-7 rounded-md border-[1.2px] p-4 md:w-[30%] md:rounded-r-none lg:px-6`}
         >
             <h2 className="text-2xl font-semibold">Messages</h2>
             <div className="divide-primary-text/20 relative flex flex-col gap-3 divide-y-[1.2px] overflow-y-auto">
