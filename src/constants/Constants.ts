@@ -106,6 +106,30 @@ const CACHE_KEYS = {
     ENROLLED_COURSES: "enrolledCourses",
 };
 
+/* DASHBOARD NAVBAR LINKS */
+
+const DASHBOARD_LINKS = [
+    {
+        title: "Profile",
+        href: "/dashboard/profile",
+    },
+    {
+        title: "Messages",
+        href: "/dashboard/messages",
+    },
+    {
+        title: "Notifications",
+        href: "/dashboard/notifications",
+    },
+    {
+        title: "Courses",
+        href: "/dashboard/courses",
+    },
+    {
+        title: "Logout",
+    },
+];
+
 /* EXPORTS */
 
 export {
@@ -134,4 +158,5 @@ export {
     TAGS_TO_BE_EXCLUDED,
     USER_BASED_LINKS,
     TABLE_HEADINGS,
+    DASHBOARD_LINKS,
 };

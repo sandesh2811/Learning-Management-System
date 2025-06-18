@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import { motion as m } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useHandleUserLogoutLogic } from "@/features/auth/hooks/useHandleUserLogoutLogic";
+import { cn } from "@/lib/utils";
 
 interface NavbarMobileProps {
     isActive: boolean;
@@ -139,10 +140,16 @@ export default NavbarMobile;
 interface NavLinkProps {
     title: string;
     href: string;
+    className?: string;
     setActiveStateFalse: () => void;
 }
 
-const NavLink = ({ title, href, setActiveStateFalse }: NavLinkProps) => {
+export const NavLink = ({
+    title,
+    href,
+    className,
+    setActiveStateFalse,
+}: NavLinkProps) => {
     const pathname = usePathname();
 
     return (
@@ -153,7 +160,10 @@ const NavLink = ({ title, href, setActiveStateFalse }: NavLinkProps) => {
                     pathname,
                 })}
                 href={href}
-                className="text-secondary-color text-[2.5rem] leading-[50px] font-medium uppercase"
+                className={cn(
+                    "text-secondary-color text-[2.5rem] leading-[50px] font-medium uppercase",
+                    className
+                )}
             >
                 {title}
             </Link>

@@ -53,7 +53,7 @@ const Navbar = () => {
 
             {/* NAVBAR MOBILE */}
             <AnimatePresence mode="wait">
-                {isActive && (
+                {!!isActive && (
                     <NavbarMobile
                         key="mobile-navbar"
                         isActive={isActive}
