@@ -9,14 +9,21 @@ const Messages = () => {
     const [selectedConversation, setSelectedConversation] = useState<
         number | null
     >(null);
+    const [isSidebarOpen, setSidebarOpen] = useState<boolean>(true);
 
     return (
         <div className="relative flex h-[80vh]">
             <Sidebar
+                isSidebarOpen={isSidebarOpen}
+                setSidebarOpen={setSidebarOpen}
                 selectedConversation={selectedConversation}
                 setSelectedConversation={setSelectedConversation}
             />
-            <MessageContainer selectedConversation={selectedConversation} />
+
+            <MessageContainer
+                setSidebarOpen={setSidebarOpen}
+                selectedConversation={selectedConversation}
+            />
         </div>
     );
 };

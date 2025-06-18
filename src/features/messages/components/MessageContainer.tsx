@@ -9,22 +9,26 @@ import { Span } from "@/components/ui/Span";
 import { Switch } from "@/components/ui/switch";
 
 import { CiChat1 } from "react-icons/ci";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion as m } from "motion/react";
-import { GoArrowUpRight, GoKebabHorizontal } from "react-icons/go";
+import { GoArrowLeft, GoArrowUpRight, GoKebabHorizontal } from "react-icons/go";
 
 interface MessageContainerProps {
     selectedConversation: number | null;
+    setSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const MessageContainer = ({ selectedConversation }: MessageContainerProps) => {
+const MessageContainer = ({
+    selectedConversation,
+    setSidebarOpen,
+}: MessageContainerProps) => {
     return (
         <div
-            className={`border-primary-text/10 flex-1 flex-col justify-between gap-6 overflow-y-auto rounded-r-md border-t-[1.2px] border-r-[1.2px] border-b-[1.2px] p-4 lg:px-6 ${selectedConversation !== null && "flex"}`}
+            className={`border-primary-text/10 flex-1 flex-col justify-between gap-6 overflow-y-auto border-t-[1.2px] border-r-[1.2px] border-b-[1.2px] p-4 md:rounded-r-md lg:px-6 ${selectedConversation !== null && "flex"} md:border-l-none rounded-md border-l-[1.2px]`}
         >
             {selectedConversation !== null ? (
                 <>
-                    <MessageContainerHeader />
+                    <MessageContainerHeader setSidebarOpen={setSidebarOpen} />
                     <MessageContainerBody />
                     <MessageContainerFooter />
                 </>
@@ -55,15 +59,28 @@ const FallbackUI = () => {
 
 /* MESSAGE CONTAINER HEADER COMPONENT */
 
-const MessageContainerHeader = () => {
+interface MessageContainerHeaderProp {
+    setSidebarOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+const MessageContainerHeader = ({
+    setSidebarOpen,
+}: MessageContainerHeaderProp) => {
     return (
         <div className="border-primary-text/10 flex items-center justify-between border-b-[1.2px] pb-2">
             <div className="flex items-center gap-2">
                 {/* USER INFO */}
 
                 <div className="flex items-center gap-4">
-                    <span className="bg-primary-text size-8 rounded-full"></span>
-                    <h2 className="text-xl font-medium">Ram Bahadur</h2>
+                    <GoArrowLeft
+                        size={22}
+                        className="md:hidden"
+                        onClick={() => setSidebarOpen(true)}
+                    />
+                    <span className="bg-primary-text mid:size-8 size-6 rounded-full"></span>
+                    <h2 className="mid:text-lg font-medium md:text-xl">
+                        Ram Bahadur
+                    </h2>
                 </div>
 
                 {/* ACTIVE STATUS INDICATOR */}
@@ -122,9 +139,12 @@ const SettingsDropdown = () => {
                         initial="initial"
                         animate="animate"
                         exit="exit"
-                        className="bg-background border-primary-text/10 absolute top-5 right-5 flex min-h-[5vh] w-[250px] items-center justify-center gap-4 rounded-sm border-[1.2px] shadow-lg"
+                        className="bg-background border-primary-text/10 mid:w-[220px] absolute top-8 right-0 flex min-h-[5vh] w-[180px] items-center justify-center gap-4 rounded-sm border-[1.2px] p-2 shadow-lg md:top-5 md:right-5 md:w-[250px] md:p-0"
                     >
-                        <label htmlFor="notifications">
+                        <label
+                            htmlFor="notifications"
+                            className="md:base text-sm"
+                        >
                             Enable notifications
                         </label>
                         <Switch
@@ -148,10 +168,10 @@ const MessageContainerBody = () => {
     return (
         <div className="flex h-[55vh] flex-col gap-6 overflow-y-auto">
             <div
-                className={`flex w-[60%] ${isSender ? "justify-end self-end" : "justify-start self-start"}`}
+                className={`mid:w-[60%] flex w-full ${isSender ? "justify-end self-end" : "justify-start self-start"}`}
             >
                 <span
-                    className={`bg-secondary-background rounded-sm p-4 font-medium`}
+                    className={`bg-secondary-background mid:p-4 mid:text-base rounded-sm p-2 text-sm font-medium`}
                 >
                     This is a demo message
                 </span>
@@ -175,7 +195,7 @@ const MessageContainerFooter = () => {
                 onChange={(e) => setMessage(e.target.value)}
             />
             <Button
-                className={`w-[150px] rounded-sm p-2 ${message === "" ? "bg-primary-text/80" : "bg-primary-text"}`}
+                className={`mid:w-[150px] w-[80px] rounded-sm p-2 ${message === "" ? "bg-primary-text/80" : "bg-primary-text"}`}
             >
                 <GoArrowUpRight size={22} />
             </Button>
