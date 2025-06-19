@@ -1,32 +1,30 @@
-import {
-    UserCreatedCoursesSchema,
-    type UserCreatedCoursesType,
-} from "../schemas/userCreatedCoursesSchema";
+"use server";
 
 import { HandleError } from "@/utils/errorHandling";
 import { generateCookieHeader } from "@/utils/generateCookieHeader";
 
-type GetCoursesCreatedByUserReturnType = {
-    userCreatedCourses: UserCreatedCoursesType;
-} & BaseResponse;
+import { revalidateTag } from "next/cache";
 
-export const getCoursesCreatedByUser = async (
-    username: string
-): Promise<GetCoursesCreatedByUserReturnType> => {
+type DeleteCourseArgs = {
+    courseId: string;
+    username: string;
+};
+
+export const deleteCourse = async ({
+    courseId,
+    username,
+}: DeleteCourseArgs) => {
     /* Get cookie header */
     const cookieHeader = await generateCookieHeader();
 
     try {
         /* Get the response from the backend */
         const response = await fetch(
-            `http://localhost:3000/api/v1/course/getCourse/author`,
+            `http://localhost:3000/api/v1/course/deleteCourse/${courseId}`,
             {
+                method: "DELETE",
                 headers: {
                     Cookie: cookieHeader,
-                },
-                next: {
-                    revalidate: 300,
-                    tags: [`dashboard/courses/${username}`],
                 },
             }
         );
@@ -36,7 +34,7 @@ export const getCoursesCreatedByUser = async (
             const errorData = await response.json();
 
             const error = new Error(
-                errorData.message || "Couldn't delete particular course!"
+                errorData.message || "Couldn't get user created courses!"
             );
 
             throw error;
@@ -44,15 +42,15 @@ export const getCoursesCreatedByUser = async (
 
         /* Get JSON data from the obtained response and destructure it */
         const jsonData = await response.json();
-        const { success, message, data } = jsonData;
+        const { success, message } = jsonData;
 
-        /* Validate the incoming data from the backend */
-        const validData = await UserCreatedCoursesSchema.parseAsync(data);
+        if (success) {
+            revalidateTag(`dashboard/courses/${username}`);
+        }
 
         return {
             success,
             message,
-            userCreatedCourses: validData,
         };
     } catch (error) {
         return HandleError(error);

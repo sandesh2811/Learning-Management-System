@@ -58,3 +58,7 @@ export const cacheData = async <T>({
         EX: ttl,
     });
 };
+
+export const deleteCachedData = async (cacheKey: string) => {
+    return await redisClient.del(cacheKey);
+};

@@ -6,19 +6,29 @@ import { useActiveState } from "@/hooks/useActiveState";
 
 import { Span } from "@/components/ui/Span";
 import Button from "@/components/ui/Button";
+import ConfirmationModal from "./ConfirmationModal";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import { GoTrash } from "react-icons/go";
 import { AnimatePresence } from "motion/react";
-import ConfirmationModal from "./ConfirmationModal";
 
 interface CreatedCoursesProps {
     userCreatedCourses: UserCreatedCoursesType;
 }
 
 const CreatedCourses = ({ userCreatedCourses }: CreatedCoursesProps) => {
+    /* Get the active state */
     const { isActive, setActiveStateTrue, setActiveStateFalse } =
         useActiveState();
+
+    /* For course deletion */
+    const [selectedCourseId, setCourseId] = useState<string | null>(null);
+
+    /* Show confirmation modal as well as set the courseId */
+    const handleTrashIconClick = (courseId: string) => () => {
+        setCourseId(courseId);
+        setActiveStateTrue();
+    };
 
     return (
         <div className="flex grid-cols-2 flex-wrap items-center justify-between gap-6 md:grid">
@@ -43,7 +53,7 @@ const CreatedCourses = ({ userCreatedCourses }: CreatedCoursesProps) => {
                         <div>
                             <Span
                                 className="bg-secondary-background block rounded-full p-2"
-                                onClick={setActiveStateTrue}
+                                onClick={handleTrashIconClick(course._id)}
                             >
                                 <GoTrash />
                             </Span>
@@ -58,6 +68,7 @@ const CreatedCourses = ({ userCreatedCourses }: CreatedCoursesProps) => {
             <AnimatePresence>
                 {!!isActive && (
                     <ConfirmationModal
+                        selectedCourseId={selectedCourseId}
                         setActiveStateFalse={setActiveStateFalse}
                     />
                 )}

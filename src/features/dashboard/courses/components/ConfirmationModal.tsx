@@ -1,16 +1,48 @@
 import { ConfirmationModalVariant } from "../../animation/variants";
 
+import { deleteCourse } from "../api/deleteCourse";
+
 import Button from "@/components/ui/Button";
 import { Span } from "@/components/ui/Span";
 
 import { GoX } from "react-icons/go";
 import { motion as m } from "motion/react";
+import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/Store";
+import { useRouter } from "next/navigation";
 
 interface ConfirmationModalProps {
+    selectedCourseId: string | null;
     setActiveStateFalse: () => void;
 }
 
-const ConfirmationModal = ({ setActiveStateFalse }: ConfirmationModalProps) => {
+const ConfirmationModal = ({
+    selectedCourseId,
+    setActiveStateFalse,
+}: ConfirmationModalProps) => {
+    /* Get the logged in user */
+    const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
+
+    const router = useRouter();
+
+    /* Handle course deletion */
+    const handleCourseDelete = async () => {
+        if (!selectedCourseId) return;
+
+        const { success, message } = await deleteCourse({
+            courseId: selectedCourseId,
+            username: loggedInUser.username,
+        });
+
+        if (success) {
+            toast.success(message);
+            router.refresh();
+        } else {
+            toast.error(message);
+        }
+    };
+
     return (
         <m.div
             variants={ConfirmationModalVariant}
@@ -46,7 +78,11 @@ const ConfirmationModal = ({ setActiveStateFalse }: ConfirmationModalProps) => {
                         >
                             Cancel
                         </Button>
-                        <Button variant="danger" className="w-[150px]">
+                        <Button
+                            onClick={handleCourseDelete}
+                            variant="danger"
+                            className="w-[150px]"
+                        >
                             Delete
                         </Button>
                     </div>
