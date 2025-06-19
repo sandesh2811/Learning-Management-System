@@ -3,5 +3,6 @@ export type CourseCreatedByAuthor = {
     title: string;
     rating: number;
     duration: string;
+    createdAt: Date;
     enrolledStudentsCount: number;
 };

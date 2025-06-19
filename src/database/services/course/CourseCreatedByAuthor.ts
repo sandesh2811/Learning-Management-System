@@ -19,7 +19,13 @@ import mongoose from "mongoose";
  *  If the data is not available then send empty array
  */
 
-export const GetCoursesCreatedByAuthor = async (authorId: string) => {
+type GetCoursesCreatedByAuthorReturnType = {
+    coursesCreatedByAuthor: CourseCreatedByAuthor[] | [];
+};
+
+export const GetCoursesCreatedByAuthor = async (
+    authorId: string
+): Promise<GetCoursesCreatedByAuthorReturnType> => {
     // Convert id to mongodb object id
     const id = new mongoose.Types.ObjectId(authorId);
 
