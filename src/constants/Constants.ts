@@ -132,6 +132,23 @@ const DASHBOARD_LINKS = [
     },
 ];
 
+/* CREATE COURSE */
+
+const COURSE_TAGS = [
+    "Frontend",
+    "Backend",
+    "Fullstack",
+    "Devops",
+    "UI/UX",
+    "Java",
+    "React",
+    "Nodejs",
+    "Nestjs",
+    "Nextjs",
+];
+
+const LANGUAGES_AVAILABLE = ["English", "Nepali"];
+
 /* EXPORTS */
 
 export {
@@ -161,4 +178,6 @@ export {
     USER_BASED_LINKS,
     TABLE_HEADINGS,
     DASHBOARD_LINKS,
+    COURSE_TAGS,
+    LANGUAGES_AVAILABLE,
 };

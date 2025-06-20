@@ -2,7 +2,27 @@ import RegisterSchema from "@/validators/auth/RegisterSchema";
 
 import { z } from "zod";
 
-const AddressSchema = z.string().optional();
+const AddressSchema = z
+    .union([
+        z
+            .string()
+            .min(4, { message: "Atleast 4 characters is required!" })
+            .max(40, { message: "Atmost 40 characters are allowed!" }),
+        z.string().length(0),
+    ])
+    .optional()
+    .transform((val) => (val === "" ? undefined : val));
+
+const ContactNumberSchema = z
+    .union([
+        z
+            .string()
+            .min(10, { message: "Atleast 10 characters is required!" })
+            .max(10, { message: "Atmost 10 characters are allowed!" }),
+        z.string().length(0),
+    ])
+    .optional()
+    .transform((val) => (val === "" ? undefined : val));
 
 const UpdateProfileSchema = RegisterSchema.pick({
     fullname: true,
@@ -14,14 +34,10 @@ const UpdateProfileSchema = RegisterSchema.pick({
         .string({ message: "Title is required!" })
         .min(5, { message: "Atleast 5 characters is required!" })
         .max(25, { message: "Atmost 25 characters is allowed!" }),
-    address: AddressSchema.refine(
-        (value) => (value !== undefined ? true : false),
-        {
-            message: "Address is to be passed!",
-        }
-    ),
 
-    contactNumber: z.string({ message: "Contact number is required!" }),
+    address: AddressSchema,
+
+    contactNumber: ContactNumberSchema,
 
     about: z
         .string({ message: "About is required!" })

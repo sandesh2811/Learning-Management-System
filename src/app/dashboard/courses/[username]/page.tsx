@@ -10,7 +10,7 @@ const page = async ({ params }: ParamsProp<{ username: string }>) => {
 
     return (
         <div className="flex flex-col gap-8">
-            <CreatedCourseHeader />
+            <CreatedCourseHeader username={username} />
             <Suspense fallback={<CreatedCoursesLoading />}>
                 <ErrorBoundaryWrapper showButton={false}>
                     <CreatedCoursesWrapper username={username} />

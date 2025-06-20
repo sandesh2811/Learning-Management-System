@@ -7,16 +7,21 @@ import Button from "./Button";
 import { ComponentPropsWithoutRef, forwardRef } from "react";
 import { GoUpload } from "react-icons/go";
 import { Control } from "react-hook-form";
+import { cn } from "@/lib/utils";
 
 interface FileInputProps extends ComponentPropsWithoutRef<"input"> {
-    title: string;
+    title?: string;
     control: Control<any>;
     name: string;
     success: boolean;
+    buttonClassName?: string;
 }
 
 const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
-    ({ title, control, name, success }, forwardedRef) => {
+    (
+        { title, control, name, success, buttonClassName, ...props },
+        forwardedRef
+    ) => {
         const {
             error,
             selectedFile,
@@ -36,7 +41,10 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
                 <Button
                     type="button"
                     variant="skeleton"
-                    className="border-secondary-text justify-start border-[1.2px] p-2 font-normal"
+                    className={cn(
+                        "border-secondary-text justify-start border-[1.2px] p-2 font-normal",
+                        buttonClassName
+                    )}
                     onClick={handleLabelClick}
                 >
                     <GoUpload size={18} />
@@ -61,6 +69,7 @@ const FileInput = forwardRef<HTMLInputElement, FileInputProps>(
                         type="file"
                         hidden
                         onChange={handleFileSelect}
+                        {...props}
                     />
                     <span className="text-sm font-light">
                         {selectedFile?.name}

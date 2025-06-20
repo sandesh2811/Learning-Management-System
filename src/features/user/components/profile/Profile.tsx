@@ -68,6 +68,8 @@ const Profile = ({ userProfileData }: ProfileProps) => {
         router.push("/");
     };
 
+    console.log("Errors", errors);
+
     return (
         <form
             onSubmit={handleSubmit(action)}

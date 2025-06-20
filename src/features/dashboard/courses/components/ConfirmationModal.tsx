@@ -1,4 +1,4 @@
-import { ConfirmationModalVariant } from "../../animation/variants";
+import { ConfirmationModalVariant } from "../animation/variants";
 
 import { deleteCourse } from "../api/deleteCourse";
 
