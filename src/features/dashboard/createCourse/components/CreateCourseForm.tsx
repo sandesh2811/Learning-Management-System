@@ -1,66 +1,35 @@
 "use client";
 
+import { COURSE_TAGS, LANGUAGES_AVAILABLE } from "@/constants/Constants";
+
+import { useCreateFormLogic } from "../hooks/useCreateCourseFormLogic";
+
 import Button from "@/components/ui/Button";
+import { Span } from "@/components/ui/Span";
 import FileInput from "@/components/ui/FileInput";
 import FormInput from "@/components/ui/FormInput";
-import { Span } from "@/components/ui/Span";
-import { COURSE_TAGS, LANGUAGES_AVAILABLE } from "@/constants/Constants";
-import { useSetupRHF } from "@/hooks/useSetupRHF";
-
-import { ReactNode, useState } from "react";
-import CreateCourseSchema, {
-    CreateCourseSchemaType,
-} from "../schemas/CreateCourseSchema";
-import { useHandleForm } from "@/hooks/useHandleForm";
-import { createdCourse } from "../api/createCourse";
 import FormError from "@/components/ui/FormError";
 
+import { ReactNode } from "react";
+
 const CreateCourseForm = () => {
-    /* Setting up react-hook-form */
+    /* Handling logic in custom hook */
     const {
-        control,
+        state,
+        action,
         handleSubmit,
-        reset,
         register,
-        formState: { errors },
-    } = useSetupRHF<CreateCourseSchemaType>(CreateCourseSchema);
-
-    const initialState = {
-        success: false,
-        message: "",
-    };
-
-    const { state, isPending, action } = useHandleForm<CreateCourseSchemaType>(
-        createdCourse,
-        initialState
-    );
-
-    console.log(errors);
-
-    const [hasDiscount, setDiscount] = useState<boolean>(false);
-    const [hasFreebieContent, setFreebieContent] = useState<boolean>(false);
-    const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-    const [selectedCourseTags, setSelectedCourseTags] = useState<string[]>([]);
-
-    const handleLanguagesSelect = (language: string) => () => {
-        if (selectedLanguages.includes(language)) {
-            setSelectedLanguages((prev) =>
-                prev.filter((item) => item !== language)
-            );
-        } else {
-            setSelectedLanguages([...selectedLanguages, language]);
-        }
-    };
-
-    const handleCourseTagsSelect = (tag: string) => () => {
-        if (selectedCourseTags.includes(tag)) {
-            setSelectedCourseTags((prev) =>
-                prev.filter((item) => item !== tag)
-            );
-        } else {
-            setSelectedCourseTags([...selectedCourseTags, tag]);
-        }
-    };
+        errors,
+        control,
+        hasDiscount,
+        setDiscount,
+        hasFreebieContent,
+        setFreebieContent,
+        selectedCourseTags,
+        selectedLanguages,
+        handleCourseTagsSelect,
+        handleLanguagesSelect,
+    } = useCreateFormLogic();
 
     return (
         <form
@@ -141,11 +110,11 @@ const CreateCourseForm = () => {
             <Wrapper>
                 <FileInput
                     id="course-thumbnail"
-                    control={control}
                     name="courseThumbnail"
                     title="Course thumbnail"
-                    success={true}
+                    control={control}
                     multiple={false}
+                    success={state.success}
                 />
 
                 <div className="flex h-full w-full flex-col">
@@ -168,9 +137,11 @@ const CreateCourseForm = () => {
                     </div>
 
                     <FileInput
+                        id="course-freebie-file"
                         name="courseContent.file"
+                        multiple={false}
                         control={control}
-                        success={false}
+                        success={state.success}
                         disabled={!hasFreebieContent}
                         buttonClassName={`${!hasFreebieContent ? "cursor-not-allowed" : "cursor-pointer"}`}
                     />
@@ -179,6 +150,7 @@ const CreateCourseForm = () => {
 
             {/* LANGUAGES AVAILABLE AND COURSE TAGS */}
             <div className="flex flex-col gap-4">
+                {/* LANGUAGES AVAILABLE */}
                 <div className="flex flex-col gap-2">
                     <span className="font-medium">Languages available</span>
                     <div className="flex gap-2">
@@ -192,9 +164,12 @@ const CreateCourseForm = () => {
                                 {language}
                             </Span>
                         ))}
+
+                        <FormError error={errors.languagesAvailable?.message} />
                     </div>
                 </div>
 
+                {/* COURSE TAGS */}
                 <div className="flex flex-col gap-2">
                     <span className="font-medium">Course Tags</span>
                     <div className="flex flex-wrap gap-2">
@@ -203,11 +178,12 @@ const CreateCourseForm = () => {
                                 key={tag}
                                 onClick={handleCourseTagsSelect(tag)}
                                 className={`${selectedCourseTags.includes(tag) ? "bg-primary-text text-background" : "bg-secondary-background"} cursor-pointer rounded-xs p-1.5 transition-colors duration-300`}
-                                {...register("tags")}
                             >
                                 {tag}
                             </Span>
                         ))}
+
+                        <FormError error={errors.tags?.message} />
                     </div>
                 </div>
             </div>

@@ -7,4 +7,9 @@ export const createdCourse = async (
     data: CreateCourseSchemaType
 ) => {
     console.log(data);
+
+    return {
+        success: true,
+        message: "Success!",
+    };
 };

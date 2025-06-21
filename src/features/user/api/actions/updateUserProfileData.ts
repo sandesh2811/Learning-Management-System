@@ -2,6 +2,8 @@
 
 import { UpdateProfileType } from "../../schemas/updateProfileSchema";
 
+import { generateCookieHeader } from "@/utils/generateCookieHeader";
+
 import axios from "axios";
 
 export const updateUserProfileData = async (
@@ -15,6 +17,9 @@ export const updateUserProfileData = async (
         };
     }
 
+    /* Get cookie header */
+    const cookieHeader = await generateCookieHeader();
+
     try {
         const formData = new FormData();
 
@@ -25,7 +30,12 @@ export const updateUserProfileData = async (
 
         const response = await axios.post(
             "http://localhost:3000/api/v1/user/profile/updateUserData",
-            formData
+            formData,
+            {
+                headers: {
+                    Cookie: cookieHeader,
+                },
+            }
         );
 
         const { success, message } = response.data;

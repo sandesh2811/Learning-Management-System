@@ -10,8 +10,8 @@ const courseContentSchema = z
             if (val.isFreebie) {
                 return (
                     val.file &&
-                    val.file[0] instanceof File &&
-                    val.file[0].type === "video/mp4"
+                    val.file instanceof File &&
+                    val.file.type === "video/mp4"
                 );
             }
             return true;
@@ -45,7 +45,7 @@ const DiscountSchema = z
     );
 
 const CreateCourseSchema = z.object({
-    authorId: z.string({ required_error: "Course author id cannot be empty!" }),
+    // authorId: z.string({ required_error: "Course author id cannot be empty!" }),
 
     title: z
         .string({ required_error: "Course title cannot be empty!" })
@@ -102,17 +102,18 @@ const CreateCourseSchema = z.object({
     //     )
     //     .default([]),
 
-    courseThumbnail: z.any().refine(
-        (file) => {
-            return (
+    courseThumbnail: z
+        .any()
+        .refine(
+            (file) =>
                 file &&
-                Array.isArray(file) &&
-                file[0] instanceof File &&
-                ["image/jpeg", "image/png", "image/jpg"].includes(file[0]?.type)
-            );
-        },
-        { message: "Only JPEG, PNG or JPG image is allowed!" }
-    ),
+                file instanceof File &&
+                ["image/jpeg", "image/png", "image/jpg"].includes(file?.type),
+            {
+                message:
+                    "Thumbnail is required and only of type JPEG, PNG or JPG image is allowed!",
+            }
+        ),
 });
 
 export default CreateCourseSchema;

@@ -20,6 +20,8 @@ import FormError from "@/components/ui/FormError";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 /* For useActionState inital state */
 const initialState = {
@@ -44,7 +46,10 @@ const Profile = ({ userProfileData }: ProfileProps) => {
         reset,
         register,
         formState: { errors },
-    } = useSetupRHF<UpdateProfileType>(UpdateProfileSchema);
+    } = useForm<UpdateProfileType>({
+        resolver: zodResolver(UpdateProfileSchema),
+        mode: "onChange",
+    });
 
     /* Handling submitted form */
     const { state, action, isPending } = useHandleForm<UpdateProfileType>(
@@ -67,8 +72,6 @@ const Profile = ({ userProfileData }: ProfileProps) => {
     const cancelProfileUpdate = () => {
         router.push("/");
     };
-
-    console.log("Errors", errors);
 
     return (
         <form

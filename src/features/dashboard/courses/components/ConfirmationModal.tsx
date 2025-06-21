@@ -5,12 +5,11 @@ import { deleteCourse } from "../api/deleteCourse";
 import Button from "@/components/ui/Button";
 import { Span } from "@/components/ui/Span";
 
-import { GoX } from "react-icons/go";
-import { motion as m } from "motion/react";
 import { toast } from "sonner";
+import { GoX } from "react-icons/go";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/Store";
-import { useRouter } from "next/navigation";
+import { motion as m } from "motion/react";
 
 interface ConfirmationModalProps {
     selectedCourseId: string | null;
@@ -24,8 +23,6 @@ const ConfirmationModal = ({
     /* Get the logged in user */
     const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
 
-    const router = useRouter();
-
     /* Handle course deletion */
     const handleCourseDelete = async () => {
         if (!selectedCourseId) return;
@@ -37,7 +34,6 @@ const ConfirmationModal = ({
 
         if (success) {
             toast.success(message);
-            router.refresh();
         } else {
             toast.error(message);
         }

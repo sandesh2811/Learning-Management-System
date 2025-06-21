@@ -3,7 +3,7 @@
 import { HandleError } from "@/utils/errorHandling";
 import { generateCookieHeader } from "@/utils/generateCookieHeader";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 type DeleteCourseArgs = {
     courseId: string;
@@ -46,6 +46,7 @@ export const deleteCourse = async ({
 
         if (success) {
             revalidateTag(`dashboard/courses/${username}`);
+            revalidatePath(`dashboard/courses/${username}`);
         }
 
         return {

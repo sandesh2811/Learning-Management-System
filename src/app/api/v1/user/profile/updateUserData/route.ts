@@ -8,7 +8,9 @@ import {
 
 import { getUserById } from "@/database/services/user/GetUserById";
 import { updateUserProfileData } from "@/database/services/user/UpdateUserProfileData";
-import { UpdateProfileType } from "@/features/user/schemas/updateProfileSchema";
+import UpdateProfileSchema, {
+    UpdateProfileType,
+} from "@/features/user/schemas/updateProfileSchema";
 
 import { CheckSession } from "@/middlewares/checkSession";
 import { RateLimit } from "@/middlewares/rateLimit";
@@ -41,7 +43,6 @@ export type ChangedDataType = {
     contactNumber?: string;
 };
 
-// Validation remaining!
 const handler = async (request: CustomNextRequest) => {
     try {
         // Get user sent form data
@@ -68,7 +69,24 @@ const handler = async (request: CustomNextRequest) => {
                 message: "Missing fields!",
             });
 
+        const userSentData = {
+            username,
+            fullname,
+            email,
+            title,
+            about,
+            address,
+            contactNumber,
+        };
+
         // Validating incoming data
+        const validData = await UpdateProfileSchema.parseAsync(userSentData);
+
+        if (!validData)
+            return API_RESPONSE(BAD_REQUEST, {
+                success: false,
+                message: "Data validation failed!",
+            });
 
         // Get user by id
         const user = await getUserById(userId);
