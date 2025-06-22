@@ -1,22 +1,27 @@
 "use client";
 
-import { useSetupRHF } from "@/hooks/useSetupRHF";
-import { useHandleFormSubmit } from "../../hooks/usehandleFormSubmit";
-
 import {
     EnrollFormSchema,
     EnrollFormType,
 } from "../../schemas/enrollFormSchema";
 
 import Button from "@/components/ui/Button";
-import Spinner from "@/components/ui/Spinner";
 import FormInput from "@/components/ui/FormInput";
 import SelectInput from "@/components/ui/selectInput/SelectInput";
 
-import { RootState } from "@/store/Store";
+import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { RootState } from "@/store/Store";
+import { userInfoForEnrollment } from "@/store/enrollForm/userInfoForEnrollment";
 
 const EnrollForm = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
+
     /* Get logged in user info */
     const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
 
@@ -26,10 +31,23 @@ const EnrollForm = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useSetupRHF<EnrollFormType>(EnrollFormSchema);
+    } = useForm<EnrollFormType>({
+        resolver: zodResolver(EnrollFormSchema),
+        mode: "onChange",
+    });
 
     /* Handle form submit and redirection */
-    const { isRedirecting, handleFormSubmit } = useHandleFormSubmit();
+    const handleFormSubmit = (data: EnrollFormType) => {
+        dispatch(
+            userInfoForEnrollment({
+                fullname: data.fullname,
+                email: data.email,
+                paymentMethod: data.paymentMethod,
+            })
+        );
+
+        router.push("/confirmation");
+    };
 
     return (
         <form
@@ -69,15 +87,7 @@ const EnrollForm = () => {
                 wrapperClassName="w-full h-auto md:w-full"
             />
 
-            <Button
-                className={`${isRedirecting && "bg-primary-text/80 cursor-not-allowed"}`}
-            >
-                {isRedirecting ? (
-                    <Spinner message="Redirecting to confirmation page" />
-                ) : (
-                    "Continue"
-                )}
-            </Button>
+            <Button>Continue</Button>
         </form>
     );
 };

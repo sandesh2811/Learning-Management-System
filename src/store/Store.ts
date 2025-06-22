@@ -15,6 +15,7 @@ import { SetLoggedInUser } from "./user/loggedInUserInfo";
 import { SetUserInfoForEnrollment } from "./enrollForm/userInfoForEnrollment";
 import { SetSelectedCourse } from "./selectedCourse/selectedCourse";
 import { SetUserVisitedRoute } from "./route/userVisitedRoute";
+import { SetCartItems } from "./cart/cartItems";
 
 const persistConfig = {
     key: "root",
@@ -30,6 +31,7 @@ const combinedReducers = combineReducers({
     loggedinUser: SetLoggedInUser,
     userInfoForEnrollment: SetUserInfoForEnrollment,
     selectedCourse: SetSelectedCourse,
+    cartItems: SetCartItems,
     visitedRoute: persistReducer(visitedRoute, SetUserVisitedRoute),
 });
 const rootReducer = persistReducer(persistConfig, combinedReducers);

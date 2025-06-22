@@ -25,6 +25,15 @@ const SingleCourse = ({ singleCourse }: SingleCourseProps) => {
         languagesAvailable,
     } = course;
 
+    /* For cart items */
+    const infoToBeSetInCart = {
+        id: course._id,
+        title: course.title,
+        price: course.price,
+        duration: course.duration,
+        instructorName: course.instructorInfo.fullname,
+    };
+
     return (
         <div className="flex min-h-[50vh] w-full flex-col gap-4">
             <div className="flex flex-col gap-4 md:flex-row">
@@ -32,6 +41,7 @@ const SingleCourse = ({ singleCourse }: SingleCourseProps) => {
                 <ReasonsToBuyTheCourse
                     studentsEnrolled={enrolledStudents}
                     languagesAvailable={languagesAvailable}
+                    cartItemInfo={infoToBeSetInCart}
                 />
             </div>
 
