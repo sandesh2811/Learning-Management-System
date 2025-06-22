@@ -43,7 +43,7 @@ const QuickLinks = ["Privacy Policy", "FAQs", "Terms & Conditions"];
 
 const Footer = () => {
     return (
-        <footer className="mt-16 flex min-h-[20vh] flex-wrap items-center justify-between gap-6">
+        <footer className="mt-10 flex min-h-[20vh] flex-wrap items-center justify-between gap-6">
             <ContactInfo />
             <SocialsInfo />
             <QuickLinksInfo />

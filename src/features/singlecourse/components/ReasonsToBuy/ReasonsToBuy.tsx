@@ -1,28 +1,36 @@
-import EnrollNowButton from "./EnrollNowButton";
+import CallToActionButtons from "./CallToActionButtons";
 import SectionMainHeading from "../SectionMainHeading";
 
 interface ReasonsToBuyTheCourseProps {
     studentsEnrolled: string[];
+    languagesAvailable: string[];
 }
 
 const ReasonsToBuyTheCourse = ({
     studentsEnrolled,
+    languagesAvailable,
 }: ReasonsToBuyTheCourseProps) => {
     return (
-        <div className="bg-secondary-background flex flex-1 flex-col gap-4 rounded-xl p-6">
-            <SectionMainHeading title="Why buy this course?" />
-            <ul className="ml-5 flex list-disc flex-col gap-2">
-                <li>
-                    {studentsEnrolled.length === 0
-                        ? 0
-                        : studentsEnrolled.length}{" "}
-                    students enrolled
-                </li>
-                <li>Chat support for guidence</li>
-                <li>Available in multiple languages</li>
-                <li>All best practices of industry covered</li>
-            </ul>
-            <EnrollNowButton />
+        <div className="bg-secondary-background flex flex-1 flex-col justify-between gap-4 rounded-xl p-6">
+            <div className="flex flex-col gap-2">
+                <SectionMainHeading title="Why buy this course?" />
+                <ul className="ml-5 flex list-disc flex-col gap-2">
+                    <li>
+                        {studentsEnrolled.length === 0
+                            ? 0
+                            : studentsEnrolled.length}{" "}
+                        students enrolled
+                    </li>
+                    <li>Chat support for guidence</li>
+                    <li>
+                        Available in{" "}
+                        {languagesAvailable
+                            .map((languages) => languages)
+                            .join(", ")}
+                    </li>
+                </ul>
+            </div>
+            <CallToActionButtons />
         </div>
     );
 };

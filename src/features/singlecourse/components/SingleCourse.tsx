@@ -18,13 +18,21 @@ type SingleCourseProps = {
 const SingleCourse = ({ singleCourse }: SingleCourseProps) => {
     const { course, relatedCourses } = singleCourse;
 
-    const { instructorInfo, courseContent, enrolledStudents } = course;
+    const {
+        instructorInfo,
+        courseContent,
+        enrolledStudents,
+        languagesAvailable,
+    } = course;
 
     return (
         <div className="flex min-h-[50vh] w-full flex-col gap-4">
             <div className="flex flex-col gap-4 md:flex-row">
                 <BasicCourseDetails course={course} />
-                <ReasonsToBuyTheCourse studentsEnrolled={enrolledStudents} />
+                <ReasonsToBuyTheCourse
+                    studentsEnrolled={enrolledStudents}
+                    languagesAvailable={languagesAvailable}
+                />
             </div>
 
             <div className="flex flex-col gap-4 md:flex-row">

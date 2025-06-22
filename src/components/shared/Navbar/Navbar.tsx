@@ -20,7 +20,7 @@ const Navbar = () => {
     const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
 
     return (
-        <header className="z-10 mb-16 flex h-[5vh] items-center justify-between">
+        <header className="z-10 mb-10 flex h-[5vh] items-center justify-between">
             {/* LOGO/HEADING */}
             <h1 className="text-lg font-semibold tracking-wide">
                 <Link href="/">LEARN NEPAL</Link>
