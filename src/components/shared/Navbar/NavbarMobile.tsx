@@ -2,7 +2,9 @@ import { Links, USER_BASED_LINKS } from "@/constants/Constants";
 
 import { useDisableScroll } from "@/hooks/useDisableScroll";
 import { useDetermineScreenSize } from "@/hooks/useDetermineScreenSize";
+import { useHandleUserLogoutLogic } from "@/features/auth/hooks/useHandleUserLogoutLogic";
 
+import { cn } from "@/lib/utils";
 import { preventNavigationFromSamePageToSamePage } from "@/utils/preventNavigationFromSamePageToSamePage";
 
 import { SlideDownVariant } from "@/animation/variants";
@@ -14,8 +16,6 @@ import { RootState } from "@/store/Store";
 import { useSelector } from "react-redux";
 import { motion as m } from "motion/react";
 import { usePathname } from "next/navigation";
-import { useHandleUserLogoutLogic } from "@/features/auth/hooks/useHandleUserLogoutLogic";
-import { cn } from "@/lib/utils";
 
 interface NavbarMobileProps {
     isActive: boolean;
@@ -86,6 +86,14 @@ const NavbarMobile = ({ isActive, setActiveStateFalse }: NavbarMobileProps) => {
                             />
                         );
                     })}
+
+                    {/* Cart */}
+
+                    <NavLink
+                        title="Cart"
+                        href="/cart"
+                        setActiveStateFalse={setActiveStateFalse}
+                    />
 
                     {/* If user is logged in then show the user based links */}
                     {loggedInUser.role !== "" && (

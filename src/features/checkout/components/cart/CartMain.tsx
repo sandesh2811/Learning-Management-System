@@ -5,7 +5,11 @@ import Link from "next/link";
 import { GoArrowUpRight, GoX } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 
-import { removeSingleCartItem, resetCart } from "@/store/cart/cartItems";
+import {
+    cartTotal,
+    removeSingleCartItem,
+    resetCart,
+} from "@/store/cart/cartItems";
 import { RootState } from "@/store/Store";
 
 const CartMain = () => {
@@ -94,6 +98,9 @@ const CartItem = ({
 /* CART FOOTER COMPONENT */
 
 const CartFooter = () => {
+    /* Get the cart total */
+    const totalPrice = useSelector(cartTotal);
+
     const dispatch = useDispatch();
 
     /* Clear the cart */
@@ -104,7 +111,9 @@ const CartFooter = () => {
     return (
         <div>
             <div className="flex w-full flex-col items-end gap-3">
-                <span className="text-lg font-medium">Total : Rs 5000</span>
+                <span className="text-lg font-medium">
+                    Total : Rs {totalPrice}
+                </span>
                 <div className="mid:flex-row mid:justify-end flex w-full flex-col-reverse items-center gap-4">
                     <Button
                         aria-label="Clear cart"
