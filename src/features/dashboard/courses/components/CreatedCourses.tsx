@@ -5,9 +5,9 @@ import { type UserCreatedCoursesType } from "../schemas/userCreatedCoursesSchema
 import { useActiveState } from "@/hooks/useActiveState";
 
 import { Span } from "@/components/ui/Span";
-import Button from "@/components/ui/Button";
 import ConfirmationModal from "./ConfirmationModal";
 
+import Link from "next/link";
 import { memo, useState } from "react";
 import { GoTrash } from "react-icons/go";
 import { AnimatePresence } from "motion/react";
@@ -61,7 +61,12 @@ const CreatedCourses = ({ userCreatedCourses }: CreatedCoursesProps) => {
                     </div>
 
                     {/* EDIT BUTTON */}
-                    <Button className="w-full">Edit Course </Button>
+                    <Link
+                        href={`/dashboard/editCourse/${course._id}`}
+                        className="bg-primary-text text-background flex w-full cursor-pointer items-center justify-center gap-2 rounded-sm p-3 text-sm font-medium tracking-wide"
+                    >
+                        Edit Course
+                    </Link>
                 </div>
             ))}
 
