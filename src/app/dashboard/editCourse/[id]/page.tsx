@@ -1,11 +1,9 @@
-import EditCoursePage from "@/features/dashboard/editCourse/components/EditCoursePage";
+import EditCoursePage from "@/components/pages/dashboard/editCourse/EditCoursePage";
 
 const page = async ({ params }: ParamsProp<{ id: string }>) => {
     const { id } = await params;
 
-    console.log(id);
-
-    return <EditCoursePage />;
+    return <EditCoursePage id={id} />;
 };
 
 export default page;

@@ -98,6 +98,7 @@ const CACHE_TTLS = {
     SINGLE_COURSE: 60 * 15,
     ENROLLED_COURSES: 60 * 5,
     CREATED_COURSES_BY_AUTHOR: 60 * 10,
+    COURSE_TO_UPDATE: 60 * 5,
 };
 
 const CACHE_KEYS = {
@@ -106,6 +107,7 @@ const CACHE_KEYS = {
     SINGLE_COURSE: "singleCourse",
     ENROLLED_COURSES: "enrolledCourses",
     CREATED_COURSES_BY_AUTHOR: "createdCourses",
+    COURSE_TO_UPDATE: "courseToEdit",
 };
 
 /* DASHBOARD NAVBAR LINKS */

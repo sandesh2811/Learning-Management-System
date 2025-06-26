@@ -1,0 +1,10 @@
+import { z } from "zod";
+
+import CreateCourseSchema from "../../createCourse/schemas/CreateCourseSchema";
+
+export const BasicInfoUpdateSchema = CreateCourseSchema.omit({
+    courseContent: true,
+    courseThumbnail: true,
+});
+
+export type BasicInfoUpdate = z.infer<typeof BasicInfoUpdateSchema>;
