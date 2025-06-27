@@ -7,4 +7,4 @@ export const BasicInfoUpdateSchema = CreateCourseSchema.omit({
     courseThumbnail: true,
 });
 
-export type BasicInfoUpdate = z.infer<typeof BasicInfoUpdateSchema>;
+export type BasicInfoUpdateType = z.infer<typeof BasicInfoUpdateSchema>;

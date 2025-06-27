@@ -1,98 +1,37 @@
 import { COURSE_TAGS, LANGUAGES_AVAILABLE } from "@/constants/Constants";
 
 import { type CourseToUpdate } from "../schemas/courseToUpdateSchema";
-import {
-    type BasicInfoUpdate,
-    BasicInfoUpdateSchema,
-} from "../schemas/basicInfoUpdateScehma";
 
-import { useHandleForm } from "@/hooks/useHandleForm";
-
-import { updateBasicInfo } from "../api/updateBasicInfo";
+import { useBasicInfoUpdateLogic } from "../hooks/useBasicInfoUpdateLogic";
 
 import Wrapper from "./FormElementWrapper";
 import Button from "@/components/ui/Button";
 import { Span } from "@/components/ui/Span";
+import Spinner from "@/components/ui/Spinner";
 import FormError from "@/components/ui/FormError";
 import FormInput from "@/components/ui/FormInput";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 interface BasicInfoUpdateProps {
     courseToUpdate: CourseToUpdate;
 }
 
 const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
-    /* Setting up react hook form */
+    /* Handle the overall form logic */
     const {
-        handleSubmit,
-        reset,
-        setValue,
-        watch,
         register,
-        formState: { errors },
-    } = useForm<BasicInfoUpdate>({
-        resolver: zodResolver(BasicInfoUpdateSchema),
-        defaultValues: {
-            title: courseToUpdate.title,
-            duration: courseToUpdate.duration,
-            price: String(courseToUpdate.price),
-            discount: {
-                hasDiscount: courseToUpdate.discount.hasDiscount,
-                discountPercentage: String(
-                    courseToUpdate.discount.discountPercentage
-                ),
-            },
-            languagesAvailable: courseToUpdate.languagesAvailable,
-            tags: courseToUpdate.tags,
-            description: courseToUpdate.description,
-        },
-    });
+        errors,
+        handleSubmit,
 
-    const selectedTags = watch("tags") || [];
-    const selectedLanguages = watch("languagesAvailable") || [];
-    const discount = watch("discount");
+        action,
+        isPending,
 
-    const toggleTag = (tag: string) => {
-        const newTags = selectedTags.includes(tag)
-            ? selectedTags.filter((t) => t !== tag)
-            : [...selectedTags, tag];
+        watchedValues,
+        valuesChanged,
 
-        setValue("tags", newTags, { shouldDirty: true });
-    };
-
-    const toggleLanguages = (language: string) => {
-        const newLanguages = selectedLanguages.includes(language)
-            ? selectedLanguages.filter((l) => l !== language)
-            : [...selectedLanguages, language];
-
-        setValue("languagesAvailable", newLanguages, { shouldDirty: true });
-    };
-
-    const toggleDiscount = () => {
-        if (discount.hasDiscount === true) {
-            setValue("discount.hasDiscount", false, { shouldDirty: true });
-            setValue("discount.discountPercentage", "0", { shouldDirty: true });
-        } else if (discount.hasDiscount === false) {
-            setValue("discount.hasDiscount", true, { shouldDirty: true });
-            setValue(
-                "discount.discountPercentage",
-                String(courseToUpdate.discount.discountPercentage),
-                { shouldDirty: true }
-            );
-        }
-    };
-
-    const initialState = {
-        success: false,
-        message: "",
-    };
-
-    const { state, action, isPending } = useHandleForm(
-        updateBasicInfo,
-        initialState
-    );
+        toggleTag,
+        toggleDiscount,
+        toggleLanguages,
+    } = useBasicInfoUpdateLogic({ courseToUpdate });
 
     return (
         <div className="bg-secondary-background min-h-[75vh] rounded-md p-4">
@@ -149,8 +88,10 @@ const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
                                     id="discount-percentage"
                                     type="string"
                                     placeholder="Discount percentage"
-                                    disabled={!discount.hasDiscount}
-                                    className={`border-secondary-text flex-1 rounded-sm border-[1.2px] p-2 text-sm ${!discount.hasDiscount && "cursor-not-allowed"}`}
+                                    disabled={
+                                        !watchedValues.discount.hasDiscount
+                                    }
+                                    className={`border-secondary-text flex-1 rounded-sm border-[1.2px] p-2 text-sm ${!watchedValues.discount.hasDiscount && "cursor-not-allowed"}`}
                                     {...register("discount.discountPercentage")}
                                 />
 
@@ -168,7 +109,7 @@ const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
                     </div>
                 </Wrapper>
 
-                <div className="flex gap-8">
+                <div className="flex flex-col gap-8 md:flex-row">
                     {/* LANGUAGES AVAILABLE */}
                     <div className="flex flex-1 flex-col gap-2">
                         <span className="font-medium">Languages available</span>
@@ -177,7 +118,7 @@ const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
                                 <Span
                                     key={language}
                                     onClick={() => toggleLanguages(language)}
-                                    className={`${selectedLanguages.includes(language) ? "bg-primary-text text-background" : "bg-secondary-background"} cursor-pointer rounded-xs p-1.5 transition-colors duration-300`}
+                                    className={`${watchedValues.languagesAvailable.includes(language) ? "bg-primary-text text-background" : "bg-secondary-background"} cursor-pointer rounded-xs p-1.5 transition-colors duration-300`}
                                 >
                                     {language}
                                 </Span>
@@ -197,7 +138,7 @@ const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
                                 <Span
                                     key={tag}
                                     onClick={() => toggleTag(tag)}
-                                    className={`${selectedTags.includes(tag) ? "bg-primary-text text-background" : "bg-secondary-background"} cursor-pointer rounded-xs p-1.5 transition-colors duration-300`}
+                                    className={`${watchedValues.tags.includes(tag) ? "bg-primary-text text-background" : "bg-secondary-background"} cursor-pointer rounded-xs p-1.5 transition-colors duration-300`}
                                 >
                                     {tag}
                                 </Span>
@@ -234,13 +175,19 @@ const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
                 <div className="flex justify-end gap-4">
                     <Button
                         type="button"
-                        className={`$ w-[150px] tracking-wider`}
+                        className={`w-[150px] tracking-wider`}
                         variant="skeleton"
                     >
                         Cancel
                     </Button>
-                    <Button className={`$ w-[150px] tracking-wider`}>
-                        Update
+                    <Button
+                        className={` ${(isPending || !valuesChanged) && "bg-primary-text/80 cursor-not-allowed"} w-[150px] tracking-wider`}
+                    >
+                        {isPending ? (
+                            <Spinner message="Updating..." />
+                        ) : (
+                            "Update"
+                        )}
                     </Button>
                 </div>
             </form>
