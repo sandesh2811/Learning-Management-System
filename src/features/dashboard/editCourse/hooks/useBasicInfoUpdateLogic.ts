@@ -11,8 +11,11 @@ import { updateBasicInfo } from "../api/updateBasicInfo";
 import lodash from "lodash";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/Store";
 import { useEffect, useMemo, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 
 type BasicInfoUpdateLogicArgs = {
     courseToUpdate: CourseToUpdate;
@@ -21,6 +24,9 @@ type BasicInfoUpdateLogicArgs = {
 export const useBasicInfoUpdateLogic = ({
     courseToUpdate,
 }: BasicInfoUpdateLogicArgs) => {
+    /* For invalidating the user created courses */
+    const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
+
     /* Initial state for useActionState hook */
     const initialState = {
         success: false,
@@ -29,6 +35,9 @@ export const useBasicInfoUpdateLogic = ({
 
     /* For disabling the update button if nothing in the form is changed */
     const [valuesChanged, setValuesChanged] = useState<boolean>(false);
+
+    /* For query invalidation */
+    const queryClient = useQueryClient();
 
     /* Default values for RHF */
     const defaultValues = useMemo(
@@ -158,14 +167,24 @@ export const useBasicInfoUpdateLogic = ({
         initialState
     );
 
-    /* Show toast based on state change */
+    /* Show toast based on state change and invalidate the cached data */
     useEffect(() => {
         if (state.success) {
             toast.success(state.message);
+
+            /* Invalidate the form data */
+            queryClient.invalidateQueries({
+                queryKey: ["courseToUpdate", courseToUpdate._id],
+            });
+
+            /* Invalidate the user created courses */
+            queryClient.invalidateQueries({
+                queryKey: ["userCreatedCourses", loggedInUser.username],
+            });
         } else if (!state.success && state.message !== "") {
             toast.error(state.message);
         }
-    }, [state]);
+    }, [state, courseToUpdate._id, queryClient, loggedInUser.username]);
 
     return {
         handleSubmit,

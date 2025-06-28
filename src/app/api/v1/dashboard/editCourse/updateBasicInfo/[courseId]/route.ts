@@ -32,6 +32,9 @@ const handler = async (
     { params }: ParamsProp<{ courseId: string }>
 ) => {
     try {
+        // Get the user id
+        const { userId } = request.user;
+
         // Get the course id
         const { courseId } = await params;
 
@@ -59,6 +62,7 @@ const handler = async (
         // Update the course
         const updatedCourseInfo = await updateCourseBasicInfo({
             courseId,
+            userId,
             dataToBeUpdated: validData,
         });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { type CourseToUpdate } from "../schemas/courseToUpdateSchema";
+import { useGetCourseToUpdate } from "@/features/dashboard/editCourse/hooks/useGetCourseToUpdate";
 
 import { Span } from "@/components/ui/Span";
 import BasicInfoUpdate from "./BasicInfoUpdate";
@@ -9,11 +9,15 @@ import CourseContentUpdate from "./CourseContentUpdate";
 import { Dispatch, SetStateAction, useState } from "react";
 
 interface EditCourseWrapperProps {
-    courseToUpdate: CourseToUpdate;
+    id: string;
 }
 
-const EditCourseWrapper = ({ courseToUpdate }: EditCourseWrapperProps) => {
+const EditCourseWrapper = ({ id }: EditCourseWrapperProps) => {
     const [activeTab, setActiveTab] = useState<string>("Basic Info");
+
+    /* Get the course data to update */
+    const { isLoading, success, message, courseToUpdate } =
+        useGetCourseToUpdate(id);
 
     return (
         <div>

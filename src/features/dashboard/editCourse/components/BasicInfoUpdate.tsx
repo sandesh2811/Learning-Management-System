@@ -34,7 +34,7 @@ const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
     } = useBasicInfoUpdateLogic({ courseToUpdate });
 
     return (
-        <div className="bg-secondary-background min-h-[75vh] rounded-md p-4">
+        <div className="bg-secondary-background min-h-[60vh] rounded-md p-4">
             <form
                 onSubmit={handleSubmit(action)}
                 className="bg-background flex h-full flex-col gap-5 rounded-sm p-6"

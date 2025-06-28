@@ -1,8 +1,7 @@
 "use client";
 
-import { type UserCreatedCoursesType } from "../schemas/userCreatedCoursesSchema";
-
 import { useActiveState } from "@/hooks/useActiveState";
+import { useGetCoursesCreatedByUser } from "../hooks/useGetCoursesCreatedByUser";
 
 import { Span } from "@/components/ui/Span";
 import ConfirmationModal from "./ConfirmationModal";
@@ -13,10 +12,13 @@ import { GoTrash } from "react-icons/go";
 import { AnimatePresence } from "motion/react";
 
 interface CreatedCoursesProps {
-    userCreatedCourses: UserCreatedCoursesType;
+    username: string;
 }
 
-const CreatedCourses = ({ userCreatedCourses }: CreatedCoursesProps) => {
+const CreatedCourses = ({ username }: CreatedCoursesProps) => {
+    /* Get the user created courses */
+    const { userCreatedCourses } = useGetCoursesCreatedByUser(username);
+
     /* Get the active state */
     const { isActive, setActiveStateTrue, setActiveStateFalse } =
         useActiveState();
