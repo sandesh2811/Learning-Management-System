@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/Store";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -26,6 +27,8 @@ export const useBasicInfoUpdateLogic = ({
 }: BasicInfoUpdateLogicArgs) => {
     /* For invalidating the user created courses */
     const loggedInUser = useSelector((state: RootState) => state.loggedinUser);
+
+    const router = useRouter();
 
     /* Initial state for useActionState hook */
     const initialState = {
@@ -187,6 +190,8 @@ export const useBasicInfoUpdateLogic = ({
     }, [state, courseToUpdate._id, queryClient, loggedInUser.username]);
 
     return {
+        router,
+
         handleSubmit,
         register,
         errors,

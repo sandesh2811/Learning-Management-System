@@ -4,17 +4,13 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const useGetCourseToUpdate = (id: string) => {
     const {
-        data: { success, message, courseToUpdate },
-        isLoading,
+        data: { courseToUpdate },
     } = useSuspenseQuery({
         queryKey: ["courseToUpdate", id],
         queryFn: () => getCourseToUpdate(id),
     });
 
     return {
-        success,
-        message,
-        isLoading,
         courseToUpdate,
     };
 };

@@ -16,8 +16,7 @@ const EditCourseWrapper = ({ id }: EditCourseWrapperProps) => {
     const [activeTab, setActiveTab] = useState<string>("Basic Info");
 
     /* Get the course data to update */
-    const { isLoading, success, message, courseToUpdate } =
-        useGetCourseToUpdate(id);
+    const { courseToUpdate } = useGetCourseToUpdate(id);
 
     return (
         <div>

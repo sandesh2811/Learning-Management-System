@@ -15,18 +15,25 @@ import { ReactNode } from "react";
 const CreateCourseForm = () => {
     /* Handling logic in custom hook */
     const {
+        router,
+
         state,
         action,
+
         handleSubmit,
         register,
         errors,
         control,
+
         hasDiscount,
         setDiscount,
+
         hasFreebieContent,
         setFreebieContent,
+
         selectedCourseTags,
         selectedLanguages,
+
         handleCourseTagsSelect,
         handleLanguagesSelect,
     } = useCreateFormLogic();
@@ -213,8 +220,10 @@ const CreateCourseForm = () => {
             {/* CTA BUTTONS */}
             <div className="flex justify-end gap-4">
                 <Button
+                    type="button"
                     className={`$ w-[150px] tracking-wider`}
                     variant="skeleton"
+                    onClick={() => router.back()}
                 >
                     Cancel
                 </Button>

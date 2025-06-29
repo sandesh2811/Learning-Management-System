@@ -18,6 +18,8 @@ interface BasicInfoUpdateProps {
 const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
     /* Handle the overall form logic */
     const {
+        router,
+
         register,
         errors,
         handleSubmit,
@@ -177,6 +179,7 @@ const BasicInfoUpdate = ({ courseToUpdate }: BasicInfoUpdateProps) => {
                         type="button"
                         className={`w-[150px] tracking-wider`}
                         variant="skeleton"
+                        onClick={() => router.back()}
                     >
                         Cancel
                     </Button>
